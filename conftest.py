@@ -6,9 +6,17 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 
 @pytest.fixture()
-def driver():
+def chrome_options():
+    options = webdriver.ChromeOptions()
+    # options.add_argument('--headless')
+    options.add_argument('--start-maximized')
+    # options.add_argument('--start-in-incognito')
+    return options
+
+
+@pytest.fixture()
+def driver(chrome_options):
     driver_service = Service(ChromeDriverManager().install())
-    driver = webdriver.Chrome(service=driver_service)
-    driver.maximize_window()
+    driver = webdriver.Chrome(service=driver_service, options=chrome_options)
     yield driver
     driver.quit()
