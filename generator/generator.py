@@ -7,7 +7,8 @@ Faker.seed()
 
 def generated_person():
     yield Patient(
-        full_name=f'{faker_ru.first_name()} {faker_ru.last_name()} {faker_ru.middle_name()}',
+        full_name=f'{faker_ru.last_name()} {faker_ru.first_name()} {faker_ru.middle_name()}',
         email=f'{faker_ru.email()}',
         phone_number=f'{faker_ru.phone_number()}',
+        birthday=f'{faker_ru.date("%d-%m-%Y")}',
     )

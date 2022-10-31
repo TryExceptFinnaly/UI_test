@@ -1,5 +1,5 @@
 from pages.base_page import BasePage
-from locators.authorization_page_locator import AuthorizationPageLocators as Locators
+from locators.elements_locators_page import AuthorizationPageLocators as Locators
 
 
 class AuthorizationPage(BasePage):

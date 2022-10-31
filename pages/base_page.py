@@ -13,6 +13,9 @@ class BasePage:
     def open(self):
         self.driver.get(self.url)
 
+    def current_url(self):
+        return self.driver.current_url
+
     def element_is_visible(self, locator, timeout=5):
         return Wait(self.driver, timeout).until(EC.visibility_of_element_located(locator))
 
@@ -32,4 +35,4 @@ class BasePage:
         return Wait(self.driver, timeout).until(EC.element_to_be_clickable(locator))
 
     def go_to_element(self, element):
-        self.driver.execute_sctript('argument[0].scrollIntoView();', element)
+        self.driver.execute_script('arguments[0].scrollIntoView();', element)
