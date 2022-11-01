@@ -10,7 +10,6 @@ class AuthorizationPageLocators:
         '#app > div.wrap > div.header > div > div > ul.nav.navbar-nav.pull-right > li.dropdown > div > div.pull-right > div:nth-child(1)'
     )
     STUDY_PAGE = (By.TAG_NAME, 'h1')
-    # PLANNED_PAGE = (By.CSS_SELECTOR, "#slide-menu>div>ul>li>a[href='/planned/']")
 
 
 class CreateVisitPageLocators:
@@ -19,7 +18,6 @@ class CreateVisitPageLocators:
     PHONE_NUMBER = (By.CSS_SELECTOR, "div>input[id='phone_number']")
     EMAIL = (By.CSS_SELECTOR, "div>input[id='email']")
     BIRTHDAY = (By.CSS_SELECTOR, "div>input[id='birth']")
-    # GENDER_CONTAINER = (By.CSS_SELECTOR, "div[class*='css'][class*='container react-select-container']")
     GENDER_CONTAINER = (By.XPATH, r'//*[@id="regform-tabs-pane-base"]/div/div[1]/div[4]/div[2]/div/div')
     GENDER = (By.CSS_SELECTOR, "div[id*='react-select-'][id*='-option-']")
     TYPES_OF_STUDY_CONTAINER = (By.XPATH, r'//*[@id="regform-tabs-pane-base"]/div/div[3]/div[2]/div/span/div/div')

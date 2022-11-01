@@ -14,25 +14,30 @@ class CreateVisitPage(AuthorizationPage):
         phone_number = patient_info.phone_number
         birthday = patient_info.birthday
 
+        print(patient_info)
+
         self.element_is_visible(Locators.CREATE_VISIT).click()
         self.element_is_visible(Locators.FULL_NAME).send_keys(full_name)
         self.element_is_visible(Locators.EMAIL).send_keys(email)
 
-        element_phone_number = self.element_is_visible(Locators.PHONE_NUMBER)
-        self.go_to_element(element_phone_number)
-        element_phone_number.send_keys(phone_number)
+        self.element_is_visible(Locators.PHONE_NUMBER).send_keys(phone_number)
 
-        self.element_is_visible(Locators.BIRTHDAY).send_keys(birthday)
+        elm_birthday = self.element_is_visible(Locators.BIRTHDAY)
+        elm_birthday.click()
+        elm_birthday.send_keys(birthday)
 
         self.element_is_visible(Locators.GENDER_CONTAINER).click()
-        genders = self.elements_are_visible(Locators.GENDER)
-        genders[randint(0, len(genders) - 1)].click()
+        elm_genders = self.elements_are_visible(Locators.GENDER)
+        elm_genders[randint(0, len(elm_genders) - 1)].click()
 
         self.element_is_visible(Locators.TYPES_OF_STUDY_CONTAINER).click()
-        types_of_study = self.elements_are_visible(Locators.TYPES_OF_STUDY)
-        types_of_study[randint(0, len(types_of_study) - 1)].click()
+        elm_types_of_study = self.elements_are_visible(Locators.TYPES_OF_STUDY)
+        elm_types_of_study[randint(0, len(elm_types_of_study) - 1)].click()
 
-        self.element_is_visible(Locators.SAVE_BUTTON).click()
+        elm_save_button = self.element_is_visible(Locators.SAVE_BUTTON)
+        self.go_to_element(elm_save_button)
+        elm_save_button.click()
+        # self.element_is_visible(Locators.SAVE_BUTTON).click()
 
     def check_data_page(self):
         return self.current_url()

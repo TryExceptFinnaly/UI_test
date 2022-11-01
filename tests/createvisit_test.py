@@ -8,4 +8,4 @@ class TestCreateVisit:
         page.open()
         page.authorization()
         page.submit_and_fill_fields()
-        assert 'https://nt.ris-x.com/study/' in page.current_url()
+        assert 'https://nt.ris-x.com/' in page.current_url()
