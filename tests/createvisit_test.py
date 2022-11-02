@@ -1,5 +1,5 @@
 from pages.create_visit_page import CreateVisitPage
-
+from time import sleep
 
 class TestCreateVisit:
 
@@ -7,5 +7,9 @@ class TestCreateVisit:
         page = CreateVisitPage(driver, 'https://nt.ris-x.com/')
         page.open()
         page.authorization()
-        page.submit_and_fill_fields()
-        assert 'https://nt.ris-x.com/' in page.current_url()
+        entered_data = page.submit_and_fill_fields()
+        sleep(5)
+        data = page.check_data_page()
+        print(f'Entered data: {entered_data}')
+        print(f'Data: {data}')
+        assert entered_data == data

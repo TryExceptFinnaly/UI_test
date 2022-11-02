@@ -3,7 +3,9 @@ from dataclasses import dataclass
 
 @dataclass
 class Patient:
-    full_name: str = None
+    first_name: str = None
+    last_name: str = None
+    middle_name: str = None
     email: str = None
     phone_number: str = None
     birthday: str = None

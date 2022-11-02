@@ -15,7 +15,9 @@ faker_ru.add_provider(RussianPhoneNumber)
 
 def generated_person():
     yield Patient(
-        full_name=f'{faker_ru.last_name()} {faker_ru.first_name()} {faker_ru.middle_name()}',
+        first_name=f'{faker_ru.first_name()}',
+        last_name=f'{faker_ru.last_name()}',
+        middle_name=f'{faker_ru.middle_name()}',
         email=f'{faker_ru.email()}',
         phone_number=f'{faker_ru.russian_phone_number()}',
         birthday=f'{faker_ru.date("%d-%m-%Y")}',

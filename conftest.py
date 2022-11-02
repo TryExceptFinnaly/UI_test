@@ -1,6 +1,5 @@
 import pytest
 
-from time import sleep
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
@@ -19,6 +18,7 @@ def chrome_options():
 def driver(chrome_options):
     driver_service = Service(ChromeDriverManager().install())
     driver = webdriver.Chrome(service=driver_service, options=chrome_options)
+    driver.implicitly_wait(5)
+    # driver.execute_script()
     yield driver
-    sleep(10)
     driver.quit()
