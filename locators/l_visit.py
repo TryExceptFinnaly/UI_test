@@ -9,18 +9,17 @@ class AuthorizationPageLocators:
     STUDY_PAGE = (By.CSS_SELECTOR, 'div.pull-left>h1.pull-left')
 
 
-class CreateVisitPageLocators:
+class VisitPageLocators:
     CREATE_VISIT = (By.CSS_SELECTOR, "a.btn.btn-primary[href='/visit/create/']")
     FULL_NAME = (By.CSS_SELECTOR, "input#full_name")
     PHONE_NUMBER = (By.CSS_SELECTOR, "input#phone_number")
     EMAIL = (By.CSS_SELECTOR, "input#email")
     BIRTHDAY = (By.CSS_SELECTOR, "input#birth")
     SEX_CONTAINER = (By.CSS_SELECTOR, "label.control-label[for='sex']+div>div")
-    SEX = (By.CSS_SELECTOR,
-           "label.control-label[for='sex']+div>div.react-select__menu>div.react-select__menu-list>div.react-select__option")
-    TYPES_OF_STUDY_CONTAINER = (By.CSS_SELECTOR, "label.control-label[for='studies']+div.studies-field>span>div>div.react-select-container>div.react-select__control")
-    TYPES_OF_STUDY = (By.CSS_SELECTOR,
-                      "label.control-label[for='studies']+div.studies-field>span>div>div.react-select-container>div.react-select__menu>div.react-select__menu-list--is-multi>div.react-select__option")
+    SEX = (By.CSS_SELECTOR, "label.control-label[for='sex']+div>div div[tabindex='-1']")
+    TYPES_OF_STUDY_CONTAINER = (
+    By.CSS_SELECTOR, "label.control-label[for='studies']+div.studies-field>span div.react-select__control")
+    TYPE_OF_STUDY = (By.CSS_SELECTOR, "label.control-label[for='studies']+div div[tabindex='-1']")
     SAVE_BUTTON = (By.CSS_SELECTOR, "div.pull-right>div.btn-toolbar[role='toolbar']>div>button.btn.btn-primary")
     PATIENTS_LIST = (By.CSS_SELECTOR, "div.table-responsive>table>tbody>tr>td>a[href^='/share/visits/']")
     PATIENTS_BIRTHDAY_LIST = (By.CSS_SELECTOR, "div.table-responsive>table>tbody>tr>td>span:has(br)")
