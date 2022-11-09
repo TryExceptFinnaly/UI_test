@@ -18,7 +18,9 @@ class BasePage:
     def current_url(self):
         return self.driver.current_url
 
-    def element_is_visible(self, locator, timeout=DEFAULT_TIMEOUT):
+    def element_is_visible(self, locator, scroll=False, timeout=DEFAULT_TIMEOUT):
+        if scroll:
+            self.scroll_to_element(self.element_is_present(locator))
         return Wait(self.driver, timeout).until(EC.visibility_of_element_located(locator))
 
     def elements_are_visible(self, locator, timeout=DEFAULT_TIMEOUT):
@@ -36,7 +38,7 @@ class BasePage:
     def element_is_clickable(self, locator, timeout=DEFAULT_TIMEOUT):
         return Wait(self.driver, timeout).until(EC.element_to_be_clickable(locator))
 
-    def go_to_element(self, element):
+    def scroll_to_element(self, element):
         self.driver.execute_script('arguments[0].scrollIntoView();', element)
 
     def action_double_click(self, element):

@@ -4,17 +4,26 @@ import requests
 
 from generator.generator import generated_person
 from pages.p_authorization import AuthorizationPage
-from locators.l_visit import VisitPageLocators as Locators
+from locators.l_visit import VisitPageLocators, CreateProtocolLocators
 
 
 class VisitPage(AuthorizationPage):
+    locators = VisitPageLocators()
 
     def go_to_create_visit(self):
-        button_create_visit = self.element_is_visible(Locators.CREATE_VISIT)
+        button_create_visit = self.element_is_visible(self.locators.CREATE_VISIT)
         link_href = button_create_visit.get_attribute('href')
         request = requests.get(link_href)
         if request.status_code == 200:
             button_create_visit.click()
+        assert link_href in self.current_url()
+
+    def go_to_created_visit(self):
+        link_created_visit = self.elements_are_visible(self.locators.PATIENTS_TYPES_OF_STUDY_LIST)
+        link_href = link_created_visit[0].get_attribute('href')
+        request = requests.get(link_href)
+        if request.status_code == 200:
+            link_created_visit[0].click()
         assert link_href in self.current_url()
 
     def fill_data_patient(self):
@@ -25,30 +34,64 @@ class VisitPage(AuthorizationPage):
         birthday = patient_info.birthday
         print(f'\n{patient_info}')
 
-        self.element_is_visible(Locators.TYPES_OF_STUDY_CONTAINER).click()
-        elm_type_of_study = self.elements_are_visible(Locators.TYPE_OF_STUDY)
-        elm_type_of_study[randint(0, len(elm_type_of_study) - 1)].click()
+        self.element_is_visible(self.locators.TYPES_OF_STUDY_CONTAINER).click()
+        elm_type_of_study = self.elements_are_visible(self.locators.TYPE_OF_STUDY)
+        elm_type_of_study = elm_type_of_study[randint(0, len(elm_type_of_study) - 1)]
+        print(elm_type_of_study.text)
+        elm_type_of_study.click()
 
-        self.element_is_visible(Locators.SEX_CONTAINER).click()
-        elm_sex = self.elements_are_visible(Locators.SEX)
+        self.element_is_visible(self.locators.SEX_CONTAINER).click()
+        elm_sex = self.elements_are_visible(self.locators.SEX)
         elm_sex[randint(0, len(elm_sex) - 1)].click()
 
-        self.element_is_visible(Locators.FULL_NAME).send_keys(full_name)
-        self.element_is_visible(Locators.BIRTHDAY).send_keys(birthday)
-        self.element_is_visible(Locators.EMAIL).send_keys(email)
-        self.element_is_visible(Locators.PHONE_NUMBER).send_keys(phone_number)
+        self.element_is_visible(self.locators.FULL_NAME).send_keys(full_name)
+        self.element_is_visible(self.locators.BIRTHDAY).send_keys(birthday)
+        self.element_is_visible(self.locators.EMAIL).send_keys(email)
+        self.element_is_visible(self.locators.PHONE_NUMBER).send_keys(phone_number)
 
         patient = f'{patient_info.last_name} {patient_info.first_name[0]}. {patient_info.middle_name[0]}.'
         return patient, patient_info.birthday
 
-    def create_visit(self):
-        self.go_to_element(self.element_is_present(Locators.SAVE_BUTTON))
-        self.element_is_visible(Locators.SAVE_BUTTON).click()
+    def save_visit(self):
+        self.element_is_visible(self.locators.SAVE_BUTTON, True).click()
+
+    def select_action_variant(self, variant: int = 1):
+        self.element_is_visible(self.locators.LIST_SAVE_ACTIONS, True).click()
+        select_action = self.elements_are_present(self.locators.SELECT_ACTIONS)[variant]
+        self.scroll_to_element(select_action)
+        select_action.click()
+
+    def refresh_study_page(self):
+        self.element_is_visible(self.locators.REFRESH_STUDY_PAGE)
+        self.element_is_clickable(self.locators.REFRESH_STUDY_PAGE).click()
 
     def check_result_created_visit(self):
-        self.element_is_clickable(Locators.REFRESH_STUDY_PAGE).click()
-        patient = self.elements_are_visible(Locators.PATIENTS_LIST)[0].text
-        patient_birthday = self.elements_are_visible(Locators.PATIENTS_BIRTHDAY_LIST)[0].text
+        patient = self.elements_are_visible(self.locators.PATIENTS_LIST)[0].text
+        patient_birthday = self.elements_are_visible(self.locators.PATIENTS_BIRTHDAY_LIST)[0].text
         patient_birthday = patient_birthday.split()[0].replace('.', '-')
         # result = [i.text for i in result]
         return patient, patient_birthday
+
+
+class CreateProtocolPage(AuthorizationPage):
+    locators = CreateProtocolLocators()
+
+    def create_protocol(self):
+        self.elements_are_visible(self.locators.BUTTONS_CREATE_PROTOCOL)[0].click()
+        self.element_is_visible(self.locators.BUTTON_CLOSE_TEMPLATE_SELECTION).click()
+        protocol_frame = self.element_is_present(self.locators.PROTOCOL_FRAME)
+        self.driver.switch_to.frame(protocol_frame)
+        description = self.element_is_visible(self.locators.DESCRIPTION_FIELD, True)
+        conclusion = self.element_is_visible(self.locators.CONCLUSION_FIELD, True)
+        recommendation = self.element_is_visible(self.locators.RECOMMENDATION_FIELD, True)
+        description.click()
+        description.send_keys('Описание')
+        conclusion.click()
+        conclusion.send_keys('Заключение')
+        recommendation.click()
+        recommendation.send_keys('Рекомендации')
+
+    def save_protocol(self):
+        self.driver.switch_to.default_content()
+        self.element_is_visible(self.locators.BUTTON_EDITABLE, True).click()
+        self.element_is_visible(self.locators.BUTTON_SAVE_PROTOCOL_AND_BACK, True).click()

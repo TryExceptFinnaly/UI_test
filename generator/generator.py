@@ -20,5 +20,5 @@ def generated_person():
         middle_name=f'{faker_ru.middle_name()}',
         email=f'{faker_ru.email()}',
         phone_number=f'{faker_ru.russian_phone_number()}',
-        birthday=f'{faker_ru.date("%d-%m-%Y")}',
+        birthday="01-04-1937",# f'{faker_ru.date("%d-%m-%Y")}',
     )
