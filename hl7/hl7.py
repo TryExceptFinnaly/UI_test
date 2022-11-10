@@ -12,7 +12,7 @@ def get_module_path() -> str:
 
 
 def gen_birthday(date) -> str:
-    date = date.split('-')
+    date = date.split('.')
     date = date[2] + date[1] + date[0]
     return date
 

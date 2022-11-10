@@ -30,7 +30,7 @@ class VisitPage(AuthorizationPage):
         full_name = f'{patient_info.last_name} {patient_info.first_name} {patient_info.middle_name}'
         email = patient_info.email
         phone_number = patient_info.phone_number
-        birthday = patient_info.birthday
+        birthday = patient_info.birthday.replace('.', '')
         print(f'\n{patient_info}')
 
         self.element_is_visible(self.locators.TYPES_OF_STUDY_CONTAINER).click()
@@ -67,7 +67,7 @@ class VisitPage(AuthorizationPage):
     def check_result_created_visit(self):
         patient = self.elements_are_visible(self.locators.PATIENTS_LIST)[0].text
         patient_birthday = self.elements_are_visible(self.locators.PATIENTS_BIRTHDAY_LIST)[0].text
-        patient_birthday = patient_birthday.split()[0].replace('.', '-')
+        patient_birthday = patient_birthday.split()[0]
         # result = [i.text for i in result]
         return patient, patient_birthday
 
