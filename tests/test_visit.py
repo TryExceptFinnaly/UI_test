@@ -22,6 +22,7 @@ class TestCreateVisitPage:
         page.authorization()
         page.go_to_create_visit()
         TestCreateVisitPage.entered_data = page.fill_data_patient()
+        page.select_action_variant()
         page.save_visit()
         sleep(5)
         print(f'Entered data: {TestCreateVisitPage.entered_data}')

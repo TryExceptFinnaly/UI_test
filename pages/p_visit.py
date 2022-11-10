@@ -54,7 +54,7 @@ class VisitPage(AuthorizationPage):
     def save_visit(self):
         self.element_is_visible(self.locators.SAVE_BUTTON, True).click()
 
-    def select_action_variant(self, variant: int = 1):
+    def select_action_variant(self, variant: int = 0):
         self.element_is_visible(self.locators.LIST_SAVE_ACTIONS, True).click()
         select_action = self.elements_are_present(self.locators.SELECT_ACTIONS)[variant]
         self.scroll_to_element(select_action)
