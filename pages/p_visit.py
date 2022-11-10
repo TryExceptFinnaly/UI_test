@@ -1,7 +1,6 @@
-from random import randint
-
 import requests
 
+from random import randint
 from generator.generator import generated_person
 from pages.p_authorization import AuthorizationPage
 from locators.l_visit import VisitPageLocators, CreateProtocolLocators

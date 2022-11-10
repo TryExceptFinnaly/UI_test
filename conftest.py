@@ -14,7 +14,7 @@ def chrome_options():
     return options
 
 
-@pytest.fixture(scope='function')
+@pytest.fixture(scope='function') 
 def driver(chrome_options):
     driver_service = Service(ChromeDriverManager().install())
     driver = webdriver.Chrome(service=driver_service, options=chrome_options)
