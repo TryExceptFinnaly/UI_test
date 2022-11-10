@@ -18,9 +18,12 @@ def write_seed():
         file.write(f'{randint(0, 1000)}')
 
 
-def read_seed() -> int:
-    with open('seed', 'r', encoding='utf-8') as file:
-        return int(file.read())
+def read_seed():
+    try:
+        with open('seed', 'r', encoding='utf-8') as file:
+            return int(file.read())
+    except Exception:
+        return None
 
 
 def generated_person():

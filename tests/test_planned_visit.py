@@ -6,9 +6,8 @@ from time import sleep
 class TestPlannedVisitPage:
     URL = 'https://nt.ris-x.com/planned/'
 
-
     def test_create_planned_visit_in_hl7_message(self, driver):
-        send_hl7_message()
+        send_hl7_message('nw')
         page = PlannedVisitPage(driver, self.URL)
         page.open()
         page.authorization()

@@ -17,13 +17,14 @@ def gen_birthday(date) -> str:
     return date
 
 
-def send_hl7_message():
+def send_hl7_message(order):
     path_to_hl7 = os.path.join(get_module_path(), 'bin\\')
     path_to_bin = f'{path_to_hl7}HL7_cmd.exe'
-    path_to_hl7 = f'{path_to_hl7}test_sc.hl7'
+    path_to_hl7 = f'{path_to_hl7}test_{order}.hl7'
     with open(path_to_hl7, 'r', encoding='utf-8') as file:
         file_data = file.read()
-    write_seed()
+    if order == 'sc':
+        write_seed()
     patient_info = next(generated_person())
     file_data = file_data.replace('PATIENT_NAME',
                                   f'{patient_info.last_name}^{patient_info.first_name}^{patient_info.middle_name}')

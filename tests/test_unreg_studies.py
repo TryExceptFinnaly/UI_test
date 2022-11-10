@@ -7,7 +7,7 @@ class TestUnregStudiesPage:
     URL = 'https://nt.ris-x.com/unreg/'
 
     def test_create_unreg_study_in_hl7_message(self, driver):
-        send_hl7_message()
+        send_hl7_message('sc')
         page = UnregStudiesPage(driver, self.URL)
         page.open()
         page.authorization()
