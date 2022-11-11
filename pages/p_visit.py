@@ -60,6 +60,15 @@ class VisitPage(AuthorizationPage):
         self.scroll_to_element(select_action)
         select_action.click()
 
+    def waiting_for_notification(self, waiting_notification: str):
+        current_notification = ''
+        while current_notification != waiting_notification:
+            notifications = self.elements_are_visible(self.locators.PAGE_NOTIFICATIONS)
+            for n in notifications:
+                current_notification = n.text
+                if current_notification == waiting_notification:
+                    break
+
     def refresh_study_page(self):
         self.element_is_visible(self.locators.REFRESH_STUDY_PAGE)
         self.element_is_clickable(self.locators.REFRESH_STUDY_PAGE).click()
@@ -68,7 +77,6 @@ class VisitPage(AuthorizationPage):
         patient = self.elements_are_visible(self.locators.PATIENTS_LIST)[0].text
         patient_birthday = self.elements_are_visible(self.locators.PATIENTS_BIRTHDAY_LIST)[0].text
         patient_birthday = patient_birthday.split()[0]
-        # result = [i.text for i in result]
         return patient, patient_birthday
 
 

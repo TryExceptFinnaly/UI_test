@@ -42,7 +42,7 @@ class TestCreateVisitPage:
         page.go_to_created_visit()
         page.select_action_variant(3)
         page.save_visit()
-        sleep(10)
+        page.waiting_for_notification('Сопоставление успешно выполнено.')
 
 
 class TestCreateProtocolPage:

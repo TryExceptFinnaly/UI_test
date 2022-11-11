@@ -2,7 +2,14 @@ from selenium.webdriver.common.by import By
 
 
 class VisitPageLocators:
+    # Visit Page
     CREATE_VISIT = (By.CSS_SELECTOR, "a.btn.btn-primary[href='/visit/create/']")
+    PATIENTS_LIST = (By.CSS_SELECTOR, "div.table-responsive>table>tbody>tr>td>a[href^='/share/visits/']")
+    PATIENTS_BIRTHDAY_LIST = (By.CSS_SELECTOR, "div.table-responsive>table>tbody>tr>td>span:has(br)")
+    PATIENTS_TYPES_OF_STUDY_LIST = (By.CSS_SELECTOR, 'ul.compact.style_marker_none>li>a[href^="/visit/"]')
+    REFRESH_STUDY_PAGE = (By.CSS_SELECTOR, "i.fa.fa-refresh")
+    PAGE_NOTIFICATIONS = (By.CSS_SELECTOR, 'div.notification.notification-success>div.notification-message>div.message')
+    # Create Visit Page
     FULL_NAME = (By.CSS_SELECTOR, "input#full_name")
     PHONE_NUMBER = (By.CSS_SELECTOR, "input#phone_number")
     EMAIL = (By.CSS_SELECTOR, "input#email")
@@ -14,11 +21,8 @@ class VisitPageLocators:
     TYPE_OF_STUDY = (By.CSS_SELECTOR, "label.control-label[for='studies']+div div[tabindex='-1']")
     SAVE_BUTTON = (By.CSS_SELECTOR, "div.pull-right>div.btn-toolbar[role='toolbar']>div>button.btn.btn-primary")
     LIST_SAVE_ACTIONS = (By.CSS_SELECTOR, "div.btn-toolbar[role='toolbar']>div>div.save-actions-variants")
-    SELECT_ACTIONS = (By.CSS_SELECTOR, "div.btn-toolbar[role='toolbar']>div>div.save-actions-variants>div.react-select__menu>div>div")
-    PATIENTS_LIST = (By.CSS_SELECTOR, "div.table-responsive>table>tbody>tr>td>a[href^='/share/visits/']")
-    PATIENTS_BIRTHDAY_LIST = (By.CSS_SELECTOR, "div.table-responsive>table>tbody>tr>td>span:has(br)")
-    PATIENTS_TYPES_OF_STUDY_LIST = (By.CSS_SELECTOR, 'ul.compact.style_marker_none>li>a[href^="/visit/"]')
-    REFRESH_STUDY_PAGE = (By.CSS_SELECTOR, "i.fa.fa-refresh")
+    SELECT_ACTIONS = (
+        By.CSS_SELECTOR, "div.btn-toolbar[role='toolbar']>div>div.save-actions-variants>div.react-select__menu>div>div")
 
 
 class CreateProtocolLocators:
