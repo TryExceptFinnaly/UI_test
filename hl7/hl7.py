@@ -29,6 +29,9 @@ def send_hl7_message(order):
     file_data = file_data.replace('PATIENT_NAME',
                                   f'{patient_info.last_name}^{patient_info.first_name}^{patient_info.middle_name}')
     file_data = file_data.replace('BIRTH_DAY', f'{gen_birthday(patient_info.birthday)}')
+    file_data = file_data.replace('PHONE_NUMBER', f'{patient_info.phone_number}')
+    file_data = file_data.replace('PATIENT_SEX', 'M')
+    file_data = file_data.replace('PATIENT_EMAIL', f'{patient_info.email}')
     with open(f'{path_to_hl7}.tmp', 'w', encoding='utf-8') as file:
         file.write(file_data)
     cmd = f'{path_to_bin} -i nt.ris-x.com -fp {path_to_hl7}.tmp -r 1 -ct 1'
