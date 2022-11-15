@@ -30,7 +30,7 @@ class VisitPage(AuthorizationPage):
         full_name = f'{patient_info.last_name} {patient_info.first_name} {patient_info.middle_name}'
         email = patient_info.email
         phone_number = patient_info.phone_number
-        birthday = patient_info.birthday.replace('.', '')
+        birthday = f'{patient_info.birth_day}{patient_info.birth_month}{patient_info.birth_year}'
         print(f'\n{patient_info}')
 
         self.element_is_visible(self.locators.TYPES_OF_STUDY_CONTAINER).click()

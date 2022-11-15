@@ -28,11 +28,17 @@ def read_seed():
 
 def generated_person():
     Faker.seed(read_seed())
+    person = faker_ru.simple_profile()
+    person_name = person['name'].split()
+
     yield Patient(
-        first_name=f'{faker_ru.first_name()}',
-        last_name=f'{faker_ru.last_name()}',
-        middle_name=f'{faker_ru.middle_name()}',
-        email=f'{faker_ru.email()}',
+        first_name=f'{person_name[0]}',
+        last_name=f'{person_name[1]}',
+        middle_name=f'{person_name[2]}',
+        sex=f'{person["sex"]}',
+        email=f'{person["mail"]}',
         phone_number=f'{faker_ru.russian_phone_number()}',
-        birthday=f'{faker_ru.date("%d.%m.%Y")}'
+        birth_year=f'{person["birthdate"].year}',
+        birth_month=f'{person["birthdate"].month:02}',
+        birth_day=f'{person["birthdate"].day:02}',
     )
