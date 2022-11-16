@@ -1,5 +1,4 @@
 from pages.p_patients import PatientsPage
-from time import sleep
 
 
 class TestPatientsPage:
@@ -9,5 +8,7 @@ class TestPatientsPage:
         page = PatientsPage(driver, self.URL)
         page.open()
         page.authorization()
-        page.check_created_patients()
-        sleep(5)
+        entered_name, entered_birthdate = page.found_created_patients()
+        name, birthdate = page.check_found_patient()
+        assert (entered_name, entered_birthdate) == (name, birthdate)
+        page.sleep(5)

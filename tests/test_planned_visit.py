@@ -1,6 +1,5 @@
 from pages.p_planned_visit import PlannedVisitPage
 from hl7.hl7 import send_hl7_message
-from time import sleep
 
 
 class TestPlannedVisitPage:
@@ -12,11 +11,11 @@ class TestPlannedVisitPage:
         page.open()
         page.authorization()
         page.check_list_planned_visits()
-        sleep(5)
+        page.sleep(5)
 
     def test_register_a_planned_visit(self, driver):
         page = PlannedVisitPage(driver, self.URL)
         page.open()
         page.authorization()
         page.register_a_planned_visit()
-        sleep(5)
+        page.sleep(5)

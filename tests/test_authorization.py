@@ -9,5 +9,6 @@ class TestAuthorizationPage:
         page.open()
         page.authorization()
         user_name, study_page = page.check_result_authorization()
+        page.sleep(5)
         assert user_name == 'Дубровин А. В.'
         assert study_page == 'Исследования'

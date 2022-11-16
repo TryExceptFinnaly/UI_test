@@ -1,5 +1,4 @@
-from pages.p_visit import VisitPage, CreateProtocolPage
-from time import sleep
+from pages.p_visit import VisitPage, CreateVisitPage, CreateProtocolPage
 
 
 class TestVisitPage:
@@ -17,18 +16,18 @@ class TestCreateVisitPage:
     entered_data = ''
 
     def test_create_visit(self, driver):
-        page = VisitPage(driver, self.URL)
+        page = CreateVisitPage(driver, self.URL)
         page.open()
         page.authorization()
         page.go_to_create_visit()
         TestCreateVisitPage.entered_data = page.fill_data_patient()
         page.select_action_variant()
         page.save_visit()
-        sleep(5)
+        page.sleep(5)
         print(f'Entered data: {TestCreateVisitPage.entered_data}')
 
     def test_check_created_visit(self, driver):
-        page = VisitPage(driver, self.URL)
+        page = CreateVisitPage(driver, self.URL)
         page.open()
         page.authorization()
         data = page.check_result_created_visit()
@@ -36,13 +35,22 @@ class TestCreateVisitPage:
         assert TestCreateVisitPage.entered_data == data
 
     def test_compare_created_visit(self, driver):
-        page = VisitPage(driver, self.URL)
+        page = CreateVisitPage(driver, self.URL)
         page.open()
         page.authorization()
         page.go_to_created_visit()
         page.select_action_variant(3)
         page.save_visit()
+        page.waiting_for_notification('Данные сохранены.')
         page.waiting_for_notification('Сопоставление успешно выполнено.')
+
+    def test_delete_visit(self, driver):
+        page = CreateVisitPage(driver, self.URL)
+        page.open()
+        page.authorization()
+        page.go_to_created_visit()
+        page.delete_visit()
+        page.sleep(5)
 
 
 class TestCreateProtocolPage:
@@ -54,4 +62,4 @@ class TestCreateProtocolPage:
         page.authorization()
         page.create_protocol()
         page.save_protocol()
-        sleep(10)
+        page.waiting_for_notification('Данные сохранены.')

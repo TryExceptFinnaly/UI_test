@@ -1,6 +1,5 @@
 from pages.p_unreg_studies import UnregStudiesPage
 from hl7.hl7 import send_hl7_message
-from time import sleep
 
 
 class TestUnregStudiesPage:
@@ -12,4 +11,4 @@ class TestUnregStudiesPage:
         page.open()
         page.authorization()
         page.check_list_unreg_studies()
-        sleep(5)
+        page.sleep(5)
