@@ -1,5 +1,6 @@
 import requests
 
+from data.data import SystemDirectory
 from generator.generator import generated_person
 from pages.p_authorization import AuthorizationPage
 from locators.l_visit import VisitPageLocators as VisitLocators
@@ -48,57 +49,62 @@ class VisitPage(AuthorizationPage):
 class CreateVisitPage(VisitPage):
 
     def fill_data_patient(self):
-        self.element_is_not_visible(CreateVisitLocators.BLOCK_PAGE)
         patient_info = next(generated_person())
         full_name = f'{patient_info.last_name} {patient_info.first_name} {patient_info.middle_name}'
         email = patient_info.email
         phone_number = patient_info.phone_number
         birthdate = f'{patient_info.birth_day}{patient_info.birth_month}{patient_info.birth_year}'
+        sex = SystemDirectory.sex[patient_info.sex][1]
+        allergy_type = SystemDirectory.allergy_type[patient_info.allergy_type][1]
+        treatment_case = SystemDirectory.treatment_case[patient_info.treatment_case][1]
+        patient_class = SystemDirectory.patient_class[patient_info.patient_class][1]
+        is_cito = SystemDirectory.is_cito[patient_info.is_cito][1]
         print(f'\n{patient_info}')
 
+        self.element_is_not_visible(CreateVisitLocators.BLOCK_PAGE)
         self.element_is_visible(CreateVisitLocators.EXTERNAL_ID).send_keys('PATIENT_ID')
         self.element_is_visible(CreateVisitLocators.POLIS_OMS).send_keys('PATIENT_POLIS_OMS')
         self.element_is_clickable(CreateVisitLocators.SNILS)
         snils = self.element_is_visible(CreateVisitLocators.SNILS)
-        self.click_and_send_keys(snils, '14858733210')
+        self.click_and_send_keys(snils, 14858733210)
         self.element_is_visible(CreateVisitLocators.FULL_NAME).send_keys(full_name)
         self.element_is_clickable(CreateVisitLocators.BIRTHDAY)
         birthday = self.element_is_visible(CreateVisitLocators.BIRTHDAY)
         self.click_and_send_keys(birthday, birthdate)
         self.element_is_visible(CreateVisitLocators.SEX_CONTAINER).click()
-        self.elements_are_visible(CreateVisitLocators.SEX, random_element=True).click()
+        self.elements_are_visible(CreateVisitLocators.SEX, element=sex).click()
         self.element_is_visible(CreateVisitLocators.PHONE_NUMBER).send_keys(phone_number)
         self.element_is_visible(CreateVisitLocators.EMAIL).send_keys(email)
         self.element_is_visible(CreateVisitLocators.ALLERGY_TYPE_CONTAINER).click()
-        # allergy_type = self.elements_are_visible(CreateVisitLocators.ALLERGY_TYPE, random_element=True)
+        # allergy_type = self.elements_are_visible(CreateVisitLocators.ALLERGY_TYPE, element=allergy_type)
         # self.scroll_to_element(allergy_type)
         # allergy_type.click()
         self.element_is_visible(CreateVisitLocators.YEAR_DOSE)
 
         self.element_is_visible(CreateVisitLocators.TREATMENT_CASE_CONTAINER).click()
-        self.elements_are_visible(CreateVisitLocators.TREATMENT_CASE, random_element=True).click()
+        self.elements_are_visible(CreateVisitLocators.TREATMENT_CASE, element=treatment_case).click()
         self.element_is_visible(CreateVisitLocators.PATIENT_CLASS_CONTAINER).click()
-        self.elements_are_visible(CreateVisitLocators.PATIENT_CLASS, random_element=True).click()
+        self.elements_are_visible(CreateVisitLocators.PATIENT_CLASS, element=patient_class).click()
         self.element_is_visible(CreateVisitLocators.OUTPATIENT_CARD_NUMBER).send_keys('OUTPATIENT_CARD_NUMBER')
         self.element_is_visible(CreateVisitLocators.CASE_HISTORY_NUMBER).send_keys('CASE_HISTORY_NUMBER')
         self.element_is_visible(CreateVisitLocators.REF_DEPARTMENT).send_keys('REF_DEPARTMENT')
         self.element_is_visible(CreateVisitLocators.REF_DOCTOR).send_keys('REF_DOCTOR')
         self.element_is_visible(CreateVisitLocators.SOURCE_FINANCING_CONTAINER).click()
-        self.elements_are_visible(CreateVisitLocators.SOURCE_FINANCING, random_element=True).click()
+        self.elements_are_visible(CreateVisitLocators.SOURCE_FINANCING, element=-1).click()
         self.element_is_visible(CreateVisitLocators.PURPOSE).send_keys('PURPOSE')
         self.element_is_visible(CreateVisitLocators.COMMENT).send_keys('COMMENT')
 
         self.element_is_visible(CreateVisitLocators.DOCTOR_CONTAINER).click()
         self.element_is_visible(CreateVisitLocators.ASSISTANT_CONTAINER).click()
         self.element_is_visible(CreateVisitLocators.TYPES_OF_STUDY_CONTAINER).click()
-        self.elements_are_visible(CreateVisitLocators.TYPE_OF_STUDY, random_element=True).click()
+        self.elements_are_visible(CreateVisitLocators.TYPE_OF_STUDY, element=-1).click()
         self.element_is_visible(CreateVisitLocators.DEVICE_CONTAINER)
         self.element_is_visible(CreateVisitLocators.CONTRAST_CONTAINER).click()
         self.element_is_visible(CreateVisitLocators.CONTRAST_VOLUME).click()
         self.element_is_visible(CreateVisitLocators.DOSE_RG).click()
         self.element_is_visible(CreateVisitLocators.DOSE)
         self.element_is_visible(CreateVisitLocators.IS_CITO_CONTAINER).click()
-        self.elements_are_visible(CreateVisitLocators.IS_CITO, random_element=True).click()
+        self.elements_are_visible(CreateVisitLocators.IS_CITO, element=is_cito).click()
 
         patient = f'{patient_info.last_name} {patient_info.first_name[0]}. {patient_info.middle_name[0]}.'
         birthdate = f'{patient_info.birth_day}.{patient_info.birth_month}.{patient_info.birth_year}'

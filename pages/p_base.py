@@ -20,33 +20,36 @@ class BasePage:
     def current_url(self):
         return self.driver.current_url
 
-    def element_is_visible(self, locator, scroll=False, timeout=DEFAULT_TIMEOUT):
+    def element_is_visible(self, locator, scroll=False, timeout: int = DEFAULT_TIMEOUT):
         if scroll:
             self.scroll_to_element(self.element_is_present(locator))
         return Wait(self.driver, timeout).until(EC.visibility_of_element_located(locator))
 
-    def elements_are_visible(self, locator, timeout=DEFAULT_TIMEOUT, random_element=False):
+    def elements_are_visible(self, locator, timeout: int = DEFAULT_TIMEOUT, element: int = None):
+        """Return list elements by locator\nelement(int) - return an element from a list(-1 = random)"""
         elements = Wait(self.driver, timeout).until(EC.visibility_of_all_elements_located(locator))
-        if random_element:
-            return elements[randint(0, len(elements) - 1)]
+        if element is not None:
+            if element == -1:
+                return elements[randint(0, len(elements) - 1)]
+            return elements[element]
         return elements
 
-    def element_is_present(self, locator, timeout=DEFAULT_TIMEOUT):
+    def element_is_present(self, locator, timeout: int = DEFAULT_TIMEOUT):
         return Wait(self.driver, timeout).until(EC.presence_of_element_located(locator))
 
-    def elements_are_present(self, locator, timeout=DEFAULT_TIMEOUT):
+    def elements_are_present(self, locator, timeout: int = DEFAULT_TIMEOUT):
         return Wait(self.driver, timeout).until(EC.presence_of_all_elements_located(locator))
 
-    def element_is_not_visible(self, locator, timeout=DEFAULT_TIMEOUT):
+    def element_is_not_visible(self, locator, timeout: int = DEFAULT_TIMEOUT):
         return Wait(self.driver, timeout).until(EC.invisibility_of_element_located(locator))
 
-    def element_is_clickable(self, locator, timeout=DEFAULT_TIMEOUT):
+    def element_is_clickable(self, locator, timeout: int = DEFAULT_TIMEOUT):
         return Wait(self.driver, timeout).until(EC.element_to_be_clickable(locator))
 
     def scroll_to_element(self, element):
         self.driver.execute_script('arguments[0].scrollIntoView();', element)
 
-    def zoom_level(self, level):
+    def zoom_level(self, level: int):
         self.driver.execute_script(f'document.body.style.zoom="{level}%";')
 
     def action_double_click(self, element):
@@ -65,5 +68,5 @@ class BasePage:
         element.send_keys(send_keys)
 
     @staticmethod
-    def sleep(secs):
+    def sleep(secs: int):
         sleep(secs)

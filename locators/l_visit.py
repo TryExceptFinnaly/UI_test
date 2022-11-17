@@ -21,16 +21,23 @@ class CreateVisitPageLocators:
     BIRTHDAY = (By.CSS_SELECTOR, "input#birth")
     SEX_CONTAINER = (By.CSS_SELECTOR, "label.control-label[for='sex']+div>div")
     SEX = (By.CSS_SELECTOR, "label.control-label[for='sex']+div>div div[tabindex='-1']")
+    SEX_SELECT_VALUE = (By.CSS_SELECTOR, "label.control-label[for='sex']+div>div>div>div.react-select__single-value")
     PHONE_NUMBER = (By.CSS_SELECTOR, "input#phone_number")
     EMAIL = (By.CSS_SELECTOR, "input#email")
     ALLERGY_TYPE_CONTAINER = (By.CSS_SELECTOR, "label.control-label[for='allergy_type']+div>div")
     ALLERGY_TYPE = (By.CSS_SELECTOR, "label.control-label[for='allergy_type']+div>div div[tabindex='-1']")
+    ALLERGY_TYPE_SELECT_VALUE = (
+        By.CSS_SELECTOR, "label.control-label[for='allergy_type']+div>div>div>div.react-select__single-value")
     YEAR_DOSE = (By.CSS_SELECTOR, "input#year_dose[disabled]")
     #   DATA DIRECTION
     TREATMENT_CASE_CONTAINER = (By.CSS_SELECTOR, "label.control-label[for='treatment_case']+div>div")
     TREATMENT_CASE = (By.CSS_SELECTOR, "label.control-label[for='treatment_case']+div>div div[tabindex='-1']")
+    TREATMENT_CASE_SELECT_VALUE = (
+        By.CSS_SELECTOR, "label.control-label[for='treatment_case']+div>div>div>div.react-select__single-value")
     PATIENT_CLASS_CONTAINER = (By.CSS_SELECTOR, "label.control-label[for='patient_class']+div>div")
     PATIENT_CLASS = (By.CSS_SELECTOR, "label.control-label[for='patient_class']+div>div div[tabindex='-1']")
+    PATIENT_CLASS_SELECT_VALUE = (
+        By.CSS_SELECTOR, "label.control-label[for='patient_class']+div>div>div>div.react-select__single-value")
     OUTPATIENT_CARD_NUMBER = (
         By.CSS_SELECTOR, "label.control-label[for='outpatient_card_number']+div>input.form-control")
     CASE_HISTORY_NUMBER = (By.CSS_SELECTOR, "label.control-label[for='case_history_number']+div>input.form-control")
@@ -38,6 +45,8 @@ class CreateVisitPageLocators:
     REF_DOCTOR = (By.CSS_SELECTOR, "label.control-label[for='ref_doctor']+div>input.form-control")
     SOURCE_FINANCING_CONTAINER = (By.CSS_SELECTOR, "label.control-label[for='source_financing']+div>div")
     SOURCE_FINANCING = (By.CSS_SELECTOR, "label.control-label[for='source_financing']+div>div div[tabindex='-1']")
+    SOURCE_FINANCING_SELECT_VALUE = (
+    By.CSS_SELECTOR, "label.control-label[for='source_financing']+div>div>div>div.react-select__single-value")
     PURPOSE = (By.CSS_SELECTOR, "label.control-label[for='purpose']+div>input.form-control")
     DIAGNOSES_MKB_CONTAINER = (By.CSS_SELECTOR, "div#diagnoses")
     COMMENT = (By.CSS_SELECTOR, "textarea#comment")
@@ -55,6 +64,7 @@ class CreateVisitPageLocators:
     DOSE = (By.CSS_SELECTOR, "input#dose[disabled]")
     IS_CITO_CONTAINER = (By.CSS_SELECTOR, "label.control-label[for='is_cito']+div>div")
     IS_CITO = (By.CSS_SELECTOR, "label.control-label[for='is_cito']+div>div div[tabindex='-1']")
+    IS_CITO_SELECT_VALUE = (By.CSS_SELECTOR, "label.control-label[for='is_cito']+div>div>div>div.react-select__single-value")
     # MAIN
     DELETE_BUTTON = (By.CSS_SELECTOR, "div.clearfix>div.pull-left>button.btn.btn-danger")
     REASON_FOR_DELETE = (By.CSS_SELECTOR, "textarea#description")

@@ -13,6 +13,13 @@ class TestPlannedVisitPage:
         page.check_list_planned_visits()
         page.sleep(5)
 
+    def test_check_data_planned_visit(self, driver):
+        page = PlannedVisitPage(driver, self.URL)
+        page.open()
+        page.authorization()
+        page.check_data_planned_visit()
+        page.sleep(5)
+
     def test_register_a_planned_visit(self, driver):
         page = PlannedVisitPage(driver, self.URL)
         page.open()

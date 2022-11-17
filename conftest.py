@@ -18,8 +18,5 @@ def chrome_options():
 def driver(chrome_options):
     driver_service = Service(ChromeDriverManager().install())
     driver = webdriver.Chrome(service=driver_service, options=chrome_options)
-    driver.implicitly_wait(5)
-    # driver.find_element().
-    # driver.execute_script()
     yield driver
     driver.quit()

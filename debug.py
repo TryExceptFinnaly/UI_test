@@ -1,6 +1,6 @@
-import pyautogui
-from time import sleep
+a = {
+        '': 'Empty',
+        '1': '1'
+}
 
-while True:
-    print(pyautogui.position())
-    sleep(5)
+print(a[''])
