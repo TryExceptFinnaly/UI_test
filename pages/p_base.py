@@ -1,4 +1,5 @@
 import requests
+import selenium.common.exceptions
 
 from selenium.webdriver import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait as Wait
@@ -42,8 +43,15 @@ class BasePage:
     def elements_are_present(self, locator, timeout: int = DEFAULT_TIMEOUT):
         return Wait(self.driver, timeout).until(EC.presence_of_all_elements_located(locator))
 
-    def element_is_not_visible(self, locator, timeout: int = DEFAULT_TIMEOUT):
-        return Wait(self.driver, timeout).until(EC.invisibility_of_element_located(locator))
+    def element_is_not_visible(self, locator, timeout: int = DEFAULT_TIMEOUT, return_bool=False):
+        if return_bool:
+            try:
+                Wait(self.driver, timeout).until(EC.invisibility_of_element_located(locator))
+                return True
+            except selenium.common.exceptions.TimeoutException:
+                return False
+        else:
+            return Wait(self.driver, timeout).until(EC.invisibility_of_element_located(locator))
 
     def element_is_clickable(self, locator, timeout: int = DEFAULT_TIMEOUT):
         return Wait(self.driver, timeout).until(EC.element_to_be_clickable(locator))

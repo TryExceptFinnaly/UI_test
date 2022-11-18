@@ -24,15 +24,6 @@ class VisitPage(AuthorizationPage):
             link_created_visit[0].click()
         assert link_href in self.current_url()
 
-    def waiting_for_notification(self, waiting_notification: str):
-        current_notification = ''
-        while current_notification != waiting_notification:
-            notifications = self.elements_are_visible(VisitLocators.PAGE_NOTIFICATIONS)
-            for n in notifications:
-                current_notification = n.text
-                if current_notification == waiting_notification:
-                    break
-
     def refresh_study_page(self):
         self.element_is_visible(VisitLocators.REFRESH_STUDY_PAGE)
         self.element_is_clickable(VisitLocators.REFRESH_STUDY_PAGE).click()
@@ -62,11 +53,12 @@ class CreateVisitPage(VisitPage):
         is_cito = SystemDirectory.is_cito[self.patient_info.is_cito][1]
         print(f'\n{self.patient_info}')
 
+        self.element_is_not_visible(CreateVisitLocators.BLOCK_PAGE)
         self.element_is_visible(CreateVisitLocators.BaseTab.EXTERNAL_ID).send_keys('PATIENT_ID')
         self.element_is_visible(CreateVisitLocators.BaseTab.POLIS_OMS).send_keys('PATIENT_POLIS_OMS')
         self.element_is_clickable(CreateVisitLocators.BaseTab.SNILS)
         snils = self.element_is_visible(CreateVisitLocators.BaseTab.SNILS)
-        self.click_and_send_keys(snils, '00000000000')
+        self.click_and_send_keys(snils, '000-000-000 00')
         self.element_is_visible(CreateVisitLocators.BaseTab.FULL_NAME).send_keys(full_name)
         self.element_is_clickable(CreateVisitLocators.BaseTab.BIRTHDAY)
         birthday = self.element_is_visible(CreateVisitLocators.BaseTab.BIRTHDAY)
@@ -122,9 +114,11 @@ class CreateVisitPage(VisitPage):
         self.element_is_visible(CreateVisitLocators.ParamsTab.WEIGHT).send_keys(80)
         self.element_is_visible(CreateVisitLocators.ParamsTab.FILM_COUNT).send_keys(3)
         self.element_is_visible(CreateVisitLocators.ParamsTab.FLU_SIGN_CONTAINER).click()
-        # self.elements_are_visible(CreateVisitLocators.ParamsTab.FLU_SIGN, element=-1).click()
+        if self.element_is_not_visible(CreateVisitLocators.ParamsTab.FLU_SIGN_NO_DATE, return_bool=True):
+            self.elements_are_visible(CreateVisitLocators.ParamsTab.FLU_SIGN, element=-1).click()
         self.element_is_visible(CreateVisitLocators.ParamsTab.FLU_PURPOSE_CONTAINER).click()
-        # self.elements_are_visible(CreateVisitLocators.ParamsTab.FLU_PURPOSE, element=-1).click()
+        if self.element_is_not_visible(CreateVisitLocators.ParamsTab.FLU_PURPOSE_NO_DATE, return_bool=True):
+            self.elements_are_visible(CreateVisitLocators.ParamsTab.FLU_PURPOSE, element=-1).click()
         self.element_is_visible(CreateVisitLocators.ParamsTab.REF_ID).send_keys('REF_ID')
         self.element_is_visible(CreateVisitLocators.ParamsTab.REF_DATE).send_keys(12112022)
         self.element_is_visible(CreateVisitLocators.ParamsTab.DIRECTION_TYPE_CONTAINER).click()

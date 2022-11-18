@@ -9,7 +9,6 @@ class VisitPageLocators:
     PATIENTS_BIRTHDAY_LIST = (By.CSS_SELECTOR, "div.table-responsive>table>tbody>tr>td>span:has(br)")
     PATIENTS_TYPES_OF_STUDY_LIST = (By.CSS_SELECTOR, 'ul.compact.style_marker_none>li>a[href^="/visit/"]')
     REFRESH_STUDY_PAGE = (By.CSS_SELECTOR, "i.fa.fa-refresh")
-    PAGE_NOTIFICATIONS = (By.CSS_SELECTOR, 'div.notification.notification-success>div.notification-message>div.message')
 
 
 class CreateVisitPageLocators:
@@ -98,8 +97,12 @@ class CreateVisitPageLocators:
         WEIGHT = (By.CSS_SELECTOR, "input#weight")
         FILM_COUNT = (By.CSS_SELECTOR, "input#film_count")
         FLU_SIGN_CONTAINER = (By.CSS_SELECTOR, "label.control-label[for='fluSign']+div>div")
+        FLU_SIGN_NO_DATE = (By.CSS_SELECTOR,
+                            "label.control-label[for='fluSign']+div>div div.react-select__menu-notice.react-select__menu-notice--no-options")
         FLU_SIGN = (By.CSS_SELECTOR, "label.control-label[for='fluSign']+div>div div[tabindex='-1']")
         FLU_PURPOSE_CONTAINER = (By.CSS_SELECTOR, "label.control-label[for='fluPurpose']+div>div")
+        FLU_PURPOSE_NO_DATE = (By.CSS_SELECTOR,
+                               "label.control-label[for='fluPurpose']+div>div div.react-select__menu-notice.react-select__menu-notice--no-options")
         FLU_PURPOSE = (By.CSS_SELECTOR, "label.control-label[for='fluPurpose']+div>div div[tabindex='-1']")
         REF_ID = (By.CSS_SELECTOR, "input#ref_id")
         REF_DATE = (By.CSS_SELECTOR, "input#ref_date")
@@ -126,7 +129,7 @@ class CreateVisitPageLocators:
         REGISTRATION_STATE_NUMBER = (By.CSS_SELECTOR, "input#registration_state_number")
         REGISTRATION_SUBJECT = (By.CSS_SELECTOR, "input#registration_subject")
         REGISTRATION_REGISTRATION_DISTRICT = (
-        By.CSS_SELECTOR, "label.control-label[for='registration_district']+div>input")
+            By.CSS_SELECTOR, "label.control-label[for='registration_district']+div>input")
         REGISTRATION_CITY = (By.CSS_SELECTOR, "input#registration_city")
         REGISTRATION_LOCALITY = (By.CSS_SELECTOR, "input#registration_locality")
         REGISTRATION_STREET = (By.CSS_SELECTOR, "input#registration_street")
