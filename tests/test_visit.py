@@ -20,10 +20,13 @@ class TestCreateVisitPage:
         page.open()
         page.authorization()
         page.go_to_create_visit()
-        TestCreateVisitPage.entered_data = page.fill_data_patient()
+        TestCreateVisitPage.entered_data = page.fill_base_fields_patient()
+        page.fill_params_fields_patient()
+        page.fill_additional_fields_patient()
+        page.fill_passport_registration_fields_patient()
         page.select_action_variant()
         page.save_visit()
-        page.sleep(5)
+        page.waiting_for_notification('Данные сохранены.')
         print(f'Entered data: {TestCreateVisitPage.entered_data}')
 
     def test_check_created_visit(self, driver):

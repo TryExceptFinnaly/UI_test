@@ -1,3 +1,5 @@
+import requests
+
 from selenium.webdriver import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait as Wait
 from selenium.webdriver.support import expected_conditions as EC
@@ -70,3 +72,7 @@ class BasePage:
     @staticmethod
     def sleep(secs: int):
         sleep(secs)
+
+    @staticmethod
+    def get_request(url: str):
+        return requests.get(url)

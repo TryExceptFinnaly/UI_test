@@ -1,4 +1,4 @@
-from pages.p_planned_visit import PlannedVisitPage
+from pages.p_planned_visit import PlannedVisitPage, CreatePlannedVisitPage
 from hl7.hl7 import send_hl7_message
 
 
@@ -14,15 +14,19 @@ class TestPlannedVisitPage:
         page.sleep(5)
 
     def test_check_data_planned_visit(self, driver):
-        page = PlannedVisitPage(driver, self.URL)
+        page = CreatePlannedVisitPage(driver, self.URL)
         page.open()
         page.authorization()
-        page.check_data_planned_visit()
-        page.sleep(5)
+        page.go_to_create_planned_visit()
+        page.check_base_planned_visit()
+        page.check_params_planned_visit()
+        page.check_additional_planned_visit()
+        page.check_passport_registration_planned_visit()
 
     def test_register_a_planned_visit(self, driver):
-        page = PlannedVisitPage(driver, self.URL)
+        page = CreatePlannedVisitPage(driver, self.URL)
         page.open()
         page.authorization()
+        page.go_to_create_planned_visit()
         page.register_a_planned_visit()
         page.sleep(5)
