@@ -20,8 +20,8 @@ def send_hl7_message(order):
     path_to_hl7 = f'{path_to_hl7}test_{order}.hl7'
     with open(path_to_hl7, 'r', encoding='utf-8') as file:
         file_data = file.read()
-    if order == 'sc':
-        write_seed()
+    # if order == 'sc':
+    #     write_seed()
     patient_info = next(generated_person())
     # Identificator's
     file_data = file_data.replace('_ID_MO', ID_MO)

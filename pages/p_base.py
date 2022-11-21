@@ -23,38 +23,48 @@ class BasePage:
     def current_url(self):
         return self.driver.current_url
 
-    def element_is_visible(self, locator, scroll=False, timeout: int = DEFAULT_TIMEOUT):
+    def wait_until(self, timeout, method, return_false: bool = False):
+        if return_false:
+            try:
+                return Wait(self.driver, timeout).until(method)
+            except selenium.common.exceptions.TimeoutException:
+                return False
+        else:
+            return Wait(self.driver, timeout).until(method)
+
+    def element_is_visible(self, locator, scroll: bool = False, timeout: int = DEFAULT_TIMEOUT,
+                           return_bool: bool = False):
         if scroll:
             self.scroll_to_element(self.element_is_present(locator))
-        return Wait(self.driver, timeout).until(EC.visibility_of_element_located(locator))
+        return self.wait_until(timeout, EC.visibility_of_element_located(locator), return_bool)
 
-    def elements_are_visible(self, locator, timeout: int = DEFAULT_TIMEOUT, element: int = None):
+    def elements_are_visible(self, locator, timeout: int = DEFAULT_TIMEOUT, element: int = None,
+                             return_false: bool = False):
         """Return list elements by locator\nelement(int) - return an element from a list(-1 = random)"""
-        elements = Wait(self.driver, timeout).until(EC.visibility_of_all_elements_located(locator))
-        if element is not None:
+        elements = self.wait_until(timeout, EC.visibility_of_all_elements_located(locator), return_false)
+        if (element is not None) and elements:
             if element == -1:
                 return elements[randint(0, len(elements) - 1)]
             return elements[element]
         return elements
 
-    def element_is_present(self, locator, timeout: int = DEFAULT_TIMEOUT):
-        return Wait(self.driver, timeout).until(EC.presence_of_element_located(locator))
+    def element_is_present(self, locator, timeout: int = DEFAULT_TIMEOUT, return_false=False):
+        return self.wait_until(timeout, EC.presence_of_element_located(locator), return_false)
 
-    def elements_are_present(self, locator, timeout: int = DEFAULT_TIMEOUT):
-        return Wait(self.driver, timeout).until(EC.presence_of_all_elements_located(locator))
+    def elements_are_present(self, locator, timeout: int = DEFAULT_TIMEOUT, element: int = None, return_false=False):
+        """Return list elements by locator\nelement(int) - return an element from a list(-1 = random)"""
+        elements = self.wait_until(timeout, EC.presence_of_all_elements_located(locator), return_false)
+        if (element is not None) and elements:
+            if element == -1:
+                return elements[randint(0, len(elements) - 1)]
+            return elements[element]
+        return elements
 
-    def element_is_not_visible(self, locator, timeout: int = DEFAULT_TIMEOUT, return_bool=False):
-        if return_bool:
-            try:
-                Wait(self.driver, timeout).until(EC.invisibility_of_element_located(locator))
-                return True
-            except selenium.common.exceptions.TimeoutException:
-                return False
-        else:
-            return Wait(self.driver, timeout).until(EC.invisibility_of_element_located(locator))
+    def element_is_not_visible(self, locator, timeout: int = DEFAULT_TIMEOUT, return_false=False):
+        return self.wait_until(timeout, EC.invisibility_of_element_located(locator), return_false)
 
-    def element_is_clickable(self, locator, timeout: int = DEFAULT_TIMEOUT):
-        return Wait(self.driver, timeout).until(EC.element_to_be_clickable(locator))
+    def element_is_clickable(self, locator, timeout: int = DEFAULT_TIMEOUT, return_false=False):
+        return self.wait_until(timeout, EC.element_to_be_clickable(locator), return_false)
 
     def scroll_to_element(self, element):
         self.driver.execute_script('arguments[0].scrollIntoView();', element)

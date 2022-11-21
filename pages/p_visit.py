@@ -1,8 +1,11 @@
+import time
+
 from data.data import SystemDirectory
 from generator.generator import generated_person
 from pages.p_authorization import AuthorizationPage
 from locators.l_visit import VisitPageLocators as VisitLocators
 from locators.l_visit import CreateVisitPageLocators as CreateVisitLocators
+from locators.l_visit import ComparisonVisitPageLocators as ComparisonVisitLocators
 from locators.l_visit import CreateProtocolPageLocators as CreateProtocolLocators
 
 
@@ -84,6 +87,30 @@ class CreateVisitPage(VisitPage):
         self.element_is_visible(CreateVisitLocators.BaseTab.SOURCE_FINANCING_CONTAINER).click()
         self.elements_are_visible(CreateVisitLocators.BaseTab.SOURCE_FINANCING, element=-1).click()
         self.element_is_visible(CreateVisitLocators.BaseTab.PURPOSE).send_keys('PURPOSE')
+        self.element_is_visible(CreateVisitLocators.BaseTab.DIAGNOSES_MKB_CONTAINER).click()
+
+        locator_mkb = CreateVisitLocators.BaseTab.DIAGNOSES_MKB_LI
+        while True:
+            time.sleep(3)
+            diagnoses_mkb = self.elements_are_present(locator_mkb, element=-1)
+            self.scroll_to_element(diagnoses_mkb)
+            diagnoses_mkb_class = diagnoses_mkb.get_attribute('class')
+            diagnoses_mkb_id = diagnoses_mkb.get_attribute('id')
+            locator_mkb = (locator_mkb[0], f'{locator_mkb[1]}[id="{diagnoses_mkb_id}"]')
+            # print('diagnoses ID: ', diagnoses_mkb_id)
+            # print(locator_mkb)
+            if 'jstree-leaf' in diagnoses_mkb_class:
+                # print('jstree-leaf')
+                locator_mkb = (locator_mkb[0], f'{locator_mkb[1]}>a')
+                # print(locator_mkb)
+                self.element_is_visible(locator_mkb, True).click()
+                break
+            locator_mkb_i = (locator_mkb[0], f'{locator_mkb[1]}>i')
+            # print(locator_mkb_i)
+            self.element_is_visible(locator_mkb_i, True).click()
+            locator_mkb = (locator_mkb[0], f'{locator_mkb[1]}>ul>li.jstree-node')
+
+        self.element_is_visible(CreateVisitLocators.BaseTab.DIAGNOSES_MKB_CONTAINER).click()
         self.element_is_visible(CreateVisitLocators.BaseTab.COMMENT).send_keys('COMMENT')
 
         self.element_is_visible(CreateVisitLocators.BaseTab.DOCTOR_CONTAINER).click()
@@ -114,10 +141,10 @@ class CreateVisitPage(VisitPage):
         self.element_is_visible(CreateVisitLocators.ParamsTab.WEIGHT).send_keys(80)
         self.element_is_visible(CreateVisitLocators.ParamsTab.FILM_COUNT).send_keys(3)
         self.element_is_visible(CreateVisitLocators.ParamsTab.FLU_SIGN_CONTAINER).click()
-        if self.element_is_not_visible(CreateVisitLocators.ParamsTab.FLU_SIGN_NO_DATE, return_bool=True):
+        if self.element_is_not_visible(CreateVisitLocators.ParamsTab.FLU_SIGN_NO_DATE, return_false=True):
             self.elements_are_visible(CreateVisitLocators.ParamsTab.FLU_SIGN, element=-1).click()
         self.element_is_visible(CreateVisitLocators.ParamsTab.FLU_PURPOSE_CONTAINER).click()
-        if self.element_is_not_visible(CreateVisitLocators.ParamsTab.FLU_PURPOSE_NO_DATE, return_bool=True):
+        if self.element_is_not_visible(CreateVisitLocators.ParamsTab.FLU_PURPOSE_NO_DATE, return_false=True):
             self.elements_are_visible(CreateVisitLocators.ParamsTab.FLU_PURPOSE, element=-1).click()
         self.element_is_visible(CreateVisitLocators.ParamsTab.REF_ID).send_keys('REF_ID')
         self.element_is_visible(CreateVisitLocators.ParamsTab.REF_DATE).send_keys(12112022)
@@ -167,6 +194,13 @@ class CreateVisitPage(VisitPage):
         self.element_is_visible(CreateVisitLocators.DELETE_BUTTON).click()
         self.element_is_visible(CreateVisitLocators.REASON_FOR_DELETE).send_keys('Reason for delete')
         self.element_is_visible(CreateVisitLocators.MODAL_ACTION_DELETE).click()
+
+
+class ComparisonVisitPage(CreateVisitPage):
+    def compare_visit(self):
+        compare_buttons = self.elements_are_visible(ComparisonVisitLocators.BUTTON_COMPARE, return_false=True)
+        if compare_buttons:
+            compare_buttons[0].click()
 
 
 class CreateProtocolPage(VisitPage):

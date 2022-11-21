@@ -66,6 +66,9 @@ class CreateVisitPageLocators:
             By.CSS_SELECTOR, "label.control-label[for='source_financing']+div>div>div>div.react-select__single-value")
         PURPOSE = (By.CSS_SELECTOR, "label.control-label[for='purpose']+div>input.form-control")
         DIAGNOSES_MKB_CONTAINER = (By.CSS_SELECTOR, "div#diagnoses")
+        DIAGNOSES_JSTREE = (By.CSS_SELECTOR, "div.jstree-default")
+        DIAGNOSES_MKB_SEARCH_INPUT = (By.CSS_SELECTOR, "div#diagnoses>div.jstree-widget-content>input")
+        DIAGNOSES_MKB_LI = (By.CSS_SELECTOR, "div#diagnoses>div.jstree-widget-content>div>ul>li.jstree-node")
         COMMENT = (By.CSS_SELECTOR, "textarea#comment")
         #   DATA STUDY
         DOCTOR_CONTAINER = (By.CSS_SELECTOR, "label.control-label[for='doctor']+div>div")
@@ -135,6 +138,11 @@ class CreateVisitPageLocators:
         REGISTRATION_STREET = (By.CSS_SELECTOR, "input#registration_street")
         REGISTRATION_HOUSE = (By.CSS_SELECTOR, "input#registration_house")
         REGISTRATION_APARTMENT = (By.CSS_SELECTOR, "input#registration_apartment")
+
+
+class ComparisonVisitPageLocators:
+    BUTTON_COMPARE = (By.CSS_SELECTOR,
+                      "div.table-responsive>table.table.table-bordered.table-condensed>tbody>tr>td>button.btn.btn-default")
 
 
 class CreateProtocolPageLocators:
