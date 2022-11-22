@@ -31,8 +31,10 @@ class CreateVisitPageLocators:
     class BaseTab:
         #   PERSON DATA
         EXTERNAL_ID = (By.CSS_SELECTOR, "input#external_id")
-        POLIS_OMS = (By.CSS_SELECTOR, "label.control-label[for='patient_polis_number']+div>input.form-control")
-        SNILS = (By.CSS_SELECTOR, "label.control-label[for='snils']+div>input.form-control")
+        POLIS_OMS = (By.CSS_SELECTOR,
+                     "label.control-label[for='patient_polis_number']+div.btn-group.bootstrap-select.form-control.open>input.form-control[value]")
+        SNILS = (By.CSS_SELECTOR,
+                 "label.control-label[for='snils']+div.btn-group.bootstrap-select.form-control.open>input.form-control[value]")
         FULL_NAME = (By.CSS_SELECTOR, "input#full_name")
         BIRTHDAY = (By.CSS_SELECTOR, "input#birth")
         SEX_CONTAINER = (By.CSS_SELECTOR, "label.control-label[for='sex']+div>div")
@@ -65,10 +67,9 @@ class CreateVisitPageLocators:
         SOURCE_FINANCING_SELECT_VALUE = (
             By.CSS_SELECTOR, "label.control-label[for='source_financing']+div>div>div>div.react-select__single-value")
         PURPOSE = (By.CSS_SELECTOR, "label.control-label[for='purpose']+div>input.form-control")
-        DIAGNOSES_MKB_CONTAINER = (By.CSS_SELECTOR, "div#diagnoses")
-        DIAGNOSES_JSTREE = (By.CSS_SELECTOR, "div.jstree-default")
+        DIAGNOSES_MKB_CONTAINER = (By.CSS_SELECTOR, "div#diagnoses.jstree-widget")
         DIAGNOSES_MKB_SEARCH_INPUT = (By.CSS_SELECTOR, "div#diagnoses>div.jstree-widget-content>input")
-        DIAGNOSES_MKB_LI = (By.CSS_SELECTOR, "div#diagnoses>div.jstree-widget-content>div>ul>li.jstree-node")
+        DIAGNOSES_MKB_NODES = (By.CSS_SELECTOR, "div#diagnoses>div.jstree-widget-content>div>ul>li.jstree-node")
         COMMENT = (By.CSS_SELECTOR, "textarea#comment")
         #   DATA STUDY
         DOCTOR_CONTAINER = (By.CSS_SELECTOR, "label.control-label[for='doctor']+div>div")

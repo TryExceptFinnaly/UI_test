@@ -87,30 +87,11 @@ class CreateVisitPage(VisitPage):
         self.element_is_visible(CreateVisitLocators.BaseTab.SOURCE_FINANCING_CONTAINER).click()
         self.elements_are_visible(CreateVisitLocators.BaseTab.SOURCE_FINANCING, element=-1).click()
         self.element_is_visible(CreateVisitLocators.BaseTab.PURPOSE).send_keys('PURPOSE')
-        self.element_is_visible(CreateVisitLocators.BaseTab.DIAGNOSES_MKB_CONTAINER).click()
-
-        locator_mkb = CreateVisitLocators.BaseTab.DIAGNOSES_MKB_LI
-        while True:
-            time.sleep(3)
-            diagnoses_mkb = self.elements_are_present(locator_mkb, element=-1)
-            self.scroll_to_element(diagnoses_mkb)
-            diagnoses_mkb_class = diagnoses_mkb.get_attribute('class')
-            diagnoses_mkb_id = diagnoses_mkb.get_attribute('id')
-            locator_mkb = (locator_mkb[0], f'{locator_mkb[1]}[id="{diagnoses_mkb_id}"]')
-            # print('diagnoses ID: ', diagnoses_mkb_id)
-            # print(locator_mkb)
-            if 'jstree-leaf' in diagnoses_mkb_class:
-                # print('jstree-leaf')
-                locator_mkb = (locator_mkb[0], f'{locator_mkb[1]}>a')
-                # print(locator_mkb)
-                self.element_is_visible(locator_mkb, True).click()
-                break
-            locator_mkb_i = (locator_mkb[0], f'{locator_mkb[1]}>i')
-            # print(locator_mkb_i)
-            self.element_is_visible(locator_mkb_i, True).click()
-            locator_mkb = (locator_mkb[0], f'{locator_mkb[1]}>ul>li.jstree-node')
 
         self.element_is_visible(CreateVisitLocators.BaseTab.DIAGNOSES_MKB_CONTAINER).click()
+        self.select_node_in_jstree(CreateVisitLocators.BaseTab.DIAGNOSES_MKB_NODES, -1)
+        self.element_is_visible(CreateVisitLocators.BaseTab.DIAGNOSES_MKB_CONTAINER).click()
+
         self.element_is_visible(CreateVisitLocators.BaseTab.COMMENT).send_keys('COMMENT')
 
         self.element_is_visible(CreateVisitLocators.BaseTab.DOCTOR_CONTAINER).click()

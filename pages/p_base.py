@@ -94,3 +94,21 @@ class BasePage:
     @staticmethod
     def get_request(url: str):
         return requests.get(url)
+
+    def select_node_in_jstree(self, locator_nodes, element):
+        nodes = self.elements_are_present(locator_nodes, element=element)
+        nodes_i = None
+        while True:
+            if nodes_i:
+                nodes = self.elements_are_visible(locator_nodes, element=element)
+            self.scroll_to_element(nodes)
+            diagnoses_mkb_class = nodes.get_attribute('class')
+            diagnoses_mkb_id = nodes.get_attribute('id')
+            locator_nodes = (locator_nodes[0], f'{locator_nodes[1]}[id="{diagnoses_mkb_id}"]')
+            if 'jstree-leaf' in diagnoses_mkb_class:
+                locator_nodes = (locator_nodes[0], f'{locator_nodes[1]}>a')
+                self.element_is_visible(locator_nodes, True).click()
+                break
+            nodes_i = (locator_nodes[0], f'{locator_nodes[1]}>i')
+            self.element_is_visible(nodes_i, True).click()
+            locator_nodes = (locator_nodes[0], f'{locator_nodes[1]}>ul>li.jstree-node')
