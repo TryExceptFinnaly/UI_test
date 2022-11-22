@@ -61,7 +61,6 @@ class TestComparisonVisitPage:
             page.compare_visit()
 
 
-
 class TestCreateProtocolPage:
     URL = 'https://nt.ris-x.com/visit/'
 
