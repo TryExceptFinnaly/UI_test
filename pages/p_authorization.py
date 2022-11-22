@@ -18,14 +18,6 @@ class AuthorizationPage(BasePage):
         return label_fio, study_page
 
     def waiting_for_notification(self, waiting_notification: str, return_false: bool = False):
-        current_notification = ''
-        while current_notification != waiting_notification:
-            notifications = self.elements_are_visible(self.Locators.PAGE_NOTIFICATIONS, return_false=return_false)
-            if notifications:
-                for n in notifications:
-                    current_notification = n.text
-                    if current_notification == waiting_notification:
-                        break
-            else:
-                return False
-        return True
+        locator_notification = (
+        BaseLocators.PAGE_NOTIFICATIONS[0], f"{BaseLocators.PAGE_NOTIFICATIONS[1]}[text()='{waiting_notification}']")
+        return self.element_is_visible(locator_notification, return_false=return_false)

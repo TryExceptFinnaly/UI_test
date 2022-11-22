@@ -33,10 +33,10 @@ class BasePage:
             return Wait(self.driver, timeout).until(method)
 
     def element_is_visible(self, locator, scroll: bool = False, timeout: int = DEFAULT_TIMEOUT,
-                           return_bool: bool = False):
+                           return_false: bool = False):
         if scroll:
             self.scroll_to_element(self.element_is_present(locator))
-        return self.wait_until(timeout, EC.visibility_of_element_located(locator), return_bool)
+        return self.wait_until(timeout, EC.visibility_of_element_located(locator), return_false)
 
     def elements_are_visible(self, locator, timeout: int = DEFAULT_TIMEOUT, element: int = None,
                              return_false: bool = False):
