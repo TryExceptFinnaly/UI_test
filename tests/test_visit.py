@@ -57,8 +57,9 @@ class TestComparisonVisitPage:
         page.select_action_variant(3)
         page.save_visit()
         page.waiting_for_notification('Данные сохранены.')
-        page.compare_visit()
-        page.waiting_for_notification('Сопоставление успешно выполнено.')
+        if not page.waiting_for_notification('Сопоставление успешно выполнено.', return_false=True):
+            page.compare_visit()
+
 
 
 class TestCreateProtocolPage:

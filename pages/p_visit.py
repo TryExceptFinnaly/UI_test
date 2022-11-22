@@ -1,5 +1,3 @@
-import time
-
 from data.data import SystemDirectory
 from generator.generator import generated_person
 from pages.p_authorization import AuthorizationPage
@@ -179,9 +177,9 @@ class CreateVisitPage(VisitPage):
 
 class ComparisonVisitPage(CreateVisitPage):
     def compare_visit(self):
-        compare_buttons = self.elements_are_visible(ComparisonVisitLocators.BUTTON_COMPARE, return_false=True)
-        if compare_buttons:
-            compare_buttons[0].click()
+        compare_buttons = self.elements_are_visible(ComparisonVisitLocators.BUTTON_COMPARE)
+        compare_buttons[0].click()
+        self.waiting_for_notification('Сопоставление успешно выполнено.')
 
 
 class CreateProtocolPage(VisitPage):

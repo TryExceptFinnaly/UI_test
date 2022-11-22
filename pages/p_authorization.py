@@ -17,11 +17,15 @@ class AuthorizationPage(BasePage):
         study_page = self.element_is_present(VisitLocators.STUDY_PAGE).text
         return label_fio, study_page
 
-    def waiting_for_notification(self, waiting_notification: str):
+    def waiting_for_notification(self, waiting_notification: str, return_false: bool = False):
         current_notification = ''
         while current_notification != waiting_notification:
-            notifications = self.elements_are_visible(self.Locators.PAGE_NOTIFICATIONS)
-            for n in notifications:
-                current_notification = n.text
-                if current_notification == waiting_notification:
-                    break
+            notifications = self.elements_are_visible(self.Locators.PAGE_NOTIFICATIONS, return_false=return_false)
+            if notifications:
+                for n in notifications:
+                    current_notification = n.text
+                    if current_notification == waiting_notification:
+                        break
+            else:
+                return False
+        return True
