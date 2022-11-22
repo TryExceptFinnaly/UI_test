@@ -32,78 +32,92 @@ class CreateVisitPageLocators:
         #   PERSON DATA
         EXTERNAL_ID = (By.CSS_SELECTOR, "input#external_id")
         POLIS_OMS = (By.CSS_SELECTOR,
-                     "label.control-label[for='patient_polis_number']+div.btn-group.bootstrap-select.form-control.open>input.form-control[value]")
+                     "div.form-group>label.control-label[for='patient_polis_number']+div.btn-group.bootstrap-select.form-control.open>input.form-control[value]")
         SNILS = (By.CSS_SELECTOR,
-                 "label.control-label[for='snils']+div.btn-group.bootstrap-select.form-control.open>input.form-control[value]")
+                 "div.form-group>label.control-label[for='snils']+div.btn-group.bootstrap-select.form-control.open>input.form-control[value]")
         FULL_NAME = (By.CSS_SELECTOR, "input#full_name")
         BIRTHDAY = (By.CSS_SELECTOR, "input#birth")
         SEX_CONTAINER = (
-            By.CSS_SELECTOR, "label.control-label[for='sex']+div.react-select-container")
-        SEX = (By.CSS_SELECTOR, "label.control-label[for='sex']+div>div div[tabindex='-1']")
+            By.CSS_SELECTOR, "div.form-group>label.control-label[for='sex']+div.react-select-container")
+        SEX = (By.CSS_SELECTOR, "div.form-group>label.control-label[for='sex']+div>div div[tabindex='-1']")
         SEX_SELECT_VALUE = (
-            By.CSS_SELECTOR, "label.control-label[for='sex']+div>div>div>div.react-select__single-value")
+            By.CSS_SELECTOR, "div.form-group>label.control-label[for='sex']+div>div>div>div.react-select__single-value")
         PHONE_NUMBER = (By.CSS_SELECTOR, "input#phone_number")
         EMAIL = (By.CSS_SELECTOR, "input#email")
         ALLERGY_TYPE_CONTAINER = (
             By.CSS_SELECTOR,
-            "label.control-label[for='allergy_type']+div.react-select-container")
-        ALLERGY_TYPE = (By.CSS_SELECTOR, "label.control-label[for='allergy_type']+div>div div[tabindex='-1']")
+            "div.form-group>label.control-label[for='allergy_type']+div.react-select-container")
+        ALLERGY_TYPE = (
+            By.CSS_SELECTOR, "div.form-group>label.control-label[for='allergy_type']+div>div div[tabindex='-1']")
         ALLERGY_TYPE_SELECT_VALUE = (
-            By.CSS_SELECTOR, "label.control-label[for='allergy_type']+div>div>div>div.react-select__single-value")
+            By.CSS_SELECTOR,
+            "div.form-group>label.control-label[for='allergy_type']+div>div>div>div.react-select__single-value")
         YEAR_DOSE = (By.CSS_SELECTOR, "input#year_dose[disabled]")
         #   DATA DIRECTION
         TREATMENT_CASE_CONTAINER = (By.CSS_SELECTOR,
-                                    "label.control-label[for='treatment_case']+div.react-select-container")
-        TREATMENT_CASE = (By.CSS_SELECTOR, "label.control-label[for='treatment_case']+div>div div[tabindex='-1']")
+                                    "div.form-group>label.control-label[for='treatment_case']+div.react-select-container")
+        TREATMENT_CASE = (
+            By.CSS_SELECTOR, "div.form-group>label.control-label[for='treatment_case']+div>div div[tabindex='-1']")
         TREATMENT_CASE_SELECT_VALUE = (
-            By.CSS_SELECTOR, "label.control-label[for='treatment_case']+div>div>div>div.react-select__single-value")
+            By.CSS_SELECTOR,
+            "div.form-group>label.control-label[for='treatment_case']+div>div>div>div.react-select__single-value")
         PATIENT_CLASS_CONTAINER = (By.CSS_SELECTOR,
-                                   "label.control-label[for='patient_class']+div.react-select-container")
-        PATIENT_CLASS = (By.CSS_SELECTOR, "label.control-label[for='patient_class']+div>div div[tabindex='-1']")
+                                   "div.form-group>label.control-label[for='patient_class']+div.react-select-container")
+        PATIENT_CLASS = (
+            By.CSS_SELECTOR, "div.form-group>label.control-label[for='patient_class']+div>div div[tabindex='-1']")
         PATIENT_CLASS_SELECT_VALUE = (
-            By.CSS_SELECTOR, "label.control-label[for='patient_class']+div>div>div>div.react-select__single-value")
+            By.CSS_SELECTOR,
+            "div.form-group>label.control-label[for='patient_class']+div>div>div>div.react-select__single-value")
         OUTPATIENT_CARD_NUMBER = (
-            By.CSS_SELECTOR, "label.control-label[for='outpatient_card_number']+div>input.form-control")
-        CASE_HISTORY_NUMBER = (By.CSS_SELECTOR, "label.control-label[for='case_history_number']+div>input.form-control")
-        REF_DEPARTMENT = (By.CSS_SELECTOR, "label.control-label[for='ref_department']+div>input.form-control")
-        REF_DOCTOR = (By.CSS_SELECTOR, "label.control-label[for='ref_doctor']+div>input.form-control")
+            By.CSS_SELECTOR, "div.form-group>label.control-label[for='outpatient_card_number']+div>input.form-control")
+        CASE_HISTORY_NUMBER = (
+            By.CSS_SELECTOR, "div.form-group>label.control-label[for='case_history_number']+div>input.form-control")
+        REF_DEPARTMENT = (
+            By.CSS_SELECTOR, "div.form-group>label.control-label[for='ref_department']+div>input.form-control")
+        REF_DOCTOR = (By.CSS_SELECTOR, "div.form-group>label.control-label[for='ref_doctor']+div>input.form-control")
         SOURCE_FINANCING_CONTAINER = (By.CSS_SELECTOR,
-                                      "label.control-label[for='source_financing']+div.react-select-container")
-        SOURCE_FINANCING = (By.CSS_SELECTOR, "label.control-label[for='source_financing']+div>div div[tabindex='-1']")
+                                      "div.form-group>label.control-label[for='source_financing']+div.react-select-container")
+        SOURCE_FINANCING = (
+            By.CSS_SELECTOR, "div.form-group>label.control-label[for='source_financing']+div>div div[tabindex='-1']")
         SOURCE_FINANCING_SELECT_VALUE = (
-            By.CSS_SELECTOR, "label.control-label[for='source_financing']+div>div>div>div.react-select__single-value")
-        PURPOSE = (By.CSS_SELECTOR, "label.control-label[for='purpose']+div>input.form-control")
+            By.CSS_SELECTOR,
+            "div.form-group>label.control-label[for='source_financing']+div>div>div>div.react-select__single-value")
+        PURPOSE = (By.CSS_SELECTOR, "div.form-group>label.control-label[for='purpose']+div>input.form-control")
         DIAGNOSES_MKB_CONTAINER = (By.CSS_SELECTOR, "div#diagnoses.jstree-widget")
         DIAGNOSES_MKB_SEARCH_INPUT = (By.CSS_SELECTOR, "div#diagnoses>div.jstree-widget-content>input")
         DIAGNOSES_MKB_NODES = (By.CSS_SELECTOR, "div#diagnoses>div.jstree-widget-content>div>ul>li.jstree-node")
         COMMENT = (By.CSS_SELECTOR, "textarea#comment")
         #   DATA STUDY
         DOCTOR_CONTAINER = (
-            By.CSS_SELECTOR, "label.control-label[for='doctor']+div.react-select-container")
+            By.CSS_SELECTOR, "div.form-group>label.control-label[for='doctor']+div.react-select-container")
         ASSISTANT_CONTAINER = (
-            By.CSS_SELECTOR, "label.control-label[for='assistant']+div.react-select-container")
+            By.CSS_SELECTOR, "div.form-group>label.control-label[for='assistant']+div.react-select-container")
         TYPES_OF_STUDY_CONTAINER = (
-            By.CSS_SELECTOR, "label.control-label[for='studies']+div.studies-field>span div.react-select__control")
-        TYPE_OF_STUDY = (By.CSS_SELECTOR, "label.control-label[for='studies']+div div[tabindex='-1']")
+            By.CSS_SELECTOR,
+            "div.form-group>label.control-label[for='studies']+div.studies-field>span div.react-select__control")
+        TYPE_OF_STUDY = (By.CSS_SELECTOR, "div.form-group>label.control-label[for='studies']+div div[tabindex='-1']")
         DEVICE_CONTAINER = (By.CSS_SELECTOR,
                             'label[for="device"]+div>div>div.react-select__value-container.react-select__value-container--has-value')
         CONTRAST_CONTAINER = (By.CSS_SELECTOR,
-                              "label.control-label[for='contrast_enhancement']+div.react-select-container")
+                              "div.form-group>label.control-label[for='contrast_enhancement']+div.react-select-container")
         CONTRAST_VOLUME = (By.CSS_SELECTOR, "input#contrast_volume")
         DOSE_RG = (By.CSS_SELECTOR, "input#doseRG")
         DOSE = (By.CSS_SELECTOR, "input#dose[disabled]")
         IS_CITO_CONTAINER = (
-            By.CSS_SELECTOR, "label.control-label[for='is_cito']+div.react-select-container")
-        IS_CITO = (By.CSS_SELECTOR, "label.control-label[for='is_cito']+div>div div[tabindex='-1']")
+            By.CSS_SELECTOR, "div.form-group>label.control-label[for='is_cito']+div.react-select-container")
+        IS_CITO = (By.CSS_SELECTOR, "div.form-group>label.control-label[for='is_cito']+div>div div[tabindex='-1']")
         IS_CITO_SELECT_VALUE = (
-            By.CSS_SELECTOR, "label.control-label[for='is_cito']+div>div>div>div.react-select__single-value")
+            By.CSS_SELECTOR,
+            "div.form-group>label.control-label[for='is_cito']+div>div>div>div.react-select__single-value")
 
     class ParamsTab:
         INSURANCE_COMPANY_CONTAINER = (By.CSS_SELECTOR,
-                                       "label.control-label[for='insurance_company']+div.react-select-container")
-        INSURANCE_COMPANY = (By.CSS_SELECTOR, "label.control-label[for='insurance_company']+div>div div[tabindex='-1']")
+                                       "div.form-group>label.control-label[for='insurance_company']+div.react-select-container")
+        INSURANCE_COMPANY = (
+            By.CSS_SELECTOR, "div.form-group>label.control-label[for='insurance_company']+div>div div[tabindex='-1']")
         INSURANCE_COMPANY_SELECT_VALUE = (
-            By.CSS_SELECTOR, "label.control-label[for='insurance_company']+div>div>div>div.react-select__single-value")
+            By.CSS_SELECTOR,
+            "div.form-group>label.control-label[for='insurance_company']+div>div>div>div.react-select__single-value")
         INSURANCE_CONTRACT = (By.CSS_SELECTOR, "input#insurance_contract")
         POLIS_NUMBER = (By.CSS_SELECTOR, "input#polis_number")
         MEDICAL_DIAGNOSIS = (By.CSS_SELECTOR, "input#medical_diagnosis")
@@ -112,38 +126,43 @@ class CreateVisitPageLocators:
         WEIGHT = (By.CSS_SELECTOR, "input#weight")
         FILM_COUNT = (By.CSS_SELECTOR, "input#film_count")
         FLU_SIGN_CONTAINER = (
-            By.CSS_SELECTOR, "label.control-label[for='fluSign']+div.react-select-container")
+            By.CSS_SELECTOR, "div.form-group>label.control-label[for='fluSign']+div.react-select-container")
         FLU_SIGN_NO_DATE = (By.CSS_SELECTOR,
-                            "label.control-label[for='fluSign']+div>div>div>div.react-select__menu-notice.react-select__menu-notice--no-options")
-        FLU_SIGN = (By.CSS_SELECTOR, "label.control-label[for='fluSign']+div>div div[tabindex='-1']")
+                            "div.form-group>label.control-label[for='fluSign']+div>div>div>div.react-select__menu-notice.react-select__menu-notice--no-options")
+        FLU_SIGN = (By.CSS_SELECTOR, "div.form-group>label.control-label[for='fluSign']+div>div div[tabindex='-1']")
         FLU_PURPOSE_CONTAINER = (
-            By.CSS_SELECTOR, "label.control-label[for='fluPurpose']+div.react-select-container")
+            By.CSS_SELECTOR, "div.form-group>label.control-label[for='fluPurpose']+div.react-select-container")
         FLU_PURPOSE_NO_DATE = (By.CSS_SELECTOR,
-                               "label.control-label[for='fluPurpose']+div>div>div>div.react-select__menu-notice.react-select__menu-notice--no-options")
-        FLU_PURPOSE = (By.CSS_SELECTOR, "label.control-label[for='fluPurpose']+div>div div[tabindex='-1']")
+                               "div.form-group>label.control-label[for='fluPurpose']+div>div>div>div.react-select__menu-notice.react-select__menu-notice--no-options")
+        FLU_PURPOSE = (
+            By.CSS_SELECTOR, "div.form-group>label.control-label[for='fluPurpose']+div>div div[tabindex='-1']")
         REF_ID = (By.CSS_SELECTOR, "input#ref_id")
         REF_DATE = (By.CSS_SELECTOR, "input#ref_date")
         DIRECTION_TYPE_CONTAINER = (By.CSS_SELECTOR,
-                                    "label.control-label[for='direction_type']+div.react-select-container")
-        DIRECTION_TYPE = (By.CSS_SELECTOR, "label.control-label[for='direction_type']+div>div div[tabindex='-1']")
+                                    "div.form-group>label.control-label[for='direction_type']+div.react-select-container")
+        DIRECTION_TYPE = (
+            By.CSS_SELECTOR, "div.form-group>label.control-label[for='direction_type']+div>div div[tabindex='-1']")
         BENEFIT_CONTAINER = (
-            By.CSS_SELECTOR, "label.control-label[for='benefit']+div.react-select-container")
-        BENEFIT = (By.CSS_SELECTOR, "label.control-label[for='benefit']+div>div div[tabindex='-1']")
+            By.CSS_SELECTOR, "div.form-group>label.control-label[for='benefit']+div.react-select-container")
+        BENEFIT = (By.CSS_SELECTOR, "div.form-group>label.control-label[for='benefit']+div>div div[tabindex='-1']")
         FSIDIS_CONTAINER = (
-            By.CSS_SELECTOR, "label.control-label[for='fsidis']+div.react-select-container")
-        FSIDIS = (By.CSS_SELECTOR, "label.control-label[for='fsidis']+div>div div[tabindex='-1']")
+            By.CSS_SELECTOR, "div.form-group>label.control-label[for='fsidis']+div.react-select-container")
+        FSIDIS = (By.CSS_SELECTOR, "div.form-group>label.control-label[for='fsidis']+div>div div[tabindex='-1']")
 
     class AdditionalTab:
         CONSULTATION_CONTAINER = (By.CSS_SELECTOR,
-                                  "label.control-label[for='customField23']+div.react-select-container")
-        CONSULTATION = (By.CSS_SELECTOR, "label.control-label[for='customField23']+div>div div[tabindex='-1']")
+                                  "div.form-group>div>label.control-label[for='customField23']+div.react-select-container")
+        CONSULTATION = (
+            By.CSS_SELECTOR, "div.form-group>div>label.control-label[for='customField23']+div>div div[tabindex='-1']")
 
     class PassportRegistrationTab:
         IDENTIFIER_TYPE_CONTAINER = (By.CSS_SELECTOR,
-                                     "label.control-label[for='identifier_type']+div.react-select-container")
-        IDENTIFIER_TYPE = (By.CSS_SELECTOR, "label.control-label[for='identifier_type']+div>div div[tabindex='-1']")
+                                     "div.form-group>label.control-label[for='identifier_type']+div.react-select-container")
+        IDENTIFIER_TYPE = (
+            By.CSS_SELECTOR, "div.form-group>label.control-label[for='identifier_type']+div>div div[tabindex='-1']")
         IDENTIFIER_TYPE_SELECT_VALUE = (
-            By.CSS_SELECTOR, "label.control-label[for='identifier_type']+div>div>div>div.react-select__single-value")
+            By.CSS_SELECTOR,
+            "div.form-group>label.control-label[for='identifier_type']+div>div>div>div.react-select__single-value")
         IDENTIFIER_SERIES = (By.CSS_SELECTOR, "input#identifier_series")
         IDENTIFIER_NUMBER = (By.CSS_SELECTOR, "input#identifier_number")
         IDENTIFIER_ISSUED = (By.CSS_SELECTOR, "input#identifier_issued")
@@ -151,7 +170,7 @@ class CreateVisitPageLocators:
         REGISTRATION_STATE_NUMBER = (By.CSS_SELECTOR, "input#registration_state_number")
         REGISTRATION_SUBJECT = (By.CSS_SELECTOR, "input#registration_subject")
         REGISTRATION_REGISTRATION_DISTRICT = (
-            By.CSS_SELECTOR, "label.control-label[for='registration_district']+div>input")
+            By.CSS_SELECTOR, "div.form-group>label.control-label[for='registration_district']+div>input")
         REGISTRATION_CITY = (By.CSS_SELECTOR, "input#registration_city")
         REGISTRATION_LOCALITY = (By.CSS_SELECTOR, "input#registration_locality")
         REGISTRATION_STREET = (By.CSS_SELECTOR, "input#registration_street")
