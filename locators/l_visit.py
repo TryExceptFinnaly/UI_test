@@ -33,8 +33,10 @@ class CreateVisitPageLocators:
         EXTERNAL_ID = (By.CSS_SELECTOR, "input#external_id")
         POLIS_OMS = (By.CSS_SELECTOR,
                      "div.form-group>label.control-label[for='patient_polis_number']+div.btn-group.bootstrap-select.form-control.open>input.form-control[value]")
-        SNILS = (By.CSS_SELECTOR,
-                 "div.form-group>label.control-label[for='snils']+div.btn-group.bootstrap-select.form-control.open>input.form-control[value]")
+        # SNILS = (By.CSS_SELECTOR,
+        #          "div.form-group>label.control-label[for='snils']+div.btn-group.bootstrap-select.form-control.open>input.form-control[value]")
+        SNILS = (By.XPATH,
+                 "//div[@id='regform-tabs-pane-base']//label[@for='snils']/following-sibling::div[@class='btn-group bootstrap-select form-control open']/input[@value]")
         FULL_NAME = (By.CSS_SELECTOR, "input#full_name")
         BIRTHDAY = (By.CSS_SELECTOR, "input#birth")
         SEX_CONTAINER = (
@@ -140,13 +142,22 @@ class CreateVisitPageLocators:
         REF_DATE = (By.CSS_SELECTOR, "input#ref_date")
         DIRECTION_TYPE_CONTAINER = (By.CSS_SELECTOR,
                                     "div.form-group>label.control-label[for='direction_type']+div.react-select-container")
+
+        DIRECTION_TYPE_NO_DATE = (By.CSS_SELECTOR,
+                                  "div.form-group>label.control-label[for='direction_type']+div>div>div>div.react-select__menu-notice.react-select__menu-notice--no-options")
         DIRECTION_TYPE = (
             By.CSS_SELECTOR, "div.form-group>label.control-label[for='direction_type']+div>div div[tabindex='-1']")
         BENEFIT_CONTAINER = (
             By.CSS_SELECTOR, "div.form-group>label.control-label[for='benefit']+div.react-select-container")
+
+        BENEFIT_NO_DATE = (By.CSS_SELECTOR,
+                           "div.form-group>label.control-label[for='benefit']+div>div>div>div.react-select__menu-notice.react-select__menu-notice--no-options")
         BENEFIT = (By.CSS_SELECTOR, "div.form-group>label.control-label[for='benefit']+div>div div[tabindex='-1']")
         FSIDIS_CONTAINER = (
             By.CSS_SELECTOR, "div.form-group>label.control-label[for='fsidis']+div.react-select-container")
+
+        FSIDIS_NO_DATE = (By.CSS_SELECTOR,
+                          "div.form-group>label.control-label[for='fsidis']+div>div>div>div.react-select__menu-notice.react-select__menu-notice--no-options")
         FSIDIS = (By.CSS_SELECTOR, "div.form-group>label.control-label[for='fsidis']+div>div div[tabindex='-1']")
 
     class AdditionalTab:

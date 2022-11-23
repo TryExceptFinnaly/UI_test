@@ -1,2 +1,1 @@
-text = 'jstree-node  jstree-closed'
-print(text.split()[1])
+print('exception', file=open('exception.txt', mode='a'))

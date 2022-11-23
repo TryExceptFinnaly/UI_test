@@ -57,13 +57,10 @@ class CreateVisitPage(VisitPage):
         self.element_is_not_visible(CreateVisitLocators.BLOCK_PAGE)
         self.element_is_visible(CreateVisitLocators.BaseTab.EXTERNAL_ID).send_keys('PATIENT_ID')
         self.element_is_visible(CreateVisitLocators.BaseTab.POLIS_OMS).send_keys('PATIENT_POLIS_OMS')
-        # self.element_is_clickable(CreateVisitLocators.BaseTab.SNILS)
-        self.element_is_visible(CreateVisitLocators.BaseTab.SNILS).send_keys('000-000-000 00')
-        # self.click_and_send_keys(snils, '000-000-000 00')
+        self.element_is_visible(CreateVisitLocators.BaseTab.SNILS).send_keys(11223344595)
         self.element_is_visible(CreateVisitLocators.BaseTab.FULL_NAME).send_keys(full_name)
         self.element_is_clickable(CreateVisitLocators.BaseTab.BIRTHDAY)
-        birthday = self.element_is_visible(CreateVisitLocators.BaseTab.BIRTHDAY)
-        self.click_and_send_keys(birthday, birthdate)
+        self.element_is_visible(CreateVisitLocators.BaseTab.BIRTHDAY).send_keys(birthdate)
         self.element_is_visible(CreateVisitLocators.BaseTab.SEX_CONTAINER).click()
         self.elements_are_visible(CreateVisitLocators.BaseTab.SEX, element=sex).click()
         self.element_is_visible(CreateVisitLocators.BaseTab.PHONE_NUMBER).send_keys(phone_number)
@@ -128,11 +125,14 @@ class CreateVisitPage(VisitPage):
         self.element_is_visible(CreateVisitLocators.ParamsTab.REF_ID).send_keys('REF_ID')
         self.element_is_visible(CreateVisitLocators.ParamsTab.REF_DATE).send_keys(12112022)
         self.element_is_visible(CreateVisitLocators.ParamsTab.DIRECTION_TYPE_CONTAINER).click()
-        # self.elements_are_visible(CreateVisitLocators.ParamsTab.DIRECTION_TYPE, element=-1).click()
+        if self.element_is_not_visible(CreateVisitLocators.ParamsTab.DIRECTION_TYPE_NO_DATE, return_false=True):
+            self.elements_are_visible(CreateVisitLocators.ParamsTab.DIRECTION_TYPE, element=-1).click()
         self.element_is_visible(CreateVisitLocators.ParamsTab.BENEFIT_CONTAINER).click()
-        # self.elements_are_visible(CreateVisitLocators.ParamsTab.BENEFIT, element=-1).click()
+        if self.element_is_not_visible(CreateVisitLocators.ParamsTab.BENEFIT_NO_DATE, return_false=True):
+            self.elements_are_visible(CreateVisitLocators.ParamsTab.BENEFIT, element=-1).click()
         self.element_is_visible(CreateVisitLocators.ParamsTab.FSIDIS_CONTAINER).click()
-        # self.elements_are_visible(CreateVisitLocators.ParamsTab.FSIDIS, element=-1).click()
+        if self.element_is_not_visible(CreateVisitLocators.ParamsTab.FSIDIS_NO_DATE, return_false=True):
+            self.elements_are_visible(CreateVisitLocators.ParamsTab.FSIDIS, element=-1).click()
 
     def fill_additional_fields_patient(self):
         self.element_is_visible(CreateVisitLocators.TAB_ADDITIONAL).click()
