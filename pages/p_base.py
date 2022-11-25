@@ -82,6 +82,11 @@ class BasePage:
         action.context_click(element)
         action.perform()
 
+    def action_move_to_element(self, element):
+        action = ActionChains(self.driver)
+        action.move_to_element(element)
+        action.perform()
+
     @staticmethod
     def click_and_send_keys(element, send_keys):
         element.click()

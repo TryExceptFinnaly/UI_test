@@ -12,4 +12,3 @@ class PlannedVisitPageLocators:
 class CreatePlannedVisitPageLocators:
     POLIS_OMS = (By.CSS_SELECTOR, "input#patient_polis_number")
     SNILS = (By.CSS_SELECTOR, "label.control-label[for='snils']+input.form-control")
-    SAVE_BUTTON = (By.CSS_SELECTOR, 'div.pull-right>div.btn-group>button:nth-child(3)')

@@ -2,7 +2,6 @@ from selenium.webdriver.common.by import By
 
 
 class VisitPageLocators:
-    LABEL_FIO = (By.CSS_SELECTOR, 'div.menu-item-user>div.pull-right>div:nth-child(1)')
     STUDY_PAGE = (By.CSS_SELECTOR, 'div.pull-left>h1.pull-left')
     CREATE_VISIT = (By.CSS_SELECTOR, "a.btn.btn-primary[href='/visit/create/']")
     PATIENTS_LIST = (By.CSS_SELECTOR, "div.table-responsive>table>tbody>tr>td>a[href^='/share/visits/']")
@@ -19,13 +18,15 @@ class CreateVisitPageLocators:
     TAB_PASSPORT_REGISTRATION = (By.CSS_SELECTOR, "a#regform-tabs-tab-passport-registration")
 
     # MAIN
-    DELETE_BUTTON = (By.CSS_SELECTOR, "div.clearfix>div.pull-left>button.btn.btn-danger")
+    BTN_SAVE_AND_CONTINUE = (By.CSS_SELECTOR, 'button[data-testid="btn-save-and-continue"]')
+    BTN_SAVE_AND_CLOSE = (By.CSS_SELECTOR, 'button[data-testid="btn-save-and-close"]')
+    BTN_SAVE_AND_CREATE = (By.CSS_SELECTOR, 'button[data-testid="btn-save-and-create"]')
+    BTN_SAVE_AND_BIND = (By.CSS_SELECTOR, 'button[data-testid="btn-save-and-bind"]')
+    BTN_SAVE_AND_BIND_AND_CREATE = (By.CSS_SELECTOR, 'button[data-testid="btn-save-and-bind-and-create"]')
+    BTN_CREATE_PROTOCOL = (By.CSS_SELECTOR, 'button[data-testid="btn-create-protocol"]')
+    BTN_DELETE = (By.CSS_SELECTOR, 'button[data-testid="btn-delete"]')
     REASON_FOR_DELETE = (By.CSS_SELECTOR, "textarea#description")
-    MODAL_ACTION_DELETE = (By.CSS_SELECTOR, "button#modal-action-delete")
-    SAVE_BUTTON = (By.CSS_SELECTOR, "div.pull-right>div.btn-toolbar[role='toolbar']>div>button.btn.btn-primary")
-    LIST_SAVE_ACTIONS = (By.CSS_SELECTOR, "div.btn-toolbar[role='toolbar']>div>div.save-actions-variants")
-    SELECT_ACTIONS = (
-        By.CSS_SELECTOR, "div.btn-toolbar[role='toolbar']>div>div.save-actions-variants>div.react-select__menu>div>div")
+    BTN_MODAL_DELETE = (By.CSS_SELECTOR, "button#modal-action-delete")
     BLOCK_PAGE = (By.CSS_SELECTOR, "div[role='dialog'][class='fade in modal'][style='display: block;']")
 
     class BaseTab:

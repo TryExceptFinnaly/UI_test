@@ -24,7 +24,6 @@ class TestCreateVisitPage:
         page.fill_params_fields_patient()
         page.fill_additional_fields_patient()
         page.fill_passport_registration_fields_patient()
-        page.select_action_variant()
         page.save_visit()
         page.waiting_for_notification('Данные сохранены.')
         print(f'Entered data: {TestCreateVisitPage.entered_data}')
@@ -54,8 +53,7 @@ class TestComparisonVisitPage:
         page.open()
         page.authorization()
         page.go_to_created_visit()
-        page.select_action_variant(3)
-        page.save_visit()
+        page.save_and_bind_visit()
         page.waiting_for_notification('Данные сохранены.')
         if not page.waiting_for_notification('Сопоставление успешно выполнено.', return_false=True):
             page.compare_visit()

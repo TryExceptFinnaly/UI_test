@@ -39,7 +39,7 @@ class CreatePlannedVisitPage(PlannedVisitPage):
         assert self.element_is_visible(CreateVisitLocators.BaseTab.EXTERNAL_ID).get_attribute('value') == 'PATIENT_ID'
         assert self.element_is_visible(CreatePlannedVisitLocators.POLIS_OMS).get_attribute(
             'value') == 'PATIENT_POLIS_OMS'
-        assert self.element_is_visible(CreatePlannedVisitLocators.SNILS).get_attribute('value') == '148-587-332 10'
+        assert self.element_is_visible(CreatePlannedVisitLocators.SNILS).get_attribute('value') == '112-233-445 95'
         assert self.element_is_visible(CreateVisitLocators.BaseTab.FULL_NAME).get_attribute('value') == full_name
         assert self.element_is_visible(CreateVisitLocators.BaseTab.BIRTHDAY).get_attribute('value') == birthdate
         assert self.element_is_visible(CreateVisitLocators.BaseTab.SEX_SELECT_VALUE).text == sex
@@ -115,4 +115,4 @@ class CreatePlannedVisitPage(PlannedVisitPage):
 
     def register_a_planned_visit(self):
         self.element_is_visible(CreateVisitLocators.BaseTab.DEVICE_CONTAINER)
-        self.element_is_visible(CreatePlannedVisitLocators.SAVE_BUTTON, True).click()
+        self.element_is_visible(CreateVisitLocators.BTN_SAVE_AND_CONTINUE, True).click()

@@ -1,6 +1,7 @@
 from pages.p_base import BasePage
 from locators.l_authorization import AuthorizationPageLocators as AuthorizationLocators
 from locators.l_visit import VisitPageLocators as VisitLocators
+from locators.l_main_content import MainContentPageLocators as MainContentLocators
 from locators.l_base import BaseLocators
 
 
@@ -13,7 +14,7 @@ class AuthorizationPage(BasePage):
         self.element_is_visible(AuthorizationLocators.BTN_SUBMIT).click()
 
     def check_result_authorization(self):
-        label_fio = self.element_is_present(VisitLocators.LABEL_FIO).text
+        label_fio = self.element_is_present(MainContentLocators.LABEL_FIO).text
         study_page = self.element_is_present(VisitLocators.STUDY_PAGE).text
         return label_fio, study_page
 

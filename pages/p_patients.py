@@ -17,7 +17,7 @@ class PatientsPage(AuthorizationPage):
         self.element_is_visible(PatientSearchLocators.INPUT_FIRST_NAME).send_keys(first_name)
         self.element_is_visible(PatientSearchLocators.INPUT_MIDDLE_NAME).send_keys(middle_name)
         self.element_is_visible(PatientSearchLocators.INPUT_BIRTHDAY).send_keys(birthdate)
-        self.element_is_visible(PatientSearchLocators.INPUT_SNILS).send_keys('000-000-000 00')
+        self.element_is_visible(PatientSearchLocators.INPUT_SNILS).send_keys('112-233-445 95')
         self.element_is_visible(PatientSearchLocators.INPUT_POLIS).send_keys('PATIENT_POLIS_OMS')
         full_name = f'{last_name} {first_name} {middle_name}'
         birthdate = f'{self.patient_info.birth_day}.{self.patient_info.birth_month}.{self.patient_info.birth_year}'
@@ -41,7 +41,7 @@ class PatientsPage(AuthorizationPage):
         assert self.element_is_visible(PatientLocators.EditTab.INPUT_MIDDLE_NAME).get_attribute('value') == middle_name
         assert self.element_is_visible(PatientLocators.EditTab.INPUT_BIRTHDAY).get_attribute('value') == birthdate
         assert self.element_is_visible(PatientLocators.EditTab.SEX_SELECT_VALUE).text == sex
-        assert self.element_is_visible(PatientLocators.EditTab.INPUT_SNILS).get_attribute('value') == '000-000-000 00'
+        assert self.element_is_visible(PatientLocators.EditTab.INPUT_SNILS).get_attribute('value') == '112-233-445 95'
         assert self.element_is_visible(PatientLocators.EditTab.INPUT_POLIS).get_attribute('value') == 'PATIENT_POLIS_OMS'
         assert self.element_is_visible(PatientLocators.EditTab.INPUT_ALTERNATE_ID).get_attribute('value') == 'PATIENT_ALTER_ID'
 

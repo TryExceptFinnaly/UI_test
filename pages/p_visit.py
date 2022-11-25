@@ -160,19 +160,16 @@ class CreateVisitPage(VisitPage):
         self.element_is_visible(CreateVisitLocators.PassportRegistrationTab.REGISTRATION_APARTMENT).send_keys(
             'APARTMENT')
 
-    def select_action_variant(self, variant: int = 0):
-        self.element_is_visible(CreateVisitLocators.LIST_SAVE_ACTIONS, True).click()
-        select_action = self.elements_are_present(CreateVisitLocators.SELECT_ACTIONS)[variant]
-        self.scroll_to_element(select_action)
-        select_action.click()
-
     def save_visit(self):
-        self.element_is_visible(CreateVisitLocators.SAVE_BUTTON, True).click()
+        self.element_is_visible(CreateVisitLocators.BTN_SAVE_AND_CLOSE, True).click()
+
+    def save_and_bind_visit(self):
+        self.element_is_visible(CreateVisitLocators.BTN_SAVE_AND_BIND, True).click()
 
     def delete_visit(self):
-        self.element_is_visible(CreateVisitLocators.DELETE_BUTTON).click()
+        self.element_is_visible(CreateVisitLocators.BTN_DELETE).click()
         self.element_is_visible(CreateVisitLocators.REASON_FOR_DELETE).send_keys('Reason for delete')
-        self.element_is_visible(CreateVisitLocators.MODAL_ACTION_DELETE).click()
+        self.element_is_visible(CreateVisitLocators.BTN_MODAL_DELETE).click()
 
 
 class ComparisonVisitPage(CreateVisitPage):
