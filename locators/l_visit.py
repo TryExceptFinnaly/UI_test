@@ -190,7 +190,7 @@ class CreateVisitPageLocators:
         REGISTRATION_APARTMENT = (By.CSS_SELECTOR, "input#registration_apartment")
 
 
-class ComparisonVisitPageLocators:
+class BindVisitPageLocators:
     BUTTON_COMPARE = (By.CSS_SELECTOR,
                       "div.table-responsive>table.table.table-bordered.table-condensed>tbody>tr>td>button.btn.btn-default")
 

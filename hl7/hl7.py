@@ -26,14 +26,14 @@ def get_module_path() -> str:
         return os.path.dirname(__file__)
 
 
-def send_hl7_message(order):
+def send_hl7_message(order, random=False):
     path_to_hl7 = os.path.join(get_module_path(), 'bin\\')
     path_to_bin = f'{path_to_hl7}HL7_cmd.exe'
     path_to_hl7 = f'{path_to_hl7}test_{order}.hl7'
     with open(path_to_hl7, 'r', encoding='utf-8') as file:
         file_data = file.read()
-    # if order == 'sc':
-    #     write_seed()
+    if random:
+        write_seed()
     patient_info = next(generated_person())
     # Main
     file_data = file_data.replace('SENDING_APPLICATION', SENDING_APPLICATION)

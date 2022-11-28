@@ -3,7 +3,7 @@ from generator.generator import generated_person
 from pages.p_authorization import AuthorizationPage
 from locators.l_visit import VisitPageLocators as VisitLocators
 from locators.l_visit import CreateVisitPageLocators as CreateVisitLocators
-from locators.l_visit import ComparisonVisitPageLocators as ComparisonVisitLocators
+from locators.l_visit import BindVisitPageLocators as BindVisitLocators
 from locators.l_visit import CreateProtocolPageLocators as CreateProtocolLocators
 
 
@@ -59,7 +59,6 @@ class CreateVisitPage(VisitPage):
         self.element_is_visible(CreateVisitLocators.BaseTab.POLIS_OMS).send_keys('PATIENT_POLIS_OMS')
         self.element_is_visible(CreateVisitLocators.BaseTab.SNILS).send_keys(11223344595)
         self.element_is_visible(CreateVisitLocators.BaseTab.FULL_NAME).send_keys(full_name)
-        self.element_is_clickable(CreateVisitLocators.BaseTab.BIRTHDAY)
         self.element_is_visible(CreateVisitLocators.BaseTab.BIRTHDAY).send_keys(birthdate)
         self.element_is_visible(CreateVisitLocators.BaseTab.SEX_CONTAINER).click()
         self.elements_are_visible(CreateVisitLocators.BaseTab.SEX, element=sex).click()
@@ -172,10 +171,10 @@ class CreateVisitPage(VisitPage):
         self.element_is_visible(CreateVisitLocators.BTN_MODAL_DELETE).click()
 
 
-class ComparisonVisitPage(CreateVisitPage):
-    def compare_visit(self):
-        compare_buttons = self.elements_are_visible(ComparisonVisitLocators.BUTTON_COMPARE)
-        compare_buttons[0].click()
+class BindVisitPage(CreateVisitPage):
+    def bind_visit(self):
+        bind_buttons = self.elements_are_visible(BindVisitLocators.BUTTON_COMPARE)
+        bind_buttons[0].click()
         self.waiting_for_notification('Сопоставление успешно выполнено.')
 
 

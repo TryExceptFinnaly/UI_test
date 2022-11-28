@@ -1,4 +1,4 @@
-from pages.p_visit import VisitPage, CreateVisitPage, ComparisonVisitPage, CreateProtocolPage
+from pages.p_visit import VisitPage, CreateVisitPage, BindVisitPage, CreateProtocolPage
 
 
 class TestVisitPage:
@@ -45,18 +45,18 @@ class TestCreateVisitPage:
         page.sleep(5)
 
 
-class TestComparisonVisitPage:
+class TestBindingVisitPage:
     URL = 'https://nt.ris-x.com/visit/'
 
-    def test_compare_created_visit(self, driver):
-        page = ComparisonVisitPage(driver, self.URL)
+    def test_bind_created_visit(self, driver):
+        page = BindVisitPage(driver, self.URL)
         page.open()
         page.authorization()
         page.go_to_created_visit()
         page.save_and_bind_visit()
         page.waiting_for_notification('Данные сохранены.')
         if not page.waiting_for_notification('Сопоставление успешно выполнено.', return_false=True):
-            page.compare_visit()
+            page.bind_visit()
 
 
 class TestCreateProtocolPage:

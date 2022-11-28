@@ -32,7 +32,7 @@ class BasePage:
         else:
             return Wait(self.driver, timeout).until(method)
 
-    def element_is_visible(self, locator, scroll: bool = False, timeout: int = DEFAULT_TIMEOUT,
+    def element_is_visible(self, locator, scroll: bool = True, timeout: int = DEFAULT_TIMEOUT,
                            return_false: bool = False):
         if scroll:
             self.scroll_to_element(self.element_is_present(locator))

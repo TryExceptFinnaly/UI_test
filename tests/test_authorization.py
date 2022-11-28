@@ -8,7 +8,7 @@ class TestAuthorizationPage:
         page = AuthorizationPage(driver, self.URL)
         page.open()
         page.authorization()
-        user_name, study_page = page.check_result_authorization()
-        page.sleep(5)
+        user_name = page.check_result_authorization()
         assert user_name == 'Дубровин А. В.'
-        assert study_page == 'Исследования'
+        page.logout()
+        page.sleep(5)

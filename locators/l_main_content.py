@@ -9,3 +9,4 @@ class MainContentPageLocators:
     SLIDE_MENU_ALL_ITEMS = (By.CSS_SELECTOR, 'div#slide-menu>div.slide-menu-col ul li:not(.divider)>a')
     SLIDE_MENU_MAIN_ITEMS = (By.CSS_SELECTOR, 'div#slide-menu>div.slide-menu-col>ul>li:not(.divider)>a')
     SLIDE_MENU_SUB_ITEMS = (By.XPATH, '//div[@id="slide-menu"]//ul[@class="submenu"]/..')
+    BTN_LOGOUT = (By.CSS_SELECTOR, '//i[@class="fa fa-power-off"]/../../..')
