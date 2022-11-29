@@ -31,3 +31,12 @@ class MainContentPage(AuthorizationPage):
             for sub_item in sub_items:
                 self.action_move_to_element(sub_item)
                 print(sub_item.text)
+
+    def switch_style_css(self, style='dark'):
+        css_theme = self.element_is_present(MainContentLocators.CURRENT_STYLE).get_attribute('href')
+        if style in css_theme:
+            return True
+        else:
+            self.element_is_visible(MainContentLocators.SWITCH_STYLE).click()
+            css_theme = self.element_is_present(MainContentLocators.CURRENT_STYLE).get_attribute('href')
+            return True if style in css_theme else False

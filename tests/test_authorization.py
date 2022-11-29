@@ -8,7 +8,7 @@ class TestAuthorizationPage:
         page = AuthorizationPage(driver, self.URL)
         page.open()
         page.authorization()
-        user_name = page.check_result_authorization()
-        assert user_name == 'Дубровин А. В.'
+        page.check_user_authorization()
+        assert 'https://nt.ris-x.com/login/' not in page.current_url()
         page.logout()
-        page.sleep(5)
+        assert 'https://nt.ris-x.com/login/' in page.current_url()

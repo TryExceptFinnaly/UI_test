@@ -45,7 +45,7 @@ class TestCreateVisitPage:
         page.sleep(5)
 
 
-class TestBindingVisitPage:
+class TestBindVisitPage:
     URL = 'https://nt.ris-x.com/visit/'
 
     def test_bind_created_visit(self, driver):

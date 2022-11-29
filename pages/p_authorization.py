@@ -12,8 +12,8 @@ class AuthorizationPage(BasePage):
         self.element_is_visible(AuthorizationLocators.USER_PASSWORD).send_keys(self.password)
         self.element_is_visible(AuthorizationLocators.BTN_SUBMIT).click()
 
-    def check_result_authorization(self):
-        return self.element_is_visible(MainContentLocators.LABEL_FIO).text
+    def check_user_authorization(self):
+        return self.element_is_visible(MainContentLocators.LABEL_USER)
 
     def waiting_for_notification(self, waiting_notification: str, return_false: bool = False):
         locator_notification = (
