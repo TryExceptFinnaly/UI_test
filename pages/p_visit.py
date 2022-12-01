@@ -4,6 +4,7 @@ from pages.p_authorization import AuthorizationPage
 from locators.l_visit import VisitPageLocators as VisitLocators
 from locators.l_visit import CreateVisitPageLocators as CreateVisitLocators
 from locators.l_visit import BindVisitPageLocators as BindVisitLocators
+from locators.l_visit import ProtocolPageLocators as ProtocolLocators
 from locators.l_visit import CreateProtocolPageLocators as CreateProtocolLocators
 
 
@@ -17,7 +18,7 @@ class VisitPage(AuthorizationPage):
             button_create_visit.click()
         assert link_href in self.current_url()
 
-    def go_to_created_visit(self):
+    def open_created_visit(self):
         link_created_visit = self.elements_are_visible(VisitLocators.PATIENTS_TYPES_OF_STUDY_LIST)
         link_href = link_created_visit[0].get_attribute('href')
         request = self.get_request(link_href)
@@ -170,6 +171,14 @@ class CreateVisitPage(VisitPage):
         self.element_is_visible(CreateVisitLocators.REASON_FOR_DELETE).send_keys('Reason for delete')
         self.element_is_visible(CreateVisitLocators.BTN_MODAL_DELETE).click()
 
+    def delete_protocol(self):
+        self.element_is_visible(CreateVisitLocators.TAB_CLINICAL_DOCUMENTS).click()
+        self.element_is_visible(CreateVisitLocators.ClinicalDocumentsTab.PROTOCOL_DELETE).click()
+        self.element_is_visible(CreateVisitLocators.BTN_MODAL_DELETE_NO)
+        self.element_is_visible(CreateVisitLocators.BTN_MODAL_DELETE_YES).click()
+        self.element_is_not_visible(CreateVisitLocators.BLOCK_PAGE)
+        self.element_is_not_visible(CreateVisitLocators.ClinicalDocumentsTab.PROTOCOL_DELETE)
+
 
 class BindVisitPage(CreateVisitPage):
     def bind_visit(self):
@@ -178,10 +187,19 @@ class BindVisitPage(CreateVisitPage):
         self.waiting_for_notification('Сопоставление успешно выполнено.')
 
 
+class ProtocolPage(VisitPage):
+    def return_protocol_to_editable(self):
+        self.elements_are_visible(VisitLocators.PROTOCOL_VIEW, element=0).click()
+        self.element_is_visible(ProtocolLocators.BUTTON_RETURN_TO_EDITABLE).click()
+
+    def close_protocol(self):
+        self.element_is_visible(ProtocolLocators.BUTTON_CLOSE)
+
+
 class CreateProtocolPage(VisitPage):
     def create_protocol(self):
-        self.elements_are_visible(CreateProtocolLocators.BUTTONS_CREATE_PROTOCOL)[0].click()
-        self.element_is_visible(CreateProtocolLocators.BUTTON_CLOSE_TEMPLATE_SELECTION).click()
+        self.elements_are_visible(VisitLocators.PROTOCOL_CREATE, element=0).click()
+        self.element_is_visible(CreateProtocolLocators.BTN_CLOSE_TEMPLATE_SELECTION).click()
         protocol_frame = self.element_is_present(CreateProtocolLocators.PROTOCOL_FRAME)
         self.driver.switch_to.frame(protocol_frame)
         description = self.element_is_visible(CreateProtocolLocators.DESCRIPTION_FIELD, True)
@@ -193,5 +211,6 @@ class CreateProtocolPage(VisitPage):
 
     def save_protocol(self):
         self.driver.switch_to.default_content()
-        self.element_is_visible(CreateProtocolLocators.BUTTON_EDITABLE, True).click()
-        self.element_is_visible(CreateProtocolLocators.BUTTON_SAVE_PROTOCOL_AND_BACK, True).click()
+        if self.element_is_visible(CreateProtocolLocators.BTN_SAVE_PROTOCOL_AND_CONTINUE, return_false=True):
+            self.element_is_visible(CreateProtocolLocators.BTN_EDITABLE, True).click()
+        self.element_is_visible(CreateProtocolLocators.BTN_SAVE_PROTOCOL_AND_CLOSE, True).click()

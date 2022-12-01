@@ -34,7 +34,7 @@ class BasePage:
 
     def element_is_visible(self, locator, scroll: bool = True, timeout: int = DEFAULT_TIMEOUT,
                            return_false: bool = False):
-        if scroll:
+        if scroll and (not return_false):
             self.scroll_to_element(self.element_is_present(locator))
         return self.wait_until(timeout, EC.visibility_of_element_located(locator), return_false)
 

@@ -1,4 +1,4 @@
-from pages.p_visit import VisitPage, CreateVisitPage, BindVisitPage, CreateProtocolPage
+from pages.p_visit import VisitPage, CreateVisitPage, BindVisitPage, CreateProtocolPage, ProtocolPage
 
 
 class TestVisitPage:
@@ -36,13 +36,19 @@ class TestCreateVisitPage:
         print(f'Data: {data}')
         assert TestCreateVisitPage.entered_data == data
 
+    def test_delete_protocol(self, driver):
+        page = CreateVisitPage(driver, self.URL)
+        page.open()
+        page.authorization()
+        page.open_created_visit()
+        page.delete_protocol()
+
     def test_delete_visit(self, driver):
         page = CreateVisitPage(driver, self.URL)
         page.open()
         page.authorization()
-        page.go_to_created_visit()
+        page.open_created_visit()
         page.delete_visit()
-        page.sleep(5)
 
 
 class TestBindVisitPage:
@@ -52,7 +58,7 @@ class TestBindVisitPage:
         page = BindVisitPage(driver, self.URL)
         page.open()
         page.authorization()
-        page.go_to_created_visit()
+        page.open_created_visit()
         page.save_and_bind_visit()
         page.waiting_for_notification('Данные сохранены.')
         if not page.waiting_for_notification('Сопоставление успешно выполнено.', return_false=True):
@@ -62,10 +68,24 @@ class TestBindVisitPage:
 class TestCreateProtocolPage:
     URL = 'https://nt.ris-x.com/visit/'
 
-    def test_create_protocol_on_created_visit(self, driver):
+    def test_create_protocol(self, driver):
         page = CreateProtocolPage(driver, self.URL)
         page.open()
         page.authorization()
         page.create_protocol()
         page.save_protocol()
         page.waiting_for_notification('Данные сохранены.')
+        page.sleep(5)
+
+
+class TestProtocolPage:
+    URL = 'https://nt.ris-x.com/visit/'
+
+    def test_return_protocol_to_editable(self, driver):
+        page = ProtocolPage(driver, self.URL)
+        page.open()
+        page.authorization()
+        page.return_protocol_to_editable()
+        page.waiting_for_notification('Документ возвращен в режим редактирования.')
+        page.close_protocol()
+        page.sleep(5)

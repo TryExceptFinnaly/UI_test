@@ -4,6 +4,8 @@ from selenium.webdriver.common.by import By
 class VisitPageLocators:
     STUDY_PAGE = (By.CSS_SELECTOR, 'div.pull-left>h1.pull-left')
     CREATE_VISIT = (By.CSS_SELECTOR, "a.btn.btn-primary[href='/visit/create/']")
+    PROTOCOL_CREATE = (By.CSS_SELECTOR, "a.no-underline[href$='/cd/CP/create']")
+    PROTOCOL_VIEW = (By.CSS_SELECTOR, "a.no-underline[href^='/modal/cd/'][href$='/CP/?popup=']")
     PATIENTS_LIST = (By.CSS_SELECTOR, "div.table-responsive>table>tbody>tr>td>a[href^='/share/visits/']")
     PATIENTS_BIRTHDAY_LIST = (By.CSS_SELECTOR, "div.table-responsive>table>tbody>tr>td>span:has(br)")
     PATIENTS_TYPES_OF_STUDY_LIST = (By.CSS_SELECTOR, 'ul.compact.style_marker_none>li>a[href^="/visit/"]')
@@ -16,6 +18,7 @@ class CreateVisitPageLocators:
     TAB_PARAMS = (By.CSS_SELECTOR, "a#regform-tabs-tab-params")
     TAB_ADDITIONAL = (By.CSS_SELECTOR, "a#regform-tabs-tab-additional")
     TAB_PASSPORT_REGISTRATION = (By.CSS_SELECTOR, "a#regform-tabs-tab-passport-registration")
+    TAB_CLINICAL_DOCUMENTS = (By.CSS_SELECTOR, "a#regform-tabs-tab-cdocuments")
 
     # MAIN
     BTN_SAVE_AND_CONTINUE = (By.CSS_SELECTOR, 'button[data-testid="btn-save-and-continue"]')
@@ -27,6 +30,10 @@ class CreateVisitPageLocators:
     BTN_DELETE = (By.CSS_SELECTOR, 'button[data-testid="btn-delete"]')
     REASON_FOR_DELETE = (By.CSS_SELECTOR, "textarea#description")
     BTN_MODAL_DELETE = (By.CSS_SELECTOR, "button#modal-action-delete")
+    BTN_MODAL_DELETE_YES = (
+        By.CSS_SELECTOR, "div[role='dialog']>div>div.modal-content>div.modal-footer>button.btn.btn-danger")
+    BTN_MODAL_DELETE_NO = (
+        By.CSS_SELECTOR, "div[role='dialog']>div>div.modal-content>div.modal-footer>button.btn.btn-default")
     BLOCK_PAGE = (By.CSS_SELECTOR, "div[role='dialog'][class='fade in modal'][style='display: block;']")
 
     class BaseTab:
@@ -189,18 +196,30 @@ class CreateVisitPageLocators:
         REGISTRATION_HOUSE = (By.CSS_SELECTOR, "input#registration_house")
         REGISTRATION_APARTMENT = (By.CSS_SELECTOR, "input#registration_apartment")
 
+    class ClinicalDocumentsTab:
+        PROTOCOL_DELETE = (
+            By.XPATH,
+            '//div[@id="regform-tabs-pane-cdocuments"]/table/tbody/tr[3]/td/div/a/i[@class="fa fa-trash"]')
+
 
 class BindVisitPageLocators:
     BUTTON_COMPARE = (By.CSS_SELECTOR,
                       "div.table-responsive>table.table.table-bordered.table-condensed>tbody>tr>td>button.btn.btn-default")
 
 
+class ProtocolPageLocators:
+    BUTTON_RETURN_TO_EDITABLE = (By.CSS_SELECTOR,
+                                 "div[role='dialog']>div>div.modal-content>div.modal-footer>div>div.pull-left>button.btn.btn-default")
+    BUTTON_CLOSE = (By.CSS_SELECTOR,
+                    "div[role='dialog']>div>div.modal-content>div.modal-footer>div>div.pull-right>button.btn.btn-default")
+
+
 class CreateProtocolPageLocators:
-    BUTTONS_CREATE_PROTOCOL = (By.CSS_SELECTOR, "a.no-underline[href$='/cd/CP/create']")
-    BUTTON_CLOSE_TEMPLATE_SELECTION = (By.CSS_SELECTOR, "div.modal-header>button.close")
+    BTN_CLOSE_TEMPLATE_SELECTION = (By.CSS_SELECTOR, "div.modal-header>button.close")
     PROTOCOL_FRAME = (By.CSS_SELECTOR, "iframe")
     DESCRIPTION_FIELD = (By.CSS_SELECTOR, 'body#tinymce>div[data-tpl-block-id="description"]')
     CONCLUSION_FIELD = (By.CSS_SELECTOR, 'body#tinymce>div[data-tpl-block-id="conclusion"]')
     RECOMMENDATION_FIELD = (By.CSS_SELECTOR, 'body#tinymce>div[data-tpl-block-id="recommendation"]')
-    BUTTON_EDITABLE = (By.CSS_SELECTOR, 'input#isEditableBottom')
-    BUTTON_SAVE_PROTOCOL_AND_BACK = (By.CSS_SELECTOR, 'button.btn.btn-primary:not([id])')
+    BTN_EDITABLE = (By.CSS_SELECTOR, 'input#isEditableBottom')
+    BTN_SAVE_PROTOCOL_AND_CONTINUE = (By.CSS_SELECTOR, 'div.flex1end div>button.btn.btn-default:not([id])')
+    BTN_SAVE_PROTOCOL_AND_CLOSE = (By.CSS_SELECTOR, 'div.flex1end div>div.btn-group>button.btn.btn-primary:not([id])')
