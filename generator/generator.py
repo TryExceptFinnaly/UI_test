@@ -35,6 +35,11 @@ patient_class_provider = DynamicProvider(
     elements=list(SystemDirectory.patient_class.keys())
 )
 
+insurance_company_provider = DynamicProvider(
+    provider_name='insurance_company',
+    elements=list(SystemDirectory.insurance_company.keys())
+)
+
 faker_ru = Faker('ru_RU')
 faker_ru.add_provider(RussianPhoneNumber)
 faker_ru.add_provider(allergy_type_provider)
@@ -42,6 +47,7 @@ faker_ru.add_provider(is_cito_provider)
 faker_ru.add_provider(identifier_type_provider)
 faker_ru.add_provider(treatment_case_provider)
 faker_ru.add_provider(patient_class_provider)
+faker_ru.add_provider(insurance_company_provider)
 
 
 def write_seed():
@@ -76,5 +82,6 @@ def generated_person():
         allergy_type=f'{faker_ru.allergy_type()}',
         identifier_type=f'{faker_ru.identifier_type()}',
         treatment_case=f'{faker_ru.treatment_case()}',
-        patient_class=f'{faker_ru.patient_class()}'
+        patient_class=f'{faker_ru.patient_class()}',
+        insurance_company=f'{faker_ru.insurance_company()}'
     )

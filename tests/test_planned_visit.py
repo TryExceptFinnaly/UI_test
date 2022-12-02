@@ -23,10 +23,18 @@ class TestPlannedVisitPage:
         page.check_additional_planned_visit()
         page.check_passport_registration_planned_visit()
 
-    def test_register_a_planned_visit(self, driver):
+    def test_register_planned_visit(self, driver):
         page = CreatePlannedVisitPage(driver, self.URL)
         page.open()
         page.authorization()
         page.go_to_create_planned_visit()
-        page.register_a_planned_visit()
+        page.register_planned_visit()
+        page.sleep(5)
+
+    def test_delete_planned_visit(self, driver):
+        page = CreatePlannedVisitPage(driver, self.URL)
+        page.open()
+        page.authorization()
+        page.go_to_create_planned_visit()
+        page.delete_planned_visit()
         page.sleep(5)

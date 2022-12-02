@@ -57,15 +57,17 @@ class CreatePlannedVisitPage(PlannedVisitPage):
             'value') == 'REF_DEPARTMENT'
         assert self.element_is_visible(CreateVisitLocators.BaseTab.REF_DOCTOR).get_attribute('value') == 'REF_DOCTOR'
         assert self.element_is_visible(CreateVisitLocators.BaseTab.SOURCE_FINANCING_SELECT_VALUE).text == 'ДМС'
-        # assert self.element_is_visible(CreateVisitLocators.BaseTab.PURPOSE).get_attribute('value') == 'PURPOSE'
-        # МКБ ------
+        assert self.element_is_visible(CreateVisitLocators.BaseTab.PURPOSE).get_attribute('value') == 'PURPOSE'
+        assert self.element_is_visible(CreateVisitLocators.BaseTab.DIAGNOSES_MKB_SELECTED_NODES).get_attribute(
+            'data-id') == 'M19.0'
         assert self.element_is_visible(CreateVisitLocators.BaseTab.COMMENT).text == 'COMMENT'
         assert self.element_is_visible(CreateVisitLocators.BaseTab.IS_CITO_SELECT_VALUE).text == is_cito
 
     def check_params_planned_visit(self):
         self.element_is_visible(CreateVisitLocators.TAB_PARAMS).click()
-        # insurance_company = self.patient_info.insurance_company
-        self.element_is_visible(CreateVisitLocators.ParamsTab.INSURANCE_COMPANY_CONTAINER)
+        insurance_company = SystemDirectory.insurance_company[self.patient_info.insurance_company][0]
+        assert self.element_is_visible(
+            CreateVisitLocators.ParamsTab.INSURANCE_COMPANY_SELECT_VALUE).text == insurance_company
         assert self.element_is_visible(CreateVisitLocators.ParamsTab.INSURANCE_CONTRACT).get_attribute(
             'value') == '_INSURANCE_CONTRACT'
         assert self.element_is_visible(CreateVisitLocators.ParamsTab.POLIS_NUMBER).get_attribute(
@@ -81,7 +83,8 @@ class CreatePlannedVisitPage(PlannedVisitPage):
         self.element_is_visible(CreateVisitLocators.TAB_PASSPORT_REGISTRATION).click()
         identifier_type = SystemDirectory.identifier_type[self.patient_info.identifier_type][0]
         print(identifier_type)
-        identifier_type_element = self.element_is_visible(CreateVisitLocators.PassportRegistrationTab.IDENTIFIER_TYPE_SELECT_VALUE).text
+        identifier_type_element = self.element_is_visible(
+            CreateVisitLocators.PassportRegistrationTab.IDENTIFIER_TYPE_SELECT_VALUE).text
         print(identifier_type_element)
         assert identifier_type_element == identifier_type
         assert self.element_is_visible(CreateVisitLocators.PassportRegistrationTab.IDENTIFIER_SERIES).get_attribute(
@@ -113,6 +116,11 @@ class CreatePlannedVisitPage(PlannedVisitPage):
             CreateVisitLocators.PassportRegistrationTab.REGISTRATION_APARTMENT).get_attribute(
             'value') == 'APARTMENT'
 
-    def register_a_planned_visit(self):
+    def register_planned_visit(self):
         self.element_is_visible(CreateVisitLocators.BaseTab.DEVICE_CONTAINER)
-        self.element_is_visible(CreateVisitLocators.BTN_SAVE_AND_CONTINUE, True).click()
+        self.element_is_visible(CreateVisitLocators.BTN_SAVE_AND_CONTINUE).click()
+
+    def delete_planned_visit(self):
+        self.element_is_visible(CreateVisitLocators.BTN_DELETE).click()
+        self.element_is_visible(CreateVisitLocators.REASON_FOR_DELETE).send_keys('Reason for delete')
+        self.element_is_visible(CreateVisitLocators.BTN_MODAL_DELETE).click()

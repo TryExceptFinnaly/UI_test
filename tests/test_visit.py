@@ -88,4 +88,3 @@ class TestProtocolPage:
         page.return_protocol_to_editable()
         page.waiting_for_notification('Документ возвращен в режим редактирования.')
         page.close_protocol()
-        page.sleep(5)

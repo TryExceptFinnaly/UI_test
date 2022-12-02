@@ -106,9 +106,10 @@ class CreateVisitPage(VisitPage):
         return patient, birthdate
 
     def fill_params_fields_patient(self):
+        insurance_company = SystemDirectory.insurance_company[self.patient_info.insurance_company][1]
         self.element_is_visible(CreateVisitLocators.TAB_PARAMS).click()
         self.element_is_visible(CreateVisitLocators.ParamsTab.INSURANCE_COMPANY_CONTAINER).click()
-        self.elements_are_visible(CreateVisitLocators.ParamsTab.INSURANCE_COMPANY, element=-1).click()
+        self.elements_are_visible(CreateVisitLocators.ParamsTab.INSURANCE_COMPANY, element=insurance_company).click()
         self.element_is_visible(CreateVisitLocators.ParamsTab.INSURANCE_CONTRACT).send_keys('_INSURANCE_CONTRACT')
         self.element_is_visible(CreateVisitLocators.ParamsTab.POLIS_NUMBER).send_keys('_PATIENT_POLIS')
         self.element_is_visible(CreateVisitLocators.ParamsTab.MEDICAL_DIAGNOSIS).send_keys('MEDICAL_DIAGNOSIS')
@@ -161,10 +162,10 @@ class CreateVisitPage(VisitPage):
             'APARTMENT')
 
     def save_visit(self):
-        self.element_is_visible(CreateVisitLocators.BTN_SAVE_AND_CLOSE, True).click()
+        self.element_is_visible(CreateVisitLocators.BTN_SAVE_AND_CLOSE).click()
 
     def save_and_bind_visit(self):
-        self.element_is_visible(CreateVisitLocators.BTN_SAVE_AND_BIND, True).click()
+        self.element_is_visible(CreateVisitLocators.BTN_SAVE_AND_BIND).click()
 
     def delete_visit(self):
         self.element_is_visible(CreateVisitLocators.BTN_DELETE).click()
@@ -202,9 +203,9 @@ class CreateProtocolPage(VisitPage):
         self.element_is_visible(CreateProtocolLocators.BTN_CLOSE_TEMPLATE_SELECTION).click()
         protocol_frame = self.element_is_present(CreateProtocolLocators.PROTOCOL_FRAME)
         self.driver.switch_to.frame(protocol_frame)
-        description = self.element_is_visible(CreateProtocolLocators.DESCRIPTION_FIELD, True)
-        conclusion = self.element_is_visible(CreateProtocolLocators.CONCLUSION_FIELD, True)
-        recommendation = self.element_is_visible(CreateProtocolLocators.RECOMMENDATION_FIELD, True)
+        description = self.element_is_visible(CreateProtocolLocators.DESCRIPTION_FIELD)
+        conclusion = self.element_is_visible(CreateProtocolLocators.CONCLUSION_FIELD)
+        recommendation = self.element_is_visible(CreateProtocolLocators.RECOMMENDATION_FIELD)
         self.click_and_send_keys(description, 'Описание')
         self.click_and_send_keys(conclusion, 'Заключение')
         self.click_and_send_keys(recommendation, 'Рекомендации')
@@ -212,5 +213,5 @@ class CreateProtocolPage(VisitPage):
     def save_protocol(self):
         self.driver.switch_to.default_content()
         if self.element_is_visible(CreateProtocolLocators.BTN_SAVE_PROTOCOL_AND_CONTINUE, return_false=True):
-            self.element_is_visible(CreateProtocolLocators.BTN_EDITABLE, True).click()
-        self.element_is_visible(CreateProtocolLocators.BTN_SAVE_PROTOCOL_AND_CLOSE, True).click()
+            self.element_is_visible(CreateProtocolLocators.BTN_EDITABLE).click()
+        self.element_is_visible(CreateProtocolLocators.BTN_SAVE_PROTOCOL_AND_CLOSE).click()

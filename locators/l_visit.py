@@ -95,6 +95,8 @@ class CreateVisitPageLocators:
         PURPOSE = (By.CSS_SELECTOR, "div.form-group>label.control-label[for='purpose']+div>input.form-control")
         DIAGNOSES_MKB_CONTAINER = (By.CSS_SELECTOR, "div#diagnoses.jstree-widget")
         DIAGNOSES_MKB_SEARCH_INPUT = (By.CSS_SELECTOR, "div#diagnoses>div.jstree-widget-content>input")
+        DIAGNOSES_MKB_SELECTED_NODES = (
+            By.CSS_SELECTOR, "div#diagnoses>div.jstree-widget-field>div>ul>li>i.fa.fa-times")
         DIAGNOSES_MKB_NODES = (By.CSS_SELECTOR, "div#diagnoses>div.jstree-widget-content>div>ul>li.jstree-node")
         COMMENT = (By.CSS_SELECTOR, "textarea#comment")
         #   DATA STUDY

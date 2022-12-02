@@ -59,6 +59,7 @@ def send_hl7_message(order, random=False):
     file_data = file_data.replace('PATIENT_EMAIL', f'{patient_info.email}')
     file_data = file_data.replace('_ALLERGY_TYPE', f'{patient_info.allergy_type}')
     file_data = file_data.replace('_IDENTIFIER_TYPE', f'{patient_info.identifier_type}')
+    file_data = file_data.replace('INSURANCE_COMPANY', f'{patient_info.insurance_company}')
     # Study info
     file_data = file_data.replace('_TREATMENT_CASE', f'{patient_info.treatment_case}')
     file_data = file_data.replace('_PATIENT_CLASS', f'{patient_info.patient_class}')
