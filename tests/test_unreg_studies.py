@@ -2,7 +2,7 @@ from pages.p_unreg_studies import UnregStudiesPage
 from hl7.hl7 import send_hl7_message
 
 
-class TestUnregStudiesPage:
+class TestUnregStudies:
     URL = 'https://nt.ris-x.com/unreg/'
 
     def test_create_unreg_study_in_hl7_message(self, driver):

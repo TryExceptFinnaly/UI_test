@@ -1,7 +1,7 @@
 from pages.p_main_content import MainContentPage
 
 
-class TestMainContentPage:
+class TestMainContent:
     URL = 'https://nt.ris-x.com/'
 
     def test_open_slide_menu(self, driver):

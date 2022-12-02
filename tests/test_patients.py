@@ -1,7 +1,7 @@
 from pages.p_patients import PatientsPage
 
 
-class TestPatientsPage:
+class TestPatients:
     URL = 'https://nt.ris-x.com/patients/'
 
     def test_created_patient(self, driver):
