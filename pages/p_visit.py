@@ -41,7 +41,6 @@ class CreateVisitPage(VisitPage):
     patient_info = next(generated_person())
 
     def fill_base_fields_patient(self):
-        self.element_is_not_visible(CreateVisitLocators.BLOCK_PAGE)
         self.element_is_visible(CreateVisitLocators.TAB_BASE).click()
 
         full_name = f'{self.patient_info.last_name} {self.patient_info.first_name} {self.patient_info.middle_name}'
@@ -55,6 +54,7 @@ class CreateVisitPage(VisitPage):
         is_cito = SystemDirectory.is_cito[self.patient_info.is_cito][1]
         print(f'\n{self.patient_info}')
 
+        self.element_is_not_visible(self.Locators.LOADING_BAR)
         self.element_is_not_visible(CreateVisitLocators.BLOCK_PAGE)
         self.element_is_visible(CreateVisitLocators.BaseTab.EXTERNAL_ID).send_keys('PATIENT_ID')
         self.element_is_visible(CreateVisitLocators.BaseTab.POLIS_OMS).send_keys('PATIENT_POLIS_OMS')
@@ -66,9 +66,7 @@ class CreateVisitPage(VisitPage):
         self.element_is_visible(CreateVisitLocators.BaseTab.PHONE_NUMBER).send_keys(phone_number)
         self.element_is_visible(CreateVisitLocators.BaseTab.EMAIL).send_keys(email)
         self.element_is_visible(CreateVisitLocators.BaseTab.ALLERGY_TYPE_CONTAINER).click()
-        # allergy_type = self.elements_are_visible(CreateVisitLocators.BaseTab.ALLERGY_TYPE, element=allergy_type)
-        # self.scroll_to_element(allergy_type)
-        # allergy_type.click()
+        self.elements_are_visible(CreateVisitLocators.BaseTab.ALLERGY_TYPE, element=allergy_type).click()
         self.element_is_visible(CreateVisitLocators.BaseTab.YEAR_DOSE)
 
         self.element_is_visible(CreateVisitLocators.BaseTab.TREATMENT_CASE_CONTAINER).click()
@@ -171,6 +169,8 @@ class CreateVisitPage(VisitPage):
         self.element_is_visible(CreateVisitLocators.BTN_DELETE).click()
         self.element_is_visible(CreateVisitLocators.REASON_FOR_DELETE).send_keys('Reason for delete')
         self.element_is_visible(CreateVisitLocators.BTN_MODAL_DELETE).click()
+        self.element_is_not_visible(CreateVisitLocators.BLOCK_PAGE)
+        self.element_is_not_visible(self.Locators.LOADING_BAR)
 
     def delete_protocol(self):
         self.element_is_visible(CreateVisitLocators.TAB_CLINICAL_DOCUMENTS).click()
@@ -183,7 +183,7 @@ class CreateVisitPage(VisitPage):
 
 class BindVisitPage(CreateVisitPage):
     def bind_visit(self):
-        bind_buttons = self.elements_are_visible(BindVisitLocators.BUTTON_COMPARE)
+        bind_buttons = self.elements_are_visible(BindVisitLocators.BTN_COMPARE)
         bind_buttons[0].click()
         self.waiting_for_notification('Сопоставление успешно выполнено.')
 
@@ -191,10 +191,10 @@ class BindVisitPage(CreateVisitPage):
 class ProtocolPage(VisitPage):
     def return_protocol_to_editable(self):
         self.elements_are_visible(VisitLocators.PROTOCOL_VIEW, element=0).click()
-        self.element_is_visible(ProtocolLocators.BUTTON_RETURN_TO_EDITABLE).click()
+        self.element_is_visible(ProtocolLocators.BTN_RETURN_TO_EDITABLE).click()
 
     def close_protocol(self):
-        self.element_is_visible(ProtocolLocators.BUTTON_CLOSE)
+        self.element_is_visible(ProtocolLocators.BTN_CLOSE)
 
 
 class CreateProtocolPage(VisitPage):
@@ -215,3 +215,8 @@ class CreateProtocolPage(VisitPage):
         if self.element_is_visible(CreateProtocolLocators.BTN_SAVE_PROTOCOL_AND_CONTINUE, return_false=True):
             self.element_is_visible(CreateProtocolLocators.BTN_EDITABLE).click()
         self.element_is_visible(CreateProtocolLocators.BTN_SAVE_PROTOCOL_AND_CLOSE).click()
+
+    def sign_protocol(self):
+        self.element_is_visible(ProtocolLocators.SIGN_CONTAINER).click()
+        self.elements_are_visible(ProtocolLocators.SIGN, element=-1).click()
+        self.element_is_visible(ProtocolLocators.BTN_SIGN).click()

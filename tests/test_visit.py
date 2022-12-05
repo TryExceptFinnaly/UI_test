@@ -75,11 +75,8 @@ class TestCreateProtocol:
         page.create_protocol()
         page.save_protocol()
         page.waiting_for_notification('Данные сохранены.')
+        page.sign_protocol()
         page.sleep(5)
-
-
-class TestProtocol:
-    URL = 'https://nt.ris-x.com/visit/'
 
     def test_return_protocol_to_editable(self, driver):
         page = ProtocolPage(driver, self.URL)

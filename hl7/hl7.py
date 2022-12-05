@@ -26,7 +26,7 @@ def get_module_path() -> str:
         return os.path.dirname(__file__)
 
 
-def send_hl7_message(order, random=False):
+def send_hl7_message(order, random=False, count=1):
     path_to_hl7 = os.path.join(get_module_path(), 'bin\\')
     path_to_bin = f'{path_to_hl7}HL7_cmd.exe'
     path_to_hl7 = f'{path_to_hl7}test_{order}.hl7'
@@ -66,7 +66,7 @@ def send_hl7_message(order, random=False):
     file_data = file_data.replace('_STATUS_CITO', f'{patient_info.is_cito}')
     with open(f'{path_to_hl7}.tmp', 'w', encoding='utf-8') as file:
         file.write(file_data)
-    cmd = f'{path_to_bin} -i nt.ris-x.com -fp {path_to_hl7}.tmp -r 1 -ct 1'
+    cmd = f'{path_to_bin} -i nt.ris-x.com -fp {path_to_hl7}.tmp -r 1 -ct 1 -s {count}'
     returned_output = subprocess.check_output(cmd)
     print(returned_output.decode('cp1251'))
     os.remove(f'{path_to_hl7}.tmp')

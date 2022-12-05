@@ -41,10 +41,10 @@ class CreateVisitPageLocators:
         EXTERNAL_ID = (By.CSS_SELECTOR, "input#external_id")
         POLIS_OMS = (By.CSS_SELECTOR,
                      "div.form-group>label.control-label[for='patient_polis_number']+div.btn-group.bootstrap-select.form-control.open>input.form-control[value]")
-        # SNILS = (By.CSS_SELECTOR,
-        #          "div.form-group>label.control-label[for='snils']+div.btn-group.bootstrap-select.form-control.open>input.form-control[value]")
-        SNILS = (By.XPATH,
-                 "//div[@id='regform-tabs-pane-base']//label[@for='snils']/following-sibling::div[@class='btn-group bootstrap-select form-control open']/input[@value]")
+        SNILS = (By.CSS_SELECTOR,
+                 "div.form-group>label.control-label[for='snils']+div.btn-group.bootstrap-select.form-control.open>input.form-control[value]")
+        # SNILS = (By.XPATH,
+        #          "//div[@id='regform-tabs-pane-base']//label[@for='snils']/following-sibling::div[@class='btn-group bootstrap-select form-control open']/input[@value]")
         FULL_NAME = (By.CSS_SELECTOR, "input#full_name")
         BIRTHDAY = (By.CSS_SELECTOR, "input#birth")
         SEX_CONTAINER = (
@@ -205,14 +205,19 @@ class CreateVisitPageLocators:
 
 
 class BindVisitPageLocators:
-    BUTTON_COMPARE = (By.CSS_SELECTOR,
+    BTN_COMPARE = (By.CSS_SELECTOR,
                       "div.table-responsive>table.table.table-bordered.table-condensed>tbody>tr>td>button.btn.btn-default")
 
 
 class ProtocolPageLocators:
-    BUTTON_RETURN_TO_EDITABLE = (By.CSS_SELECTOR,
+    SIGN_CONTAINER = (
+        By.CSS_SELECTOR, "div[role='dialog']>div>div.modal-content>div.modal-footer div.react-select-container")
+    SIGN = (By.CSS_SELECTOR,
+            "div[role='dialog']>div>div.modal-content>div.modal-footer div.react-select-container>div div[tabindex='-1']")
+    BTN_SIGN = (By.CSS_SELECTOR, "div[role='dialog']>div>div.modal-content>div.modal-footer button.btn.btn-primary")
+    BTN_RETURN_TO_EDITABLE = (By.CSS_SELECTOR,
                                  "div[role='dialog']>div>div.modal-content>div.modal-footer>div>div.pull-left>button.btn.btn-default")
-    BUTTON_CLOSE = (By.CSS_SELECTOR,
+    BTN_CLOSE = (By.CSS_SELECTOR,
                     "div[role='dialog']>div>div.modal-content>div.modal-footer>div>div.pull-right>button.btn.btn-default")
 
 
