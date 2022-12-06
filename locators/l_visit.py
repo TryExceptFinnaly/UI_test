@@ -4,11 +4,13 @@ from selenium.webdriver.common.by import By
 class VisitPageLocators:
     STUDY_PAGE = (By.CSS_SELECTOR, 'div.pull-left>h1.pull-left')
     CREATE_VISIT = (By.CSS_SELECTOR, "a.btn.btn-primary[href='/visit/create/']")
-    PROTOCOL_CREATE = (By.CSS_SELECTOR, "a.no-underline[href$='/cd/CP/create']")
+    PROTOCOL_CREATE = (By.XPATH, "//td/a[@class='no-underline'][contains(@href,'/cd/CP/create')]")
     PROTOCOL_VIEW = (By.CSS_SELECTOR, "a.no-underline[href^='/modal/cd/'][href$='/CP/?popup=']")
     PATIENTS_LIST = (By.CSS_SELECTOR, "div.table-responsive>table>tbody>tr>td>a[href^='/share/visits/']")
-    PATIENTS_BIRTHDAY_LIST = (By.CSS_SELECTOR, "div.table-responsive>table>tbody>tr>td>span:has(br)")
-    PATIENTS_TYPES_OF_STUDY_LIST = (By.CSS_SELECTOR, 'ul.compact.style_marker_none>li>a[href^="/visit/"]')
+    PATIENTS_BIRTHDAY = (By.CSS_SELECTOR, "div.table-responsive>table>tbody>tr>td>span:has(br)")
+    PATIENTS_STUDY = (By.CSS_SELECTOR, 'ul.compact.style_marker_none>li>a[href^="/visit/"]')
+    PATIENTS_WITHOUT_PROTOCOL_STUDY = (By.XPATH,
+                                  "//tr/td/a[@class='no-underline'][contains(@href,'/cd/CP/create')]/../../td//a[not(@class)][contains(@href,'/visit/')]")
     REFRESH_STUDY_PAGE = (By.CSS_SELECTOR, "i.fa.fa-refresh")
 
 
@@ -34,7 +36,7 @@ class CreateVisitPageLocators:
         By.CSS_SELECTOR, "div[role='dialog']>div>div.modal-content>div.modal-footer>button.btn.btn-danger")
     BTN_MODAL_DELETE_NO = (
         By.CSS_SELECTOR, "div[role='dialog']>div>div.modal-content>div.modal-footer>button.btn.btn-default")
-    BLOCK_PAGE = (By.CSS_SELECTOR, "div[role='dialog'][class='fade in modal'][style='display: block;']")
+    BLOCK_PAGE = (By.CSS_SELECTOR, "div[role='dialog'][class='fade in modal'][style*='display: block;']")
 
     class BaseTab:
         #   PERSON DATA
@@ -202,23 +204,27 @@ class CreateVisitPageLocators:
         PROTOCOL_DELETE = (
             By.XPATH,
             '//div[@id="regform-tabs-pane-cdocuments"]/table/tbody/tr[3]/td/div/a/i[@class="fa fa-trash"]')
+        PROTOCOL_CREATE = (
+            By.XPATH,
+            '//div[@id="regform-tabs-pane-cdocuments"]/table/tbody/tr[3]/td/div/a/i[@class="fa fa-plus"]')
 
 
 class BindVisitPageLocators:
     BTN_COMPARE = (By.CSS_SELECTOR,
-                      "div.table-responsive>table.table.table-bordered.table-condensed>tbody>tr>td>button.btn.btn-default")
+                   "div.table-responsive>table.table.table-bordered.table-condensed>tbody>tr>td>button.btn.btn-default")
 
 
 class ProtocolPageLocators:
+    MODAL_CONTENT = (By.CSS_SELECTOR, "div[role='dialog']>div>div.modal-content")
     SIGN_CONTAINER = (
         By.CSS_SELECTOR, "div[role='dialog']>div>div.modal-content>div.modal-footer div.react-select-container")
     SIGN = (By.CSS_SELECTOR,
             "div[role='dialog']>div>div.modal-content>div.modal-footer div.react-select-container>div div[tabindex='-1']")
     BTN_SIGN = (By.CSS_SELECTOR, "div[role='dialog']>div>div.modal-content>div.modal-footer button.btn.btn-primary")
     BTN_RETURN_TO_EDITABLE = (By.CSS_SELECTOR,
-                                 "div[role='dialog']>div>div.modal-content>div.modal-footer>div>div.pull-left>button.btn.btn-default")
+                              "div[role='dialog']>div>div.modal-content>div.modal-footer>div>div.pull-left>button.btn.btn-default")
     BTN_CLOSE = (By.CSS_SELECTOR,
-                    "div[role='dialog']>div>div.modal-content>div.modal-footer>div>div.pull-right>button.btn.btn-default")
+                 "div[role='dialog']>div>div.modal-content>div.modal-footer>div>div.pull-right>button.btn.btn-default")
 
 
 class CreateProtocolPageLocators:

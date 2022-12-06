@@ -18,8 +18,11 @@ class VisitPage(AuthorizationPage):
             button_create_visit.click()
         assert link_href in self.current_url()
 
-    def open_created_visit(self):
-        link_created_visit = self.elements_are_visible(VisitLocators.PATIENTS_TYPES_OF_STUDY_LIST)
+    def open_created_visit(self, without_protocol: bool = False):
+        if without_protocol:
+            link_created_visit = self.elements_are_visible(VisitLocators.PATIENTS_WITHOUT_PROTOCOL_STUDY)
+        else:
+            link_created_visit = self.elements_are_visible(VisitLocators.PATIENTS_STUDY)
         link_href = link_created_visit[0].get_attribute('href')
         request = self.get_request(link_href)
         if request.status_code == 200:
@@ -31,8 +34,9 @@ class VisitPage(AuthorizationPage):
         self.element_is_clickable(VisitLocators.REFRESH_STUDY_PAGE).click()
 
     def check_result_created_visit(self):
+        self.element_is_not_visible(self.Locators.LOADING_BAR)
         patient = self.elements_are_visible(VisitLocators.PATIENTS_LIST)[0].text
-        patient_birthday = self.elements_are_visible(VisitLocators.PATIENTS_BIRTHDAY_LIST)[0].text
+        patient_birthday = self.elements_are_visible(VisitLocators.PATIENTS_BIRTHDAY)[0].text
         patient_birthday = patient_birthday.split()[0]
         return patient, patient_birthday
 
@@ -159,11 +163,22 @@ class CreateVisitPage(VisitPage):
         self.element_is_visible(CreateVisitLocators.PassportRegistrationTab.REGISTRATION_APARTMENT).send_keys(
             'APARTMENT')
 
-    def save_visit(self):
-        self.element_is_visible(CreateVisitLocators.BTN_SAVE_AND_CLOSE).click()
-
-    def save_and_bind_visit(self):
-        self.element_is_visible(CreateVisitLocators.BTN_SAVE_AND_BIND).click()
+    def save_visit(self, action: str):
+        """action: continue, close, create, bind, bind_and_create"""
+        match action:
+            case 'continue':
+                locator = CreateVisitLocators.BTN_SAVE_AND_CONTINUE
+            case 'close':
+                locator = CreateVisitLocators.BTN_SAVE_AND_CLOSE
+            case 'create':
+                locator = CreateVisitLocators.BTN_SAVE_AND_CREATE
+            case 'bind':
+                locator = CreateVisitLocators.BTN_SAVE_AND_BIND
+            case 'bind_and_create':
+                locator = CreateVisitLocators.BTN_SAVE_AND_BIND_AND_CREATE
+            case _:
+                return 'Incorrect action'
+        self.element_is_visible(locator).click()
 
     def delete_visit(self):
         self.element_is_visible(CreateVisitLocators.BTN_DELETE).click()
@@ -192,14 +207,27 @@ class ProtocolPage(VisitPage):
     def return_protocol_to_editable(self):
         self.elements_are_visible(VisitLocators.PROTOCOL_VIEW, element=0).click()
         self.element_is_visible(ProtocolLocators.BTN_RETURN_TO_EDITABLE).click()
+        self.waiting_for_notification('Документ возвращен в режим редактирования.')
 
     def close_protocol(self):
         self.element_is_visible(ProtocolLocators.BTN_CLOSE)
 
 
 class CreateProtocolPage(VisitPage):
-    def create_protocol(self):
-        self.elements_are_visible(VisitLocators.PROTOCOL_CREATE, element=0).click()
+    def create_protocol(self, site: str):
+        """site: visit_page, reg_form, tab_doc"""
+        match site:
+            case 'visit_page':
+                self.elements_are_visible(VisitLocators.PROTOCOL_CREATE, element=0).click()
+            case 'reg_form':
+                self.open_created_visit(without_protocol=True)
+                self.element_is_visible(CreateVisitLocators.BTN_CREATE_PROTOCOL).click()
+            case 'tab_doc':
+                self.open_created_visit(without_protocol=True)
+                self.element_is_visible(CreateVisitLocators.TAB_CLINICAL_DOCUMENTS).click()
+                self.element_is_visible(CreateVisitLocators.ClinicalDocumentsTab.PROTOCOL_CREATE).click()
+            case _:
+                return 'Incorrect site'
         self.element_is_visible(CreateProtocolLocators.BTN_CLOSE_TEMPLATE_SELECTION).click()
         protocol_frame = self.element_is_present(CreateProtocolLocators.PROTOCOL_FRAME)
         self.driver.switch_to.frame(protocol_frame)
@@ -215,8 +243,12 @@ class CreateProtocolPage(VisitPage):
         if self.element_is_visible(CreateProtocolLocators.BTN_SAVE_PROTOCOL_AND_CONTINUE, return_false=True):
             self.element_is_visible(CreateProtocolLocators.BTN_EDITABLE).click()
         self.element_is_visible(CreateProtocolLocators.BTN_SAVE_PROTOCOL_AND_CLOSE).click()
+        self.waiting_for_notification('Данные сохранены.')
+        if self.element_is_visible(ProtocolLocators.MODAL_CONTENT, return_false=True):
+            self.sign_protocol()
 
     def sign_protocol(self):
         self.element_is_visible(ProtocolLocators.SIGN_CONTAINER).click()
         self.elements_are_visible(ProtocolLocators.SIGN, element=-1).click()
         self.element_is_visible(ProtocolLocators.BTN_SIGN).click()
+        self.waiting_for_notification('Документ подписан.')
