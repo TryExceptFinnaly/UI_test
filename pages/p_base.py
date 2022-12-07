@@ -97,8 +97,13 @@ class BasePage:
         sleep(secs)
 
     @staticmethod
-    def get_request(url: str):
-        return requests.get(url)
+    def get_request_href_and_click(element):
+        link_href = element.get_attribute('href')
+        status_code = requests.get(link_href).status_code
+        if status_code == 200:
+            element.click()
+        else:
+            raise f'Status code: {status_code}'
 
     def select_node_in_jstree(self, locator_nodes, element):
         nodes = self.elements_are_present(locator_nodes, element=element)

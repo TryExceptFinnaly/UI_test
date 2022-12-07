@@ -14,11 +14,7 @@ class PlannedVisitPage(AuthorizationPage):
 
     def go_to_create_planned_visit(self):
         button_create_planned_visit = self.element_is_visible(PlannedVisitLocators.BUTTON_REGISTER_PLANNED_VISIT)
-        link_href = button_create_planned_visit.get_attribute('href')
-        request = self.get_request(link_href)
-        if request.status_code == 200:
-            button_create_planned_visit.click()
-        assert link_href in self.current_url()
+        self.get_request_href_and_click(button_create_planned_visit)
 
 
 class CreatePlannedVisitPage(PlannedVisitPage):

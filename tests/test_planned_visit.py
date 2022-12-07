@@ -35,7 +35,6 @@ class TestPlannedVisit:
         page.authorization()
         page.go_to_create_planned_visit()
         page.register_planned_visit()
-        page.sleep(5)
 
     @allure.title('Delete planned visit')
     def test_delete_planned_visit(self, driver):
@@ -44,4 +43,3 @@ class TestPlannedVisit:
         page.authorization()
         page.go_to_create_planned_visit()
         page.delete_planned_visit()
-        page.sleep(5)

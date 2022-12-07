@@ -1,9 +1,13 @@
+import allure
+
 from pages.p_patients import PatientsPage
 
 
+@allure.feature('Patients')
 class TestPatients:
     URL = 'https://nt.ris-x.com/patients/'
 
+    @allure.title('Found patient, tab edit - save')
     def test_created_patient(self, driver):
         page = PatientsPage(driver, self.URL)
         page.open()
@@ -16,5 +20,3 @@ class TestPatients:
         page.waiting_for_notification('Данные сохранены.')
         page.save_patient()
         page.waiting_for_notification('Данные сохранены.')
-
-

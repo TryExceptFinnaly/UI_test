@@ -1,16 +1,25 @@
+import os.path
+
 from selenium.webdriver.common.by import By
 
 
 class VisitPageLocators:
     STUDY_PAGE = (By.CSS_SELECTOR, 'div.pull-left>h1.pull-left')
     CREATE_VISIT = (By.CSS_SELECTOR, "a.btn.btn-primary[href='/visit/create/']")
-    PROTOCOL_CREATE = (By.XPATH, "//td/a[@class='no-underline'][contains(@href,'/cd/CP/create')]")
-    PROTOCOL_VIEW = (By.CSS_SELECTOR, "a.no-underline[href^='/modal/cd/'][href$='/CP/?popup=']")
+    CREATE_PROTOCOL = (By.XPATH, "//tr/td/a[@class='no-underline']/i[@class='fa fa-plus']")
+    VIEW_PROTOCOL = (By.XPATH, "//tr/td/a[@class='no-underline']/i[@class='fa fa-file-text-o']")
+    EDIT_PROTOCOL = (By.XPATH, "//tr/td/a[@class='no-underline']/i[@class='fa fa-pencil']")
     PATIENTS_LIST = (By.CSS_SELECTOR, "div.table-responsive>table>tbody>tr>td>a[href^='/share/visits/']")
     PATIENTS_BIRTHDAY = (By.CSS_SELECTOR, "div.table-responsive>table>tbody>tr>td>span:has(br)")
-    PATIENTS_STUDY = (By.CSS_SELECTOR, 'ul.compact.style_marker_none>li>a[href^="/visit/"]')
-    PATIENTS_WITHOUT_PROTOCOL_STUDY = (By.XPATH,
-                                  "//tr/td/a[@class='no-underline'][contains(@href,'/cd/CP/create')]/../../td//a[not(@class)][contains(@href,'/visit/')]")
+    PATIENTS_STUDY = (By.XPATH, "//td//a[not(@class)][contains(@href,'/visit/')]")
+    PATIENTS_MISSING_PROTOCOL_STUDY = (By.XPATH,
+                                       "//tr/td//i[@class='fa fa-plus']/../../../td//a[not(@class)][contains(@href,'/visit/')]")
+    PATIENTS_COMPLETED_PROTOCOL_STUDY = (By.XPATH,
+                                         "//tr/td//i[@class='fa fa-file-text-o']/../../../td//a[not(@class)][contains(@href,'/visit/')]")
+    PATIENTS_EDITABLE_PROTOCOL_STUDY = (By.XPATH,
+                                        "//tr/td//i[@class='fa fa-pencil']/../../../td//a[not(@class)][contains(@href,'/visit/')]")
+    PATIENTS_PRESENT_PROTOCOL_STUDY = (By.XPATH,
+                                         "//tr/td//i[@class='fa fa-pencil' or @class='fa fa-file-text-o']/../../../td//a[not(@class)][contains(@href,'/visit/')]")
     REFRESH_STUDY_PAGE = (By.CSS_SELECTOR, "i.fa.fa-refresh")
 
 

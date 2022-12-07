@@ -9,25 +9,28 @@ from locators.l_visit import CreateProtocolPageLocators as CreateProtocolLocator
 
 
 class VisitPage(AuthorizationPage):
+    patient_info = next(generated_person())
 
     def go_to_create_visit(self):
         button_create_visit = self.element_is_visible(VisitLocators.CREATE_VISIT)
-        link_href = button_create_visit.get_attribute('href')
-        request = self.get_request(link_href)
-        if request.status_code == 200:
-            button_create_visit.click()
-        assert link_href in self.current_url()
+        self.get_request_href_and_click(button_create_visit)
 
-    def open_created_visit(self, without_protocol: bool = False):
-        if without_protocol:
-            link_created_visit = self.elements_are_visible(VisitLocators.PATIENTS_WITHOUT_PROTOCOL_STUDY)
-        else:
-            link_created_visit = self.elements_are_visible(VisitLocators.PATIENTS_STUDY)
-        link_href = link_created_visit[0].get_attribute('href')
-        request = self.get_request(link_href)
-        if request.status_code == 200:
-            link_created_visit[0].click()
-        assert link_href in self.current_url()
+    def open_visit(self, protocol: str):
+        """protocol: present, editable, completed, missing, ignore"""
+        match protocol:
+            case 'present':
+                visit = self.elements_are_visible(VisitLocators.PATIENTS_PRESENT_PROTOCOL_STUDY, element=0)
+            case 'editable':
+                visit = self.elements_are_visible(VisitLocators.PATIENTS_EDITABLE_PROTOCOL_STUDY, element=0)
+            case 'completed':
+                visit = self.elements_are_visible(VisitLocators.PATIENTS_COMPLETED_PROTOCOL_STUDY, element=0)
+            case 'missing':
+                visit = self.elements_are_visible(VisitLocators.PATIENTS_MISSING_PROTOCOL_STUDY, element=0)
+            case 'ignore':
+                visit = self.elements_are_visible(VisitLocators.PATIENTS_STUDY, element=0)
+            case _:
+                return 'Incorrect protocol'
+        self.get_request_href_and_click(visit)
 
     def refresh_study_page(self):
         self.element_is_visible(VisitLocators.REFRESH_STUDY_PAGE)
@@ -42,7 +45,6 @@ class VisitPage(AuthorizationPage):
 
 
 class CreateVisitPage(VisitPage):
-    patient_info = next(generated_person())
 
     def fill_base_fields_patient(self):
         self.element_is_visible(CreateVisitLocators.TAB_BASE).click()
@@ -120,21 +122,21 @@ class CreateVisitPage(VisitPage):
         self.element_is_visible(CreateVisitLocators.ParamsTab.WEIGHT).send_keys(80)
         self.element_is_visible(CreateVisitLocators.ParamsTab.FILM_COUNT).send_keys(3)
         self.element_is_visible(CreateVisitLocators.ParamsTab.FLU_SIGN_CONTAINER).click()
-        if self.element_is_not_visible(CreateVisitLocators.ParamsTab.FLU_SIGN_NO_DATE, return_false=True):
+        if not self.element_is_visible(CreateVisitLocators.ParamsTab.FLU_SIGN_NO_DATE, return_false=True):
             self.elements_are_visible(CreateVisitLocators.ParamsTab.FLU_SIGN, element=-1).click()
         self.element_is_visible(CreateVisitLocators.ParamsTab.FLU_PURPOSE_CONTAINER).click()
-        if self.element_is_not_visible(CreateVisitLocators.ParamsTab.FLU_PURPOSE_NO_DATE, return_false=True):
+        if not self.element_is_visible(CreateVisitLocators.ParamsTab.FLU_PURPOSE_NO_DATE, return_false=True):
             self.elements_are_visible(CreateVisitLocators.ParamsTab.FLU_PURPOSE, element=-1).click()
         self.element_is_visible(CreateVisitLocators.ParamsTab.REF_ID).send_keys('REF_ID')
         self.element_is_visible(CreateVisitLocators.ParamsTab.REF_DATE).send_keys(12112022)
         self.element_is_visible(CreateVisitLocators.ParamsTab.DIRECTION_TYPE_CONTAINER).click()
-        if self.element_is_not_visible(CreateVisitLocators.ParamsTab.DIRECTION_TYPE_NO_DATE, return_false=True):
+        if not self.element_is_visible(CreateVisitLocators.ParamsTab.DIRECTION_TYPE_NO_DATE, return_false=True):
             self.elements_are_visible(CreateVisitLocators.ParamsTab.DIRECTION_TYPE, element=-1).click()
         self.element_is_visible(CreateVisitLocators.ParamsTab.BENEFIT_CONTAINER).click()
-        if self.element_is_not_visible(CreateVisitLocators.ParamsTab.BENEFIT_NO_DATE, return_false=True):
+        if not self.element_is_visible(CreateVisitLocators.ParamsTab.BENEFIT_NO_DATE, return_false=True):
             self.elements_are_visible(CreateVisitLocators.ParamsTab.BENEFIT, element=-1).click()
         self.element_is_visible(CreateVisitLocators.ParamsTab.FSIDIS_CONTAINER).click()
-        if self.element_is_not_visible(CreateVisitLocators.ParamsTab.FSIDIS_NO_DATE, return_false=True):
+        if not self.element_is_visible(CreateVisitLocators.ParamsTab.FSIDIS_NO_DATE, return_false=True):
             self.elements_are_visible(CreateVisitLocators.ParamsTab.FSIDIS, element=-1).click()
 
     def fill_additional_fields_patient(self):
@@ -162,6 +164,13 @@ class CreateVisitPage(VisitPage):
         self.element_is_visible(CreateVisitLocators.PassportRegistrationTab.REGISTRATION_HOUSE).send_keys('HOUSE')
         self.element_is_visible(CreateVisitLocators.PassportRegistrationTab.REGISTRATION_APARTMENT).send_keys(
             'APARTMENT')
+
+    def fill_all_fields(self):
+        entered_data = self.fill_base_fields_patient()
+        self.fill_params_fields_patient()
+        self.fill_additional_fields_patient()
+        self.fill_passport_registration_fields_patient()
+        return entered_data
 
     def save_visit(self, action: str):
         """action: continue, close, create, bind, bind_and_create"""
@@ -205,7 +214,7 @@ class BindVisitPage(CreateVisitPage):
 
 class ProtocolPage(VisitPage):
     def return_protocol_to_editable(self):
-        self.elements_are_visible(VisitLocators.PROTOCOL_VIEW, element=0).click()
+        self.elements_are_visible(VisitLocators.VIEW_PROTOCOL, element=0).click()
         self.element_is_visible(ProtocolLocators.BTN_RETURN_TO_EDITABLE).click()
         self.waiting_for_notification('Документ возвращен в режим редактирования.')
 
@@ -213,17 +222,17 @@ class ProtocolPage(VisitPage):
         self.element_is_visible(ProtocolLocators.BTN_CLOSE)
 
 
-class CreateProtocolPage(VisitPage):
+class CreateProtocolPage(CreateVisitPage):
     def create_protocol(self, site: str):
         """site: visit_page, reg_form, tab_doc"""
         match site:
             case 'visit_page':
-                self.elements_are_visible(VisitLocators.PROTOCOL_CREATE, element=0).click()
+                self.elements_are_visible(VisitLocators.CREATE_PROTOCOL, element=0).click()
             case 'reg_form':
-                self.open_created_visit(without_protocol=True)
+                self.open_visit('missing')
                 self.element_is_visible(CreateVisitLocators.BTN_CREATE_PROTOCOL).click()
             case 'tab_doc':
-                self.open_created_visit(without_protocol=True)
+                self.open_visit('missing')
                 self.element_is_visible(CreateVisitLocators.TAB_CLINICAL_DOCUMENTS).click()
                 self.element_is_visible(CreateVisitLocators.ClinicalDocumentsTab.PROTOCOL_CREATE).click()
             case _:
@@ -240,7 +249,7 @@ class CreateProtocolPage(VisitPage):
 
     def save_protocol(self):
         self.driver.switch_to.default_content()
-        if self.element_is_visible(CreateProtocolLocators.BTN_SAVE_PROTOCOL_AND_CONTINUE, return_false=True):
+        if not self.element_is_not_visible(CreateProtocolLocators.BTN_SAVE_PROTOCOL_AND_CONTINUE, return_false=True):
             self.element_is_visible(CreateProtocolLocators.BTN_EDITABLE).click()
         self.element_is_visible(CreateProtocolLocators.BTN_SAVE_PROTOCOL_AND_CLOSE).click()
         self.waiting_for_notification('Данные сохранены.')

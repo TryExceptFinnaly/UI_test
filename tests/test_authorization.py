@@ -7,8 +7,8 @@ from pages.p_authorization import AuthorizationPage
 class TestAuthorization:
     URL = 'https://nt.ris-x.com/'
 
-    @allure.title('Check Authorization and Logout')
-    def test_authorization(self, driver):
+    @allure.title('Check authorization and logout')
+    def test_authorization_and_logout(self, driver):
         page = AuthorizationPage(driver, self.URL)
         page.open()
         page.authorization()
