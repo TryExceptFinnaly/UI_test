@@ -55,6 +55,8 @@ class VisitPage(AuthorizationPage):
 class CreateVisitPage(VisitPage):
 
     def fill_base_fields_patient(self):
+        self.element_is_not_visible(self.Locators.LOADING_BAR)
+        self.element_is_not_visible(self.Locators.BLOCK_PAGE)
         self.element_is_visible(CreateVisitLocators.TAB_BASE).click()
 
         full_name = f'{self.patient_info.last_name} {self.patient_info.first_name} {self.patient_info.middle_name}'
@@ -68,13 +70,10 @@ class CreateVisitPage(VisitPage):
         is_cito = SystemDirectory.is_cito[self.patient_info.is_cito][1]
         print(f'\n{self.patient_info}')
 
-        self.element_is_not_visible(self.Locators.LOADING_BAR)
-        self.element_is_not_visible(self.Locators.BLOCK_PAGE)
+        self.element_is_visible(CreateVisitLocators.BaseTab.FULL_NAME).send_keys(full_name)
         self.element_is_visible(CreateVisitLocators.BaseTab.EXTERNAL_ID).send_keys('PATIENT_ID')
         self.element_is_visible(CreateVisitLocators.BaseTab.POLIS_OMS).send_keys('PATIENT_POLIS_OMS')
-        self.element_is_visible(CreateVisitLocators.BaseTab.SNILS)
-        self.element_is_clickable(CreateVisitLocators.BaseTab.SNILS).send_keys(11223344595)
-        self.element_is_visible(CreateVisitLocators.BaseTab.FULL_NAME).send_keys(full_name)
+        self.element_is_visible(CreateVisitLocators.BaseTab.SNILS).send_keys(11223344595)
         self.element_is_visible(CreateVisitLocators.BaseTab.BIRTHDAY).send_keys(birthdate)
         self.element_is_visible(CreateVisitLocators.BaseTab.SEX_CONTAINER).click()
         self.elements_are_visible(CreateVisitLocators.BaseTab.SEX, element=sex).click()
