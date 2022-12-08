@@ -17,7 +17,7 @@ def chrome_options():
     # options.add_argument('user-data-dir=C:\\Users\\LINS\\AppData\\Local\\Google\\Chrome\\User Data')
     # options.add_argument('profile-directory=Default')
     # print(os.path.dirname(__file__))
-    # options.add_extension('extensions/1.2.13_0.crx')
+    options.add_extension('extensions/1.2.13_0.crx')
     # options.add_argument('--window-size="1920,1080"')
     return options
 

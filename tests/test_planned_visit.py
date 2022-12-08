@@ -15,7 +15,6 @@ class TestPlannedVisit:
         page.open()
         page.authorization()
         page.check_list_planned_visits()
-        page.sleep(5)
 
     @allure.title('Check data planned visit')
     def test_check_data_planned_visit(self, driver):

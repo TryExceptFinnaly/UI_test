@@ -13,6 +13,6 @@ class TestAuthorization:
         page.open()
         page.authorization()
         page.check_user_authorization()
-        assert 'https://nt.ris-x.com/login/' not in page.current_url()
+        assert f'{self.URL}login/' not in page.current_url()
         page.logout()
-        assert 'https://nt.ris-x.com/login/' in page.current_url()
+        assert f'{self.URL}login/' in page.current_url()

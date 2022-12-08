@@ -15,24 +15,32 @@ class VisitPage(AuthorizationPage):
         button_create_visit = self.element_is_visible(VisitLocators.CREATE_VISIT)
         self.get_request_href_and_click(button_create_visit)
 
-    def open_visit(self, protocol: str):
-        """protocol: present, editable, completed, missing, ignore"""
+    def list_visits_on_page(self, protocol: str):
+        """param protocol: present, editable, completed, missing, ignore\n
+        return: count, locator"""
         match protocol:
             case 'present':
-                visit = self.elements_are_visible(VisitLocators.PATIENTS_PRESENT_PROTOCOL_STUDY, element=0)
+                locator = VisitLocators.PATIENTS_PRESENT_PROTOCOL_STUDY
             case 'editable':
-                visit = self.elements_are_visible(VisitLocators.PATIENTS_EDITABLE_PROTOCOL_STUDY, element=0)
+                locator = VisitLocators.PATIENTS_EDITABLE_PROTOCOL_STUDY
             case 'completed':
-                visit = self.elements_are_visible(VisitLocators.PATIENTS_COMPLETED_PROTOCOL_STUDY, element=0)
+                locator = VisitLocators.PATIENTS_COMPLETED_PROTOCOL_STUDY
             case 'missing':
-                visit = self.elements_are_visible(VisitLocators.PATIENTS_MISSING_PROTOCOL_STUDY, element=0)
+                locator = VisitLocators.PATIENTS_MISSING_PROTOCOL_STUDY
             case 'ignore':
-                visit = self.elements_are_visible(VisitLocators.PATIENTS_STUDY, element=0)
+                locator = VisitLocators.PATIENTS_STUDY
             case _:
                 return 'Incorrect protocol'
+        visits = self.elements_are_visible(locator)
+        return len(visits), locator
+
+    def open_visit(self, locator, visit: int = 0):
+        self.element_is_not_visible(self.Locators.LOADING_BAR)
+        visit = self.elements_are_visible(locator, element=visit)
         self.get_request_href_and_click(visit)
 
     def refresh_study_page(self):
+        self.element_is_not_visible(self.Locators.LOADING_BAR)
         self.element_is_visible(VisitLocators.REFRESH_STUDY_PAGE)
         self.element_is_clickable(VisitLocators.REFRESH_STUDY_PAGE).click()
 
@@ -61,10 +69,11 @@ class CreateVisitPage(VisitPage):
         print(f'\n{self.patient_info}')
 
         self.element_is_not_visible(self.Locators.LOADING_BAR)
-        self.element_is_not_visible(CreateVisitLocators.BLOCK_PAGE)
+        self.element_is_not_visible(self.Locators.BLOCK_PAGE)
         self.element_is_visible(CreateVisitLocators.BaseTab.EXTERNAL_ID).send_keys('PATIENT_ID')
         self.element_is_visible(CreateVisitLocators.BaseTab.POLIS_OMS).send_keys('PATIENT_POLIS_OMS')
-        self.element_is_visible(CreateVisitLocators.BaseTab.SNILS).send_keys(11223344595)
+        self.element_is_visible(CreateVisitLocators.BaseTab.SNILS)
+        self.element_is_clickable(CreateVisitLocators.BaseTab.SNILS).send_keys(11223344595)
         self.element_is_visible(CreateVisitLocators.BaseTab.FULL_NAME).send_keys(full_name)
         self.element_is_visible(CreateVisitLocators.BaseTab.BIRTHDAY).send_keys(birthdate)
         self.element_is_visible(CreateVisitLocators.BaseTab.SEX_CONTAINER).click()
@@ -97,9 +106,13 @@ class CreateVisitPage(VisitPage):
         self.element_is_visible(CreateVisitLocators.BaseTab.ASSISTANT_CONTAINER).click()
         self.element_is_visible(CreateVisitLocators.BaseTab.TYPES_OF_STUDY_CONTAINER).click()
         self.elements_are_visible(CreateVisitLocators.BaseTab.TYPE_OF_STUDY, element=-1).click()
+        selected_study = self.element_is_visible(CreateVisitLocators.BaseTab.TYPE_OF_STUDY_VALUE).text
         self.element_is_visible(CreateVisitLocators.BaseTab.DEVICE_CONTAINER)
-        self.element_is_visible(CreateVisitLocators.BaseTab.CONTRAST_CONTAINER).click()
-        self.element_is_visible(CreateVisitLocators.BaseTab.CONTRAST_VOLUME).click()
+        if 'контраст' in selected_study:
+            self.element_is_visible(CreateVisitLocators.BaseTab.CONTRAST_CONTAINER).click()
+            self.elements_are_visible(CreateVisitLocators.BaseTab.CONTRAST, element=-1).click()
+            if not self.element_is_visible(CreateVisitLocators.BaseTab.CONTRAST_VOLUME).get_attribute('value'):
+                raise Exception('No contrast volume!')
         self.element_is_visible(CreateVisitLocators.BaseTab.DOSE_RG).click()
         self.element_is_visible(CreateVisitLocators.BaseTab.DOSE)
         self.element_is_visible(CreateVisitLocators.BaseTab.IS_CITO_CONTAINER).click()
@@ -172,6 +185,21 @@ class CreateVisitPage(VisitPage):
         self.fill_passport_registration_fields_patient()
         return entered_data
 
+    def fill_document_and_save(self):
+        self.element_is_visible(CreateVisitLocators.TAB_PASSPORT_REGISTRATION).click()
+        self.element_is_not_visible(self.Locators.LOADING_BAR)
+        self.element_is_not_visible(self.Locators.BLOCK_PAGE)
+        for i in range(28):
+            self.element_is_visible(CreateVisitLocators.PassportRegistrationTab.IDENTIFIER_TYPE_CONTAINER).click()
+            self.elements_are_visible(CreateVisitLocators.PassportRegistrationTab.IDENTIFIER_TYPE, element=i).click()
+            self.save_visit('continue')
+            self.element_is_not_visible(self.Locators.LOADING_BAR)
+            self.element_is_not_visible(self.Locators.BLOCK_PAGE)
+            if not self.element_is_not_visible(CreateVisitLocators.PassportRegistrationTab.IDENTIFIER_TYPE_ERROR,
+                                               return_false=True, timeout=2):
+                print(
+                    f'{self.element_is_visible(CreateVisitLocators.PassportRegistrationTab.IDENTIFIER_TYPE_SELECT_VALUE).text}: {self.element_is_visible(CreateVisitLocators.PassportRegistrationTab.IDENTIFIER_TYPE_ERROR).text}')
+
     def save_visit(self, action: str):
         """action: continue, close, create, bind, bind_and_create"""
         match action:
@@ -189,11 +217,16 @@ class CreateVisitPage(VisitPage):
                 return 'Incorrect action'
         self.element_is_visible(locator).click()
 
+    def bind_visit(self):
+        bind_buttons = self.elements_are_visible(BindVisitLocators.BTN_COMPARE)
+        bind_buttons[0].click()
+        self.waiting_for_notification('Сопоставление успешно выполнено.')
+
     def delete_visit(self):
+        self.element_is_not_visible(self.Locators.BLOCK_PAGE)
         self.element_is_visible(CreateVisitLocators.BTN_DELETE).click()
         self.element_is_visible(CreateVisitLocators.REASON_FOR_DELETE).send_keys('Reason for delete')
         self.element_is_visible(CreateVisitLocators.BTN_MODAL_DELETE).click()
-        self.element_is_not_visible(CreateVisitLocators.BLOCK_PAGE)
         self.element_is_not_visible(self.Locators.LOADING_BAR)
 
     def delete_protocol(self):
@@ -201,15 +234,8 @@ class CreateVisitPage(VisitPage):
         self.element_is_visible(CreateVisitLocators.ClinicalDocumentsTab.PROTOCOL_DELETE).click()
         self.element_is_visible(CreateVisitLocators.BTN_MODAL_DELETE_NO)
         self.element_is_visible(CreateVisitLocators.BTN_MODAL_DELETE_YES).click()
-        self.element_is_not_visible(CreateVisitLocators.BLOCK_PAGE)
+        self.element_is_not_visible(self.Locators.BLOCK_PAGE)
         self.element_is_not_visible(CreateVisitLocators.ClinicalDocumentsTab.PROTOCOL_DELETE)
-
-
-class BindVisitPage(CreateVisitPage):
-    def bind_visit(self):
-        bind_buttons = self.elements_are_visible(BindVisitLocators.BTN_COMPARE)
-        bind_buttons[0].click()
-        self.waiting_for_notification('Сопоставление успешно выполнено.')
 
 
 class ProtocolPage(VisitPage):
@@ -229,10 +255,12 @@ class CreateProtocolPage(CreateVisitPage):
             case 'visit_page':
                 self.elements_are_visible(VisitLocators.CREATE_PROTOCOL, element=0).click()
             case 'reg_form':
-                self.open_visit('missing')
+                count, locator = self.list_visits_on_page('missing')
+                self.open_visit(locator)
                 self.element_is_visible(CreateVisitLocators.BTN_CREATE_PROTOCOL).click()
             case 'tab_doc':
-                self.open_visit('missing')
+                count, locator = self.list_visits_on_page('missing')
+                self.open_visit(locator)
                 self.element_is_visible(CreateVisitLocators.TAB_CLINICAL_DOCUMENTS).click()
                 self.element_is_visible(CreateVisitLocators.ClinicalDocumentsTab.PROTOCOL_CREATE).click()
             case _:
@@ -261,3 +289,10 @@ class CreateProtocolPage(CreateVisitPage):
         self.elements_are_visible(ProtocolLocators.SIGN, element=-1).click()
         self.element_is_visible(ProtocolLocators.BTN_SIGN).click()
         self.waiting_for_notification('Документ подписан.')
+        self.check_signed_protocol()
+
+    def check_signed_protocol(self):
+        self.elements_are_visible(VisitLocators.VIEW_PROTOCOL, element=0).click()
+        self.element_is_visible(ProtocolLocators.SIGNED_PDF)
+        self.element_is_visible(ProtocolLocators.BTN_CLOSE).click()
+        self.element_is_not_visible(self.Locators.BLOCK_PAGE)

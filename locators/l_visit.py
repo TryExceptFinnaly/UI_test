@@ -19,7 +19,7 @@ class VisitPageLocators:
     PATIENTS_EDITABLE_PROTOCOL_STUDY = (By.XPATH,
                                         "//tr/td//i[@class='fa fa-pencil']/../../../td//a[not(@class)][contains(@href,'/visit/')]")
     PATIENTS_PRESENT_PROTOCOL_STUDY = (By.XPATH,
-                                         "//tr/td//i[@class='fa fa-pencil' or @class='fa fa-file-text-o']/../../../td//a[not(@class)][contains(@href,'/visit/')]")
+                                       "//tr/td//i[@class='fa fa-pencil' or @class='fa fa-file-text-o']/../../../td//a[not(@class)][contains(@href,'/visit/')]")
     REFRESH_STUDY_PAGE = (By.CSS_SELECTOR, "i.fa.fa-refresh")
 
 
@@ -45,7 +45,6 @@ class CreateVisitPageLocators:
         By.CSS_SELECTOR, "div[role='dialog']>div>div.modal-content>div.modal-footer>button.btn.btn-danger")
     BTN_MODAL_DELETE_NO = (
         By.CSS_SELECTOR, "div[role='dialog']>div>div.modal-content>div.modal-footer>button.btn.btn-default")
-    BLOCK_PAGE = (By.CSS_SELECTOR, "div[role='dialog'][class='fade in modal'][style*='display: block;']")
 
     class BaseTab:
         #   PERSON DATA
@@ -119,10 +118,16 @@ class CreateVisitPageLocators:
             By.CSS_SELECTOR,
             "div.form-group>label.control-label[for='studies']+div.studies-field>span div.react-select__control")
         TYPE_OF_STUDY = (By.CSS_SELECTOR, "div.form-group>label.control-label[for='studies']+div div[tabindex='-1']")
+        TYPE_OF_STUDY_VALUE = (
+            By.CSS_SELECTOR,
+            "div.form-group>label.control-label[for='studies']+div div.react-select__multi-value__label")
         DEVICE_CONTAINER = (By.CSS_SELECTOR,
                             'label[for="device"]+div>div>div.react-select__value-container.react-select__value-container--has-value')
         CONTRAST_CONTAINER = (By.CSS_SELECTOR,
                               "div.form-group>label.control-label[for='contrast_enhancement']+div.react-select-container")
+        CONTRAST = (
+            By.CSS_SELECTOR,
+            "div.form-group>label.control-label[for='contrast_enhancement']+div>div div[tabindex='-1']")
         CONTRAST_VOLUME = (By.CSS_SELECTOR, "input#contrast_volume")
         DOSE_RG = (By.CSS_SELECTOR, "input#doseRG")
         DOSE = (By.CSS_SELECTOR, "input#dose[disabled]")
@@ -195,6 +200,7 @@ class CreateVisitPageLocators:
         IDENTIFIER_TYPE_SELECT_VALUE = (
             By.CSS_SELECTOR,
             "div.form-group>label.control-label[for='identifier_type']+div>div>div>div.react-select__single-value")
+        IDENTIFIER_TYPE_ERROR = (By.XPATH, '//*[@id="regform-tabs-pane-passport-registration"]/div[1]/div[1]/div/span')
         IDENTIFIER_SERIES = (By.CSS_SELECTOR, "input#identifier_series")
         IDENTIFIER_NUMBER = (By.CSS_SELECTOR, "input#identifier_number")
         IDENTIFIER_ISSUED = (By.CSS_SELECTOR, "input#identifier_issued")
@@ -225,6 +231,7 @@ class BindVisitPageLocators:
 
 class ProtocolPageLocators:
     MODAL_CONTENT = (By.CSS_SELECTOR, "div[role='dialog']>div>div.modal-content")
+    SIGNED_PDF = (By.CSS_SELECTOR, "div.modal-content[role='document']>div.modal-body object[data*='/print_']")
     SIGN_CONTAINER = (
         By.CSS_SELECTOR, "div[role='dialog']>div>div.modal-content>div.modal-footer div.react-select-container")
     SIGN = (By.CSS_SELECTOR,

@@ -51,15 +51,15 @@ faker_ru.add_provider(insurance_company_provider)
 
 
 def write_seed():
-    with open(r'C:\Users\LINS\PycharmProjects\UI_test\tests\seed', 'w', encoding='utf-8') as file:
+    with open(r'C:\Users\kov\PycharmProjects\UI_test\tests\seed', 'w', encoding='utf-8') as file:
         file.write(f'{randint(0, 1000)}')
 
 
 def read_seed():
     try:
-        with open(r'C:\Users\LINS\PycharmProjects\UI_test\tests\seed', 'r', encoding='utf-8') as file:
+        with open(r'C:\Users\kov\PycharmProjects\UI_test\tests\seed', 'r', encoding='utf-8') as file:
             return int(file.read())
-    except Exception:
+    except FileNotFoundError:
         return None
 
 

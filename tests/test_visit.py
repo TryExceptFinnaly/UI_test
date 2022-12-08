@@ -1,6 +1,6 @@
 import allure
 
-from pages.p_visit import VisitPage, CreateVisitPage, BindVisitPage, CreateProtocolPage, ProtocolPage
+from pages.p_visit import VisitPage, CreateVisitPage, CreateProtocolPage, ProtocolPage
 
 
 @allure.feature('Visit Page')
@@ -19,8 +19,19 @@ class TestVisitPage:
 class TestCreateVisit:
     URL = 'https://nt.ris-x.com/visit/'
 
-    @allure.title('Create visit')
-    def test_create_visit(self, driver):
+    @allure.title('Create and continue visit')
+    def test_create_and_continue_visit(self, driver):
+        page = CreateVisitPage(driver, self.URL)
+        page.open()
+        page.authorization()
+        page.go_to_create_visit()
+        entered_data = page.fill_all_fields()
+        page.save_visit('continue')
+        page.waiting_for_notification('Данные сохранены.')
+        assert (self.URL in page.current_url()) and (self.URL != page.current_url())
+
+    @allure.title('Create and close visit')
+    def test_create_and_close_visit(self, driver):
         page = CreateVisitPage(driver, self.URL)
         page.open()
         page.authorization()
@@ -30,8 +41,53 @@ class TestCreateVisit:
         page.waiting_for_notification('Данные сохранены.')
         data = page.check_result_created_visit()
         assert entered_data == data
-        print(f'Entered data: {entered_data}')
-        print(f'Data: {data}')
+        assert self.URL == page.current_url()
+
+    @allure.title('Create and create new visit')
+    def test_create_and_create_new_visit(self, driver):
+        page = CreateVisitPage(driver, self.URL)
+        page.open()
+        page.authorization()
+        page.go_to_create_visit()
+        entered_data = page.fill_all_fields()
+        page.save_visit('create')
+        page.waiting_for_notification('Данные сохранены.')
+        assert f'{self.URL}create/' in page.current_url()
+
+    @allure.title('Create and bind visit')
+    def test_create_and_bind_visit(self, driver):
+        page = CreateVisitPage(driver, self.URL)
+        page.open()
+        page.authorization()
+        page.go_to_create_visit()
+        entered_data = page.fill_all_fields()
+        page.save_visit('bind')
+        page.waiting_for_notification('Данные сохранены.')
+        if not page.waiting_for_notification('Сопоставление успешно выполнено.', return_false=True):
+            page.bind_visit()
+        data = page.check_result_created_visit()
+        assert entered_data == data
+        assert self.URL == page.current_url()
+
+    @allure.title('Create and bind and create new visit')
+    def test_create_and_bind_and_create_new_visit(self, driver):
+        page = CreateVisitPage(driver, self.URL)
+        page.open()
+        page.authorization()
+        page.go_to_create_visit()
+        entered_data = page.fill_all_fields()
+        page.save_visit('bind_and_create')
+        page.waiting_for_notification('Данные сохранены.')
+        if not page.waiting_for_notification('Сопоставление успешно выполнено.', return_false=True):
+            page.bind_visit()
+        assert f'{self.URL}create/' in page.current_url()
+
+    # def test_document(self, driver):
+    #     page = CreateVisitPage(driver, self.URL)
+    #     page.open()
+    #     page.authorization()
+    #     page.go_to_create_visit()
+    #     page.fill_document_and_save()
 
 
 @allure.feature('Protocol')
@@ -45,7 +101,8 @@ class TestProtocol:
         page.authorization()
         page.create_protocol('visit_page')
         page.save_protocol()
-        page.open_visit('available')
+        count, locator = page.list_visits_on_page('present')
+        page.open_visit(locator)
         page.delete_protocol()
 
     @allure.title('Create protocol from reg form and delete')
@@ -55,7 +112,8 @@ class TestProtocol:
         page.authorization()
         page.create_protocol('reg_form')
         page.save_protocol()
-        page.open_visit('available')
+        count, locator = page.list_visits_on_page('present')
+        page.open_visit(locator)
         page.delete_protocol()
 
     @allure.title('Create protocol from tab doc')
@@ -79,7 +137,8 @@ class TestProtocol:
         page = CreateVisitPage(driver, self.URL)
         page.open()
         page.authorization()
-        page.open_visit('available')
+        count, locator = page.list_visits_on_page('present')
+        page.open_visit(locator)
         page.delete_protocol()
 
 
@@ -89,19 +148,23 @@ class TestVisit:
 
     @allure.title('Bind visit')
     def test_bind_visit(self, driver):
-        page = BindVisitPage(driver, self.URL)
+        page = CreateVisitPage(driver, self.URL)
         page.open()
         page.authorization()
-        page.open_visit('ignore')
+        count, locator = page.list_visits_on_page('ignore')
+        page.open_visit(locator)
         page.save_visit('bind')
         page.waiting_for_notification('Данные сохранены.')
         if not page.waiting_for_notification('Сопоставление успешно выполнено.', return_false=True):
             page.bind_visit()
 
-    @allure.title('Delete visit')
-    def test_delete_visit(self, driver):
+    @allure.title('Delete visits')
+    def test_delete_visits(self, driver):
         page = CreateVisitPage(driver, self.URL)
         page.open()
         page.authorization()
-        page.open_visit('ignore')
-        page.delete_visit()
+        count, locator = page.list_visits_on_page('ignore')
+        for i in range(count):
+            page.open_visit(locator)
+            page.delete_visit()
+            page.refresh_study_page()

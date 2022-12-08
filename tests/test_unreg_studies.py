@@ -15,4 +15,3 @@ class TestUnregStudies:
         page.open()
         page.authorization()
         page.check_list_unreg_studies()
-        page.sleep(5)
