@@ -20,6 +20,7 @@ class VisitPageLocators:
                                         "//tr/td//i[@class='fa fa-pencil']/../../../td//a[not(@class)][contains(@href,'/visit/')]")
     PATIENTS_PRESENT_PROTOCOL_STUDY = (By.XPATH,
                                        "//tr/td//i[@class='fa fa-pencil' or @class='fa fa-file-text-o']/../../../td//a[not(@class)][contains(@href,'/visit/')]")
+    VIEW_IMAGE_VISIT = (By.XPATH, "//tr/td//i[@class='fa fa-picture-o']/..")
     REFRESH_STUDY_PAGE = (By.CSS_SELECTOR, "i.fa.fa-refresh")
 
 
@@ -222,6 +223,11 @@ class CreateVisitPageLocators:
         PROTOCOL_CREATE = (
             By.XPATH,
             '//div[@id="regform-tabs-pane-cdocuments"]/table/tbody/tr[3]/td/div/a/i[@class="fa fa-plus"]')
+
+
+class ImageVisitPageLocators:
+    BTN_DELETE = (By.XPATH, "//div[@class='pacs-image']//i[@class='fa fa-remove']/..")
+    BTN_CLOSE_IMAGE_PAGE = (By.XPATH, "//div[@class='modal-content'][@role='document']//button[@class='close']")
 
 
 class BindVisitPageLocators:

@@ -1,6 +1,6 @@
 import allure
 
-from pages.p_visit import VisitPage, CreateVisitPage, CreateProtocolPage, ProtocolPage
+from pages.p_visit import VisitPage, CreateVisitPage, ImageVisitPage, CreateProtocolPage, ProtocolPage
 
 
 @allure.feature('Visit Page')
@@ -140,6 +140,20 @@ class TestProtocol:
         count, locator = page.list_visits_on_page('present')
         page.open_visit(locator)
         page.delete_protocol()
+
+
+@allure.feature('Image Visit')
+class TestImageVisit:
+    URL = 'https://nt.ris-x.com/visit/'
+
+    @allure.title('Delete image from visit')
+    def test_delete_image_from_visit(self, driver):
+        page = ImageVisitPage(driver, self.URL)
+        page.open()
+        page.authorization()
+        before_count = page.open_image_from_visit()
+        answer_count = page.delete_image_from_visit()
+        assert before_count == answer_count
 
 
 @allure.feature('Visit')

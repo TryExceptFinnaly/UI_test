@@ -10,8 +10,9 @@ class TestUnregStudies:
 
     @allure.title('Create unreg studies from HL7 message')
     def test_create_unreg_study_from_hl7_message(self, driver):
-        send_hl7_message('sc', count=2)  # True
+        send_hl7_message('sc', count=3)  # True
         page = UnregStudiesPage(driver, self.URL)
         page.open()
         page.authorization()
-        page.check_list_unreg_studies()
+        patient = page.check_list_unreg_studies()
+        print(patient)

@@ -11,5 +11,13 @@
 # for i in range(500):
 #     send_hl7_message('sc')
 #
-if not '':
-    print('41241')
+blabla = False
+
+
+def func():
+    if blabla:
+        return blabla
+
+
+func = func()
+print(func)

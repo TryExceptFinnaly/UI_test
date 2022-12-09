@@ -20,8 +20,8 @@ class PlannedVisitPage(AuthorizationPage):
 class CreatePlannedVisitPage(PlannedVisitPage):
     patient_info = next(generated_person())
 
-    def check_base_planned_visit(self):
-        self.element_is_not_visible(CreateVisitLocators.BLOCK_PAGE)
+    def check_base_fields(self):
+        self.element_is_not_visible(self.Locators.BLOCK_PAGE)
         self.element_is_visible(CreateVisitLocators.TAB_BASE).click()
         full_name = f'{self.patient_info.last_name} {self.patient_info.first_name} {self.patient_info.middle_name}'
         email = self.patient_info.email
@@ -59,7 +59,7 @@ class CreatePlannedVisitPage(PlannedVisitPage):
         assert self.element_is_visible(CreateVisitLocators.BaseTab.COMMENT).text == 'COMMENT'
         assert self.element_is_visible(CreateVisitLocators.BaseTab.IS_CITO_SELECT_VALUE).text == is_cito
 
-    def check_params_planned_visit(self):
+    def check_params_fields(self):
         self.element_is_visible(CreateVisitLocators.TAB_PARAMS).click()
         insurance_company = SystemDirectory.insurance_company[self.patient_info.insurance_company][0]
         assert self.element_is_visible(
@@ -71,11 +71,11 @@ class CreatePlannedVisitPage(PlannedVisitPage):
         assert self.element_is_visible(CreateVisitLocators.ParamsTab.ALTERNATE_ID).get_attribute(
             'value') == 'PATIENT_ALTER_ID'
 
-    def check_additional_planned_visit(self):
+    def check_additional_fields(self):
         self.element_is_visible(CreateVisitLocators.TAB_ADDITIONAL).click()
         self.element_is_visible(CreateVisitLocators.AdditionalTab.CONSULTATION_CONTAINER)
 
-    def check_passport_registration_planned_visit(self):
+    def check_passport_registration_fields(self):
         self.element_is_visible(CreateVisitLocators.TAB_PASSPORT_REGISTRATION).click()
         identifier_type = SystemDirectory.identifier_type[self.patient_info.identifier_type][0]
         print(identifier_type)
@@ -111,6 +111,12 @@ class CreatePlannedVisitPage(PlannedVisitPage):
         assert self.element_is_visible(
             CreateVisitLocators.PassportRegistrationTab.REGISTRATION_APARTMENT).get_attribute(
             'value') == 'APARTMENT'
+
+    def check_all_fields(self):
+        self.check_base_fields()
+        self.check_params_fields()
+        self.check_additional_fields()
+        self.check_passport_registration_fields()
 
     def register_planned_visit(self):
         self.element_is_visible(CreateVisitLocators.BaseTab.DEVICE_CONTAINER)

@@ -4,6 +4,7 @@ from pages.p_authorization import AuthorizationPage
 from locators.l_visit import VisitPageLocators as VisitLocators
 from locators.l_visit import CreateVisitPageLocators as CreateVisitLocators
 from locators.l_visit import BindVisitPageLocators as BindVisitLocators
+from locators.l_visit import ImageVisitPageLocators as ImageVisitLocators
 from locators.l_visit import ProtocolPageLocators as ProtocolLocators
 from locators.l_visit import CreateProtocolPageLocators as CreateProtocolLocators
 
@@ -70,6 +71,22 @@ class CreateVisitPage(VisitPage):
         is_cito = SystemDirectory.is_cito[self.patient_info.is_cito][1]
         print(f'\n{self.patient_info}')
 
+        self.element_is_visible(CreateVisitLocators.BaseTab.DOCTOR_CONTAINER).click()
+        self.element_is_visible(CreateVisitLocators.BaseTab.ASSISTANT_CONTAINER).click()
+        self.element_is_visible(CreateVisitLocators.BaseTab.TYPES_OF_STUDY_CONTAINER).click()
+        self.elements_are_visible(CreateVisitLocators.BaseTab.TYPE_OF_STUDY, element=-1).click()
+        selected_study = self.element_is_visible(CreateVisitLocators.BaseTab.TYPE_OF_STUDY_VALUE).text
+        self.element_is_visible(CreateVisitLocators.BaseTab.DEVICE_CONTAINER)
+        if 'контраст' in selected_study:
+            self.element_is_visible(CreateVisitLocators.BaseTab.CONTRAST_CONTAINER).click()
+            self.elements_are_visible(CreateVisitLocators.BaseTab.CONTRAST, element=-1).click()
+            if not self.element_is_visible(CreateVisitLocators.BaseTab.CONTRAST_VOLUME).get_attribute('value'):
+                raise Exception('No contrast volume!')
+        self.element_is_visible(CreateVisitLocators.BaseTab.DOSE_RG).click()
+        self.element_is_visible(CreateVisitLocators.BaseTab.DOSE)
+        self.element_is_visible(CreateVisitLocators.BaseTab.IS_CITO_CONTAINER).click()
+        self.elements_are_visible(CreateVisitLocators.BaseTab.IS_CITO, element=is_cito).click()
+
         self.element_is_visible(CreateVisitLocators.BaseTab.FULL_NAME).send_keys(full_name)
         self.element_is_visible(CreateVisitLocators.BaseTab.EXTERNAL_ID).send_keys('PATIENT_ID')
         self.element_is_visible(CreateVisitLocators.BaseTab.POLIS_OMS).send_keys('PATIENT_POLIS_OMS')
@@ -100,22 +117,6 @@ class CreateVisitPage(VisitPage):
         self.element_is_visible(CreateVisitLocators.BaseTab.DIAGNOSES_MKB_CONTAINER).click()
 
         self.element_is_visible(CreateVisitLocators.BaseTab.COMMENT).send_keys('COMMENT')
-
-        self.element_is_visible(CreateVisitLocators.BaseTab.DOCTOR_CONTAINER).click()
-        self.element_is_visible(CreateVisitLocators.BaseTab.ASSISTANT_CONTAINER).click()
-        self.element_is_visible(CreateVisitLocators.BaseTab.TYPES_OF_STUDY_CONTAINER).click()
-        self.elements_are_visible(CreateVisitLocators.BaseTab.TYPE_OF_STUDY, element=-1).click()
-        selected_study = self.element_is_visible(CreateVisitLocators.BaseTab.TYPE_OF_STUDY_VALUE).text
-        self.element_is_visible(CreateVisitLocators.BaseTab.DEVICE_CONTAINER)
-        if 'контраст' in selected_study:
-            self.element_is_visible(CreateVisitLocators.BaseTab.CONTRAST_CONTAINER).click()
-            self.elements_are_visible(CreateVisitLocators.BaseTab.CONTRAST, element=-1).click()
-            if not self.element_is_visible(CreateVisitLocators.BaseTab.CONTRAST_VOLUME).get_attribute('value'):
-                raise Exception('No contrast volume!')
-        self.element_is_visible(CreateVisitLocators.BaseTab.DOSE_RG).click()
-        self.element_is_visible(CreateVisitLocators.BaseTab.DOSE)
-        self.element_is_visible(CreateVisitLocators.BaseTab.IS_CITO_CONTAINER).click()
-        self.elements_are_visible(CreateVisitLocators.BaseTab.IS_CITO, element=is_cito).click()
 
         patient = f'{self.patient_info.last_name} {self.patient_info.first_name[0]}. {self.patient_info.middle_name[0]}.'
         birthdate = f'{self.patient_info.birth_day}.{self.patient_info.birth_month}.{self.patient_info.birth_year}'
@@ -235,6 +236,23 @@ class CreateVisitPage(VisitPage):
         self.element_is_visible(CreateVisitLocators.BTN_MODAL_DELETE_YES).click()
         self.element_is_not_visible(self.Locators.BLOCK_PAGE)
         self.element_is_not_visible(CreateVisitLocators.ClinicalDocumentsTab.PROTOCOL_DELETE)
+
+
+class ImageVisitPage(VisitPage):
+    def open_image_from_visit(self):
+        image_visit = self.elements_are_visible(VisitLocators.VIEW_IMAGE_VISIT)
+        image_visit[0].click()
+        self.element_is_not_visible(self.Locators.LOADING_BAR)
+        return len(image_visit)
+
+    def delete_image_from_visit(self):
+        self.element_is_visible(ImageVisitLocators.BTN_DELETE).click()
+        self.element_is_visible(CreateVisitLocators.BTN_MODAL_DELETE_YES).click()
+        self.element_is_not_visible(self.Locators.LOADING_BAR)
+        self.element_is_visible(ImageVisitLocators.BTN_CLOSE_IMAGE_PAGE).click()
+        image_visit = self.elements_are_visible(VisitLocators.VIEW_IMAGE_VISIT, return_false=True)
+        if image_visit:
+            return len(image_visit)
 
 
 class ProtocolPage(VisitPage):

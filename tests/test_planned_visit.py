@@ -22,10 +22,7 @@ class TestPlannedVisit:
         page.open()
         page.authorization()
         page.go_to_create_planned_visit()
-        page.check_base_planned_visit()
-        page.check_params_planned_visit()
-        page.check_additional_planned_visit()
-        page.check_passport_registration_planned_visit()
+        page.check_all_fields()
 
     @allure.title('Register planned visit')
     def test_register_planned_visit(self, driver):
