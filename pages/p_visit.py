@@ -44,6 +44,7 @@ class VisitPage(AuthorizationPage):
         self.element_is_not_visible(self.Locators.LOADING_BAR)
         self.element_is_visible(VisitLocators.REFRESH_STUDY_PAGE)
         self.element_is_clickable(VisitLocators.REFRESH_STUDY_PAGE).click()
+        self.element_is_visible(self.Locators.LOADING_BAR)
 
     def check_result_created_visit(self):
         self.element_is_not_visible(self.Locators.LOADING_BAR)
