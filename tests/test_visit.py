@@ -1,6 +1,7 @@
 import allure
 
 from pages.p_visit import VisitPage, CreateVisitPage, ImageVisitPage, CreateProtocolPage, ProtocolPage
+from hl7.hl7 import send_hl7_message
 
 
 @allure.feature('Visit Page')
@@ -28,7 +29,7 @@ class TestCreateVisit:
         entered_data = page.fill_all_fields()
         page.save_visit('continue')
         page.waiting_for_notification('Данные сохранены.')
-        assert (self.URL in page.current_url()) and (self.URL != page.current_url())
+        assert (self.URL in page.current_url()) and (self.URL != page.current_url()), 'Incorrect current URL'
 
     @allure.title('Create and close visit')
     def test_create_and_close_visit(self, driver):
@@ -40,8 +41,8 @@ class TestCreateVisit:
         page.save_visit('close')
         page.waiting_for_notification('Данные сохранены.')
         data = page.check_result_created_visit()
-        assert entered_data == data
-        assert self.URL == page.current_url()
+        assert entered_data == data, 'The data entered does not match the data received'
+        assert self.URL == page.current_url(), 'Incorrect current URL'
 
     @allure.title('Create and create new visit')
     def test_create_and_create_new_visit(self, driver):
@@ -52,7 +53,7 @@ class TestCreateVisit:
         entered_data = page.fill_all_fields()
         page.save_visit('create')
         page.waiting_for_notification('Данные сохранены.')
-        assert f'{self.URL}create/' in page.current_url()
+        assert f'{self.URL}create/' in page.current_url(), 'Incorrect current URL'
 
     @allure.title('Create and bind visit')
     def test_create_and_bind_visit(self, driver):
@@ -66,8 +67,8 @@ class TestCreateVisit:
         if not page.waiting_for_notification('Сопоставление успешно выполнено.', return_false=True):
             page.bind_visit()
         data = page.check_result_created_visit()
-        assert entered_data == data
-        assert self.URL == page.current_url()
+        assert entered_data == data, 'The data entered does not match the data received'
+        assert self.URL == page.current_url(), 'Incorrect current URL'
 
     @allure.title('Create and bind and create new visit')
     def test_create_and_bind_and_create_new_visit(self, driver):
@@ -80,7 +81,7 @@ class TestCreateVisit:
         page.waiting_for_notification('Данные сохранены.')
         if not page.waiting_for_notification('Сопоставление успешно выполнено.', return_false=True):
             page.bind_visit()
-        assert f'{self.URL}create/' in page.current_url()
+        assert f'{self.URL}create/' in page.current_url(), 'Incorrect current URL'
 
     # def test_document(self, driver):
     #     page = CreateVisitPage(driver, self.URL)
@@ -153,7 +154,7 @@ class TestImageVisit:
         page.authorization()
         before_count = page.open_image_from_visit()
         answer_count = page.delete_image_from_visit()
-        assert before_count == answer_count
+        assert before_count == answer_count, 'Before and answer counts do not differ'
 
 
 @allure.feature('Visit')
@@ -165,19 +166,30 @@ class TestVisit:
         page = CreateVisitPage(driver, self.URL)
         page.open()
         page.authorization()
-        count, locator = page.list_visits_on_page('ignore')
+        count, locator = page.list_visits_on_page()
         page.open_visit(locator)
         page.save_visit('bind')
         page.waiting_for_notification('Данные сохранены.')
         if not page.waiting_for_notification('Сопоставление успешно выполнено.', return_false=True):
             page.bind_visit()
 
+    @allure.title('Bind visit from HL7 message(SC Accession Number)')
+    def test_bind_visit_from_hl7_message(self, driver):
+        page = VisitPage(driver, self.URL)
+        page.open()
+        page.authorization()
+        count, locator = page.list_visits_on_page(image='missing')
+        for i in range(count):
+            acc_number = page.get_visit_id(locator, i)
+            send_hl7_message('sc', acc_number=acc_number)
+            page.sleep(2)
+
     @allure.title('Delete visits')
     def test_delete_visits(self, driver):
         page = CreateVisitPage(driver, self.URL)
         page.open()
         page.authorization()
-        count, locator = page.list_visits_on_page('ignore')
+        count, locator = page.list_visits_on_page()
         for i in range(count):
             page.open_visit(locator)
             page.delete_visit()

@@ -13,6 +13,6 @@ class TestAuthorization:
         page.open()
         page.authorization()
         page.check_user_authorization()
-        assert f'{self.URL}login/' not in page.current_url()
+        assert f'{self.URL}login/' not in page.current_url(), 'Authorization: Incorrect current URL'
         page.logout()
-        assert f'{self.URL}login/' in page.current_url()
+        assert f'{self.URL}login/' in page.current_url(), 'Logout: Incorrect current URL'

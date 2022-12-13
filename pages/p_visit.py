@@ -16,8 +16,9 @@ class VisitPage(AuthorizationPage):
         button_create_visit = self.element_is_visible(VisitLocators.CREATE_VISIT)
         self.get_request_href_and_click(button_create_visit)
 
-    def list_visits_on_page(self, protocol: str):
+    def list_visits_on_page(self, protocol: str = 'ignore', image: str = 'ignore'):
         """param protocol: present, editable, completed, missing, ignore\n
+        param image: present, missing, ignore\n
         return: count, locator"""
         match protocol:
             case 'present':
@@ -32,6 +33,15 @@ class VisitPage(AuthorizationPage):
                 locator = VisitLocators.PATIENTS_STUDY
             case _:
                 return 'Incorrect protocol'
+        match image:
+            case 'present':
+                locator = (locator[0], locator[1].replace(VisitLocators.PREFIX, VisitLocators.PREFIX_PRESENT_IMAGE))
+            case 'missing':
+                locator = (locator[0], locator[1].replace(VisitLocators.PREFIX, VisitLocators.PREFIX_MISSING_IMAGE))
+            case 'ignore':
+                pass
+            case _:
+                return 'Incorrect image'
         visits = self.elements_are_visible(locator)
         return len(visits), locator
 
@@ -39,6 +49,11 @@ class VisitPage(AuthorizationPage):
         self.element_is_not_visible(self.Locators.LOADING_BAR)
         visit = self.elements_are_visible(locator, element=visit)
         self.get_request_href_and_click(visit)
+
+    def get_visit_id(self, locator, visit: int = 0) -> str:
+        self.element_is_not_visible(self.Locators.LOADING_BAR)
+        visit = self.elements_are_visible(locator, element=visit, return_false=True)
+        return visit.get_attribute('href').rsplit('/', 2)[1]
 
     def refresh_study_page(self):
         self.element_is_not_visible(self.Locators.LOADING_BAR)
@@ -72,12 +87,12 @@ class CreateVisitPage(VisitPage):
         is_cito = SystemDirectory.is_cito[self.patient_info.is_cito][1]
         print(f'\n{self.patient_info}')
 
+        self.element_is_visible(CreateVisitLocators.BaseTab.DEVICE_CONTAINER)
         self.element_is_visible(CreateVisitLocators.BaseTab.DOCTOR_CONTAINER).click()
         self.element_is_visible(CreateVisitLocators.BaseTab.ASSISTANT_CONTAINER).click()
         self.element_is_visible(CreateVisitLocators.BaseTab.TYPES_OF_STUDY_CONTAINER).click()
         self.elements_are_visible(CreateVisitLocators.BaseTab.TYPE_OF_STUDY, element=-1).click()
         selected_study = self.element_is_visible(CreateVisitLocators.BaseTab.TYPE_OF_STUDY_VALUE).text
-        self.element_is_visible(CreateVisitLocators.BaseTab.DEVICE_CONTAINER)
         if 'контраст' in selected_study:
             self.element_is_visible(CreateVisitLocators.BaseTab.CONTRAST_CONTAINER).click()
             self.elements_are_visible(CreateVisitLocators.BaseTab.CONTRAST, element=-1).click()

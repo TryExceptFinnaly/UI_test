@@ -29,7 +29,7 @@ class TestMainContent:
         page = MainContentPage(driver, self.URL)
         page.open()
         page.authorization()
-        assert page.switch_style_css('dark')
+        assert page.switch_style_css('dark'), 'Dark style CSS missing in HTML'
         page.sleep(3)
-        assert page.switch_style_css('white')
+        assert page.switch_style_css('white'), 'White style CSS missing in HTML'
         page.sleep(3)

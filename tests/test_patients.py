@@ -14,7 +14,7 @@ class TestPatients:
         page.authorization()
         entered_name, entered_birthdate = page.found_created_patients()
         name, birthdate = page.check_found_patient()
-        assert (entered_name, entered_birthdate) == (name, birthdate)
+        assert (entered_name, entered_birthdate) == (name, birthdate), 'The data entered does not match the data received'
         page.check_found_patient_in_edit_tab()
         page.save_and_continue_patient()
         page.waiting_for_notification('Данные сохранены.')

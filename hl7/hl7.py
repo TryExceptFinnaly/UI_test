@@ -17,6 +17,7 @@ DEVICE_SN = 'DEVICE_SN'
 DEVICE_AET = 'DEVICE_AET'
 # Study
 MODALITY = 'CT'
+YEAR = '22'
 
 
 def get_module_path() -> str:
@@ -26,7 +27,7 @@ def get_module_path() -> str:
         return os.path.dirname(__file__)
 
 
-def send_hl7_message(order, random=False, count=1):
+def send_hl7_message(order, random: bool = False, count: int = 1, acc_number: str = ''):
     path_to_hl7 = os.path.join(get_module_path(), 'bin\\')
     path_to_bin = f'{path_to_hl7}HL7_cmd.exe'
     path_to_hl7 = f'{path_to_hl7}test_{order}.hl7'
@@ -48,6 +49,8 @@ def send_hl7_message(order, random=False, count=1):
     file_data = file_data.replace('DEVICE_SN', DEVICE_SN)
     file_data = file_data.replace('DEVICE_AET', DEVICE_AET)
     # Study
+    if acc_number:
+        file_data = file_data.replace('ACCESSION_NUMBER', f'{YEAR}{MODALITY}{acc_number}')
     file_data = file_data.replace('MODALITY', MODALITY)
     # Patient info
     file_data = file_data.replace('PATIENT_NAME',

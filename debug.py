@@ -10,14 +10,7 @@
 #
 # for i in range(500):
 #     send_hl7_message('sc')
-#
-blabla = False
 
 
-def func():
-    if blabla:
-        return blabla
-
-
-func = func()
-print(func)
+string = 'https://nt.ris-x.com/visit/687/'
+print(string.rsplit('/', 2)[1])

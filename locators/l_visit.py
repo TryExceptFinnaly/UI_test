@@ -11,7 +11,8 @@ class VisitPageLocators:
     EDIT_PROTOCOL = (By.XPATH, "//tr/td/a[@class='no-underline']/i[@class='fa fa-pencil']")
     PATIENTS_LIST = (By.CSS_SELECTOR, "div.table-responsive>table>tbody>tr>td>a[href^='/share/visits/']")
     PATIENTS_BIRTHDAY = (By.CSS_SELECTOR, "div.table-responsive>table>tbody>tr>td>span:has(br)")
-    PATIENTS_STUDY = (By.XPATH, "//td//a[not(@class)][contains(@href,'/visit/')]")
+    #
+    PATIENTS_STUDY = (By.XPATH, "//tr/td//a[not(@class)][contains(@href,'/visit/')]")
     PATIENTS_MISSING_PROTOCOL_STUDY = (By.XPATH,
                                        "//tr/td//i[@class='fa fa-plus']/../../../td//a[not(@class)][contains(@href,'/visit/')]")
     PATIENTS_COMPLETED_PROTOCOL_STUDY = (By.XPATH,
@@ -20,6 +21,10 @@ class VisitPageLocators:
                                         "//tr/td//i[@class='fa fa-pencil']/../../../td//a[not(@class)][contains(@href,'/visit/')]")
     PATIENTS_PRESENT_PROTOCOL_STUDY = (By.XPATH,
                                        "//tr/td//i[@class='fa fa-pencil' or @class='fa fa-file-text-o']/../../../td//a[not(@class)][contains(@href,'/visit/')]")
+    PREFIX = '//tr/'
+    PREFIX_PRESENT_IMAGE = '//tr/td[3][a]/../'
+    PREFIX_MISSING_IMAGE = '//tr/td[3][not(a)]/../'
+    #
     VIEW_IMAGE_VISIT = (By.XPATH, "//tr/td//i[@class='fa fa-picture-o']/..")
     REFRESH_STUDY_PAGE = (By.CSS_SELECTOR, "i.fa.fa-refresh")
 
