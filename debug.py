@@ -12,5 +12,16 @@
 #     send_hl7_message('sc')
 
 
-string = 'https://nt.ris-x.com/visit/687/'
-print(string.rsplit('/', 2)[1])
+def _test(order):
+    match order.split('_'):
+        case ['nw']:
+            print('nw')
+        case ['sc', *param]:
+            if param:
+                print('True')
+            else:
+                print('False')
+            print('sc+', param)
+
+
+_test('nw')

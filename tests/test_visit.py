@@ -182,7 +182,7 @@ class TestVisit:
         for i in range(count):
             page.refresh_study_page()
             acc_number = page.get_visit_id(locator)
-            send_hl7_message('sc', acc_number=acc_number)
+            send_hl7_message(f'sc_{acc_number}')
             page.sleep(5)
 
     @allure.title('Delete visits')

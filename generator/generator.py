@@ -1,3 +1,5 @@
+import os
+
 from data.data import Patient, SystemDirectory
 from faker import Faker
 from faker.providers import DynamicProvider
@@ -49,15 +51,17 @@ faker_ru.add_provider(treatment_case_provider)
 faker_ru.add_provider(patient_class_provider)
 faker_ru.add_provider(insurance_company_provider)
 
+PATH = os.path.join(os.path.dirname(__file__), 'seed')
+
 
 def write_seed():
-    with open(r'C:\Users\LINS\PycharmProjects\UI_test\tests\seed', 'w', encoding='utf-8') as file:
+    with open(PATH, 'w', encoding='utf-8') as file:
         file.write(f'{randint(0, 1000)}')
 
 
 def read_seed():
     try:
-        with open(r'C:\Users\LINS\PycharmProjects\UI_test\tests\seed', 'r', encoding='utf-8') as file:
+        with open(PATH, 'r', encoding='utf-8') as file:
             return int(file.read())
     except FileNotFoundError:
         return None
