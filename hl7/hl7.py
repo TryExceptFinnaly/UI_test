@@ -86,5 +86,5 @@ def send_hl7_message(order: str, random: bool = False, count: int = 1):
         file.write(file_data)
     cmd = f'{path_to_bin} -i nt.ris-x.com -fp {path_to_hl7}.tmp -r 1 -ct 1 -s {count}'
     returned_output = subprocess.check_output(cmd)
-    print(returned_output.decode('cp1251'))
     os.remove(f'{path_to_hl7}.tmp')
+    return returned_output.decode('cp1251')

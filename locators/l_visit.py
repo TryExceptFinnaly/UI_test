@@ -21,9 +21,11 @@ class VisitPageLocators:
                                         "//tr/td//i[@class='fa fa-pencil']/../../../td//a[not(@class)][contains(@href,'/visit/')]")
     PATIENTS_PRESENT_PROTOCOL_STUDY = (By.XPATH,
                                        "//tr/td//i[@class='fa fa-pencil' or @class='fa fa-file-text-o']/../../../td//a[not(@class)][contains(@href,'/visit/')]")
-    PREFIX = '//tr/'
-    PREFIX_PRESENT_IMAGE = '//tr/td[3][a]/../'
-    PREFIX_MISSING_IMAGE = '//tr/td[3][not(a)]/../'
+    PREFIX = '//tr'
+    PREFIX_PRESENT_WLM = '//tr[td[5][div[text()="PACS"]]]'
+    PREFIX_MISSING_WLM = '//tr[td[5][not(div[text()="PACS"])]]'
+    PREFIX_PRESENT_IMAGE = '//tr[td[3][a]]'
+    PREFIX_MISSING_IMAGE = '//tr[td[3][not(a)]]'
     #
     VIEW_IMAGE_VISIT = (By.XPATH, "//tr/td//i[@class='fa fa-picture-o']/..")
     REFRESH_STUDY_PAGE = (By.CSS_SELECTOR, "i.fa.fa-refresh")
@@ -65,7 +67,8 @@ class CreateVisitPageLocators:
         BIRTHDAY = (By.CSS_SELECTOR, "input#birth")
         SEX_CONTAINER = (
             By.CSS_SELECTOR, "div.form-group>label.control-label[for='sex']+div.react-select-container")
-        SEX = (By.CSS_SELECTOR, "div.form-group>label.control-label[for='sex']+div>div div[tabindex='-1']")
+        SEX = (By.CSS_SELECTOR,
+               "div.form-group>label.control-label[for='sex']+div>div div.react-select__option[tabindex='-1']")
         SEX_SELECT_VALUE = (
             By.CSS_SELECTOR, "div.form-group>label.control-label[for='sex']+div>div>div>div.react-select__single-value")
         PHONE_NUMBER = (By.CSS_SELECTOR, "input#phone_number")
@@ -74,7 +77,8 @@ class CreateVisitPageLocators:
             By.CSS_SELECTOR,
             "div.form-group>label.control-label[for='allergy_type']+div.react-select-container")
         ALLERGY_TYPE = (
-            By.CSS_SELECTOR, "div.form-group>label.control-label[for='allergy_type']+div>div div[tabindex='-1']")
+            By.CSS_SELECTOR,
+            "div.form-group>label.control-label[for='allergy_type']+div>div div.react-select__option[tabindex='-1']")
         ALLERGY_TYPE_SELECT_VALUE = (
             By.CSS_SELECTOR,
             "div.form-group>label.control-label[for='allergy_type']+div>div>div>div.react-select__single-value")
@@ -83,14 +87,16 @@ class CreateVisitPageLocators:
         TREATMENT_CASE_CONTAINER = (By.CSS_SELECTOR,
                                     "div.form-group>label.control-label[for='treatment_case']+div.react-select-container")
         TREATMENT_CASE = (
-            By.CSS_SELECTOR, "div.form-group>label.control-label[for='treatment_case']+div>div div[tabindex='-1']")
+            By.CSS_SELECTOR,
+            "div.form-group>label.control-label[for='treatment_case']+div>div div.react-select__option[tabindex='-1']")
         TREATMENT_CASE_SELECT_VALUE = (
             By.CSS_SELECTOR,
             "div.form-group>label.control-label[for='treatment_case']+div>div>div>div.react-select__single-value")
         PATIENT_CLASS_CONTAINER = (By.CSS_SELECTOR,
                                    "div.form-group>label.control-label[for='patient_class']+div.react-select-container")
         PATIENT_CLASS = (
-            By.CSS_SELECTOR, "div.form-group>label.control-label[for='patient_class']+div>div div[tabindex='-1']")
+            By.CSS_SELECTOR,
+            "div.form-group>label.control-label[for='patient_class']+div>div div.react-select__option[tabindex='-1']")
         PATIENT_CLASS_SELECT_VALUE = (
             By.CSS_SELECTOR,
             "div.form-group>label.control-label[for='patient_class']+div>div>div>div.react-select__single-value")
@@ -104,7 +110,8 @@ class CreateVisitPageLocators:
         SOURCE_FINANCING_CONTAINER = (By.CSS_SELECTOR,
                                       "div.form-group>label.control-label[for='source_financing']+div.react-select-container")
         SOURCE_FINANCING = (
-            By.CSS_SELECTOR, "div.form-group>label.control-label[for='source_financing']+div>div div[tabindex='-1']")
+            By.CSS_SELECTOR,
+            "div.form-group>label.control-label[for='source_financing']+div>div div.react-select__option[tabindex='-1']")
         SOURCE_FINANCING_SELECT_VALUE = (
             By.CSS_SELECTOR,
             "div.form-group>label.control-label[for='source_financing']+div>div>div>div.react-select__single-value")
@@ -123,7 +130,8 @@ class CreateVisitPageLocators:
         TYPES_OF_STUDY_CONTAINER = (
             By.CSS_SELECTOR,
             "div.form-group>label.control-label[for='studies']+div.studies-field>span div.react-select__control")
-        TYPE_OF_STUDY = (By.CSS_SELECTOR, "div.form-group>label.control-label[for='studies']+div div[tabindex='-1']")
+        TYPE_OF_STUDY = (By.CSS_SELECTOR,
+                         "div.form-group>label.control-label[for='studies']+div div.react-select__option[tabindex='-1']")
         TYPE_OF_STUDY_VALUE = (
             By.CSS_SELECTOR,
             "div.form-group>label.control-label[for='studies']+div div.react-select__multi-value__label")
@@ -133,13 +141,14 @@ class CreateVisitPageLocators:
                               "div.form-group>label.control-label[for='contrast_enhancement']+div.react-select-container")
         CONTRAST = (
             By.CSS_SELECTOR,
-            "div.form-group>label.control-label[for='contrast_enhancement']+div>div div[tabindex='-1']")
+            "div.form-group>label.control-label[for='contrast_enhancement']+div>div div.react-select__option[tabindex='-1']")
         CONTRAST_VOLUME = (By.CSS_SELECTOR, "input#contrast_volume")
         DOSE_RG = (By.CSS_SELECTOR, "input#doseRG")
         DOSE = (By.CSS_SELECTOR, "input#dose[disabled]")
         IS_CITO_CONTAINER = (
             By.CSS_SELECTOR, "div.form-group>label.control-label[for='is_cito']+div.react-select-container")
-        IS_CITO = (By.CSS_SELECTOR, "div.form-group>label.control-label[for='is_cito']+div>div div[tabindex='-1']")
+        IS_CITO = (By.CSS_SELECTOR,
+                   "div.form-group>label.control-label[for='is_cito']+div>div div.react-select__option[tabindex='-1']")
         IS_CITO_SELECT_VALUE = (
             By.CSS_SELECTOR,
             "div.form-group>label.control-label[for='is_cito']+div>div>div>div.react-select__single-value")
@@ -148,7 +157,8 @@ class CreateVisitPageLocators:
         INSURANCE_COMPANY_CONTAINER = (By.CSS_SELECTOR,
                                        "div.form-group>label.control-label[for='insurance_company']+div.react-select-container")
         INSURANCE_COMPANY = (
-            By.CSS_SELECTOR, "div.form-group>label.control-label[for='insurance_company']+div>div div[tabindex='-1']")
+            By.CSS_SELECTOR,
+            "div.form-group>label.control-label[for='insurance_company']+div>div div.react-select__option[tabindex='-1']")
         INSURANCE_COMPANY_SELECT_VALUE = (
             By.CSS_SELECTOR,
             "div.form-group>label.control-label[for='insurance_company']+div>div>div>div.react-select__single-value")
@@ -163,13 +173,15 @@ class CreateVisitPageLocators:
             By.CSS_SELECTOR, "div.form-group>label.control-label[for='fluSign']+div.react-select-container")
         FLU_SIGN_NO_DATE = (By.CSS_SELECTOR,
                             "div.form-group>label.control-label[for='fluSign']+div>div>div>div.react-select__menu-notice.react-select__menu-notice--no-options")
-        FLU_SIGN = (By.CSS_SELECTOR, "div.form-group>label.control-label[for='fluSign']+div>div div[tabindex='-1']")
+        FLU_SIGN = (By.CSS_SELECTOR,
+                    "div.form-group>label.control-label[for='fluSign']+div>div div.react-select__option[tabindex='-1']")
         FLU_PURPOSE_CONTAINER = (
             By.CSS_SELECTOR, "div.form-group>label.control-label[for='fluPurpose']+div.react-select-container")
         FLU_PURPOSE_NO_DATE = (By.CSS_SELECTOR,
                                "div.form-group>label.control-label[for='fluPurpose']+div>div>div>div.react-select__menu-notice.react-select__menu-notice--no-options")
         FLU_PURPOSE = (
-            By.CSS_SELECTOR, "div.form-group>label.control-label[for='fluPurpose']+div>div div[tabindex='-1']")
+            By.CSS_SELECTOR,
+            "div.form-group>label.control-label[for='fluPurpose']+div>div div.react-select__option[tabindex='-1']")
         REF_ID = (By.CSS_SELECTOR, "input#ref_id")
         REF_DATE = (By.CSS_SELECTOR, "input#ref_date")
         DIRECTION_TYPE_CONTAINER = (By.CSS_SELECTOR,
@@ -178,31 +190,36 @@ class CreateVisitPageLocators:
         DIRECTION_TYPE_NO_DATE = (By.CSS_SELECTOR,
                                   "div.form-group>label.control-label[for='direction_type']+div>div>div>div.react-select__menu-notice.react-select__menu-notice--no-options")
         DIRECTION_TYPE = (
-            By.CSS_SELECTOR, "div.form-group>label.control-label[for='direction_type']+div>div div[tabindex='-1']")
+            By.CSS_SELECTOR,
+            "div.form-group>label.control-label[for='direction_type']+div>div div.react-select__option[tabindex='-1']")
         BENEFIT_CONTAINER = (
             By.CSS_SELECTOR, "div.form-group>label.control-label[for='benefit']+div.react-select-container")
 
         BENEFIT_NO_DATE = (By.CSS_SELECTOR,
                            "div.form-group>label.control-label[for='benefit']+div>div>div>div.react-select__menu-notice.react-select__menu-notice--no-options")
-        BENEFIT = (By.CSS_SELECTOR, "div.form-group>label.control-label[for='benefit']+div>div div[tabindex='-1']")
+        BENEFIT = (By.CSS_SELECTOR,
+                   "div.form-group>label.control-label[for='benefit']+div>div div.react-select__option[tabindex='-1']")
         FSIDIS_CONTAINER = (
             By.CSS_SELECTOR, "div.form-group>label.control-label[for='fsidis']+div.react-select-container")
 
         FSIDIS_NO_DATE = (By.CSS_SELECTOR,
                           "div.form-group>label.control-label[for='fsidis']+div>div>div>div.react-select__menu-notice.react-select__menu-notice--no-options")
-        FSIDIS = (By.CSS_SELECTOR, "div.form-group>label.control-label[for='fsidis']+div>div div[tabindex='-1']")
+        FSIDIS = (By.CSS_SELECTOR,
+                  "div.form-group>label.control-label[for='fsidis']+div>div div.react-select__option[tabindex='-1']")
 
     class AdditionalTab:
         CONSULTATION_CONTAINER = (By.CSS_SELECTOR,
                                   "div.form-group>div>label.control-label[for='customField23']+div.react-select-container")
         CONSULTATION = (
-            By.CSS_SELECTOR, "div.form-group>div>label.control-label[for='customField23']+div>div div[tabindex='-1']")
+            By.CSS_SELECTOR,
+            "div.form-group>div>label.control-label[for='customField23']+div>div div.react-select__option[tabindex='-1']")
 
     class PassportRegistrationTab:
         IDENTIFIER_TYPE_CONTAINER = (By.CSS_SELECTOR,
                                      "div.form-group>label.control-label[for='identifier_type']+div.react-select-container")
         IDENTIFIER_TYPE = (
-            By.CSS_SELECTOR, "div.form-group>label.control-label[for='identifier_type']+div>div div[tabindex='-1']")
+            By.CSS_SELECTOR,
+            "div.form-group>label.control-label[for='identifier_type']+div>div div.react-select__option[tabindex='-1']")
         IDENTIFIER_TYPE_SELECT_VALUE = (
             By.CSS_SELECTOR,
             "div.form-group>label.control-label[for='identifier_type']+div>div>div>div.react-select__single-value")
@@ -246,7 +263,7 @@ class ProtocolPageLocators:
     SIGN_CONTAINER = (
         By.CSS_SELECTOR, "div[role='dialog']>div>div.modal-content>div.modal-footer div.react-select-container")
     SIGN = (By.CSS_SELECTOR,
-            "div[role='dialog']>div>div.modal-content>div.modal-footer div.react-select-container>div div[tabindex='-1']")
+            "div[role='dialog']>div>div.modal-content>div.modal-footer div.react-select-container>div div.react-select__option[tabindex='-1']")
     BTN_SIGN = (By.CSS_SELECTOR, "div[role='dialog']>div>div.modal-content>div.modal-footer button.btn.btn-primary")
     BTN_RETURN_TO_EDITABLE = (By.CSS_SELECTOR,
                               "div[role='dialog']>div>div.modal-content>div.modal-footer>div>div.pull-left>button.btn.btn-default")

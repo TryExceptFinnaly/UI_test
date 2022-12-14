@@ -178,11 +178,12 @@ class TestVisit:
         page = VisitPage(driver, self.URL)
         page.open()
         page.authorization()
-        count, locator = page.list_visits_on_page(image='missing')
+        count, locator = page.list_visits_on_page(image='missing', wlm='present')
         for i in range(count):
             page.refresh_study_page()
             acc_number = page.get_visit_id(locator)
-            send_hl7_message(f'sc_{acc_number}')
+            result = send_hl7_message(f'sc_{acc_number}')
+            print(result)
             page.sleep(5)
 
     @allure.title('Delete visits')

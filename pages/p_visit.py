@@ -16,9 +16,10 @@ class VisitPage(AuthorizationPage):
         button_create_visit = self.element_is_visible(VisitLocators.CREATE_VISIT)
         self.get_request_href_and_click(button_create_visit)
 
-    def list_visits_on_page(self, protocol: str = 'ignore', image: str = 'ignore'):
+    def list_visits_on_page(self, protocol: str = 'ignore', image: str = 'ignore', wlm: str = 'ignore'):
         """param protocol: present, editable, completed, missing, ignore\n
         param image: present, missing, ignore\n
+        param wlm: present, missing, ignore\n
         return: count, locator"""
         match protocol:
             case 'present':
@@ -42,6 +43,15 @@ class VisitPage(AuthorizationPage):
                 pass
             case _:
                 return 'Incorrect image'
+        match wlm:
+            case 'present':
+                locator = (locator[0], locator[1].replace(VisitLocators.PREFIX, VisitLocators.PREFIX_PRESENT_WLM))
+            case 'missing':
+                locator = (locator[0], locator[1].replace(VisitLocators.PREFIX, VisitLocators.PREFIX_MISSING_WLM))
+            case 'ignore':
+                pass
+            case _:
+                return 'Incorrect WLM'
         visits = self.elements_are_visible(locator)
         return len(visits), locator
 

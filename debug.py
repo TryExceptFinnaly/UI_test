@@ -11,17 +11,22 @@
 # for i in range(500):
 #     send_hl7_message('sc')
 
-
-def _test(order):
-    match order.split('_'):
-        case ['nw']:
-            print('nw')
-        case ['sc', *param]:
-            if param:
-                print('True')
+image = 'present'
+def _test(image):
+    match image.lower().split('_'):
+        case ['present', *param]:
+            if 'wlm' in param:
+                print('wlm')
             else:
-                print('False')
-            print('sc+', param)
+                print('no wlm')
+        case ['missing', *param]:
+            if 'wlm' in param:
+                print('wlm')
+            else:
+                print('no wlm')
+        case ['ignore']:
+            pass
+        case _:
+            print('Incorrect image')
 
-
-_test('nw')
+_test(image)
