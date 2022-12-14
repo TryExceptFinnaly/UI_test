@@ -1,5 +1,3 @@
-import os.path
-
 from selenium.webdriver.common.by import By
 
 
@@ -9,18 +7,20 @@ class VisitPageLocators:
     CREATE_PROTOCOL = (By.XPATH, "//tr/td/a[@class='no-underline']/i[@class='fa fa-plus']")
     VIEW_PROTOCOL = (By.XPATH, "//tr/td/a[@class='no-underline']/i[@class='fa fa-file-text-o']")
     EDIT_PROTOCOL = (By.XPATH, "//tr/td/a[@class='no-underline']/i[@class='fa fa-pencil']")
+    SEARCH_PATIENT = (
+        By.XPATH, "//tr[td[span[br][text()='BIRTHDATE']]][td[a[text()='NAME']]][td[ul[li[a[@href][text()='STUDY']]]]]")
     PATIENTS_LIST = (By.CSS_SELECTOR, "div.table-responsive>table>tbody>tr>td>a[href^='/share/visits/']")
     PATIENTS_BIRTHDAY = (By.CSS_SELECTOR, "div.table-responsive>table>tbody>tr>td>span:has(br)")
     #
     PATIENTS_STUDY = (By.XPATH, "//tr/td//a[not(@class)][contains(@href,'/visit/')]")
     PATIENTS_MISSING_PROTOCOL_STUDY = (By.XPATH,
-                                       "//tr/td//i[@class='fa fa-plus']/../../../td//a[not(@class)][contains(@href,'/visit/')]")
+                                       "//tr[td[a[i[@class='fa fa-plus']]]]//a[not(@class)][contains(@href,'/visit/')]")
     PATIENTS_COMPLETED_PROTOCOL_STUDY = (By.XPATH,
-                                         "//tr/td//i[@class='fa fa-file-text-o']/../../../td//a[not(@class)][contains(@href,'/visit/')]")
+                                         "//tr[td[a[i[@class='fa fa-file-text-o']]]]//a[not(@class)][contains(@href,'/visit/')]")
     PATIENTS_EDITABLE_PROTOCOL_STUDY = (By.XPATH,
-                                        "//tr/td//i[@class='fa fa-pencil']/../../../td//a[not(@class)][contains(@href,'/visit/')]")
+                                        "//tr[td[a[i[@class='fa fa-pencil']]]]//a[not(@class)][contains(@href,'/visit/')]")
     PATIENTS_PRESENT_PROTOCOL_STUDY = (By.XPATH,
-                                       "//tr/td//i[@class='fa fa-pencil' or @class='fa fa-file-text-o']/../../../td//a[not(@class)][contains(@href,'/visit/')]")
+                                       "//tr[td[a[i[@class='fa fa-pencil' or @class='fa fa-file-text-o']]]]//a[not(@class)][contains(@href,'/visit/')]")
     PREFIX = '//tr'
     PREFIX_PRESENT_WLM = '//tr[td[5][div[text()="PACS"]]]'
     PREFIX_MISSING_WLM = '//tr[td[5][not(div[text()="PACS"])]]'

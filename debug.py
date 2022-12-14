@@ -11,22 +11,6 @@
 # for i in range(500):
 #     send_hl7_message('sc')
 
-image = 'present'
-def _test(image):
-    match image.lower().split('_'):
-        case ['present', *param]:
-            if 'wlm' in param:
-                print('wlm')
-            else:
-                print('no wlm')
-        case ['missing', *param]:
-            if 'wlm' in param:
-                print('wlm')
-            else:
-                print('no wlm')
-        case ['ignore']:
-            pass
-        case _:
-            print('Incorrect image')
+image = ''
 
-_test(image)
+assert image

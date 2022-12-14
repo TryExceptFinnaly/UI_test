@@ -26,10 +26,13 @@ class TestCreateVisit:
         page.open()
         page.authorization()
         page.go_to_create_visit()
-        entered_data = page.fill_all_fields()
+        name, birthdate, study = page.fill_all_fields()
         page.save_visit('continue')
         page.waiting_for_notification('Данные сохранены.')
         assert (self.URL in page.current_url()) and (self.URL != page.current_url()), 'Incorrect current URL'
+        page.open()
+        assert page.check_result_created_visit(name, birthdate,
+                                               study), 'The data entered does not match the data received'
 
     @allure.title('Create and close visit')
     def test_create_and_close_visit(self, driver):
@@ -37,12 +40,12 @@ class TestCreateVisit:
         page.open()
         page.authorization()
         page.go_to_create_visit()
-        entered_data = page.fill_all_fields()
+        name, birthdate, study = page.fill_all_fields()
         page.save_visit('close')
         page.waiting_for_notification('Данные сохранены.')
-        data = page.check_result_created_visit()
-        assert entered_data == data, 'The data entered does not match the data received'
         assert self.URL == page.current_url(), 'Incorrect current URL'
+        assert page.check_result_created_visit(name, birthdate,
+                                               study), 'The data entered does not match the data received'
 
     @allure.title('Create and create new visit')
     def test_create_and_create_new_visit(self, driver):
@@ -50,10 +53,13 @@ class TestCreateVisit:
         page.open()
         page.authorization()
         page.go_to_create_visit()
-        entered_data = page.fill_all_fields()
+        name, birthdate, study = page.fill_all_fields()
         page.save_visit('create')
         page.waiting_for_notification('Данные сохранены.')
         assert f'{self.URL}create/' in page.current_url(), 'Incorrect current URL'
+        page.open()
+        assert page.check_result_created_visit(name, birthdate,
+                                               study), 'The data entered does not match the data received'
 
     @allure.title('Create and bind visit')
     def test_create_and_bind_visit(self, driver):
@@ -61,14 +67,14 @@ class TestCreateVisit:
         page.open()
         page.authorization()
         page.go_to_create_visit()
-        entered_data = page.fill_all_fields()
+        name, birthdate, study = page.fill_all_fields()
         page.save_visit('bind')
         page.waiting_for_notification('Данные сохранены.')
         if not page.waiting_for_notification('Сопоставление успешно выполнено.', return_false=True):
             page.bind_visit()
-        data = page.check_result_created_visit()
-        assert entered_data == data, 'The data entered does not match the data received'
         assert self.URL == page.current_url(), 'Incorrect current URL'
+        assert page.check_result_created_visit(name, birthdate,
+                                               study), 'The data entered does not match the data received'
 
     @allure.title('Create and bind and create new visit')
     def test_create_and_bind_and_create_new_visit(self, driver):
@@ -76,12 +82,15 @@ class TestCreateVisit:
         page.open()
         page.authorization()
         page.go_to_create_visit()
-        entered_data = page.fill_all_fields()
+        name, birthdate, study = page.fill_all_fields()
         page.save_visit('bind_and_create')
         page.waiting_for_notification('Данные сохранены.')
         if not page.waiting_for_notification('Сопоставление успешно выполнено.', return_false=True):
             page.bind_visit()
         assert f'{self.URL}create/' in page.current_url(), 'Incorrect current URL'
+        page.open()
+        assert page.check_result_created_visit(name, birthdate,
+                                               study), 'The data entered does not match the data received'
 
     # def test_document(self, driver):
     #     page = CreateVisitPage(driver, self.URL)

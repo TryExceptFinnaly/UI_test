@@ -71,12 +71,13 @@ class VisitPage(AuthorizationPage):
         self.element_is_clickable(VisitLocators.REFRESH_STUDY_PAGE).click()
         self.element_is_visible(self.Locators.LOADING_BAR)
 
-    def check_result_created_visit(self):
+    def check_result_created_visit(self, name, birthdate, study):
         self.element_is_not_visible(self.Locators.LOADING_BAR)
-        patient = self.elements_are_visible(VisitLocators.PATIENTS_LIST)[0].text
-        patient_birthday = self.elements_are_visible(VisitLocators.PATIENTS_BIRTHDAY)[0].text
-        patient_birthday = patient_birthday.split()[0]
-        return patient, patient_birthday
+        visit = (VisitLocators.SEARCH_PATIENT[0],
+                 VisitLocators.SEARCH_PATIENT[1].replace('BIRTHDATE', birthdate).replace('NAME', name).replace('STUDY',
+                                                                                                               study))
+        visit = self.element_is_visible(visit, return_false=True)
+        return visit
 
 
 class CreateVisitPage(VisitPage):
@@ -144,9 +145,9 @@ class CreateVisitPage(VisitPage):
 
         self.element_is_visible(CreateVisitLocators.BaseTab.COMMENT).send_keys('COMMENT')
 
-        patient = f'{self.patient_info.last_name} {self.patient_info.first_name[0]}. {self.patient_info.middle_name[0]}.'
+        name = f'{self.patient_info.last_name} {self.patient_info.first_name[0]}. {self.patient_info.middle_name[0]}.'
         birthdate = f'{self.patient_info.birth_day}.{self.patient_info.birth_month}.{self.patient_info.birth_year}'
-        return patient, birthdate
+        return name, birthdate, selected_study
 
     def fill_params_fields_patient(self):
         insurance_company = SystemDirectory.insurance_company[self.patient_info.insurance_company][1]
@@ -205,11 +206,11 @@ class CreateVisitPage(VisitPage):
             'APARTMENT')
 
     def fill_all_fields(self):
-        entered_data = self.fill_base_fields_patient()
+        name, birthdate, study = self.fill_base_fields_patient()
         self.fill_params_fields_patient()
         self.fill_additional_fields_patient()
         self.fill_passport_registration_fields_patient()
-        return entered_data
+        return name, birthdate, study
 
     def fill_document_and_save(self):
         self.element_is_visible(CreateVisitLocators.TAB_PASSPORT_REGISTRATION).click()
