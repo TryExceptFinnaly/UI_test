@@ -12,3 +12,6 @@ class MainContentPageLocators:
     BTN_LOGOUT = (By.XPATH, '//i[@class="fa fa-power-off"]/../../..')
     CURRENT_STYLE = (By.CSS_SELECTOR, 'body>div#app>link')
     SWITCH_STYLE = (By.CSS_SELECTOR, 'div.pull-right>div.checkbox-switch')
+    LOGO = (By.XPATH, "//img[@class='hidden-xs']")
+    SWITCH_USER_MODE = (By.XPATH, "//div[@class='main-container']//i[@class='fa fa fa-user']")
+    SWITCH_ADMIN_MODE = (By.XPATH, "//div[@class='main-container']//i[@class='fa fa-wrench']")

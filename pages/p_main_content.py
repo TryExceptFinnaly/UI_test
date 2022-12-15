@@ -32,7 +32,7 @@ class MainContentPage(AuthorizationPage):
                 self.action_move_to_element(sub_item)
                 print(sub_item.text)
 
-    def switch_style_css(self, style='dark'):
+    def switch_style_css(self, style: str = 'dark'):
         css_theme = self.element_is_present(MainContentLocators.CURRENT_STYLE).get_attribute('href')
         if style in css_theme:
             return True
@@ -40,3 +40,17 @@ class MainContentPage(AuthorizationPage):
             self.element_is_visible(MainContentLocators.SWITCH_STYLE).click()
             css_theme = self.element_is_present(MainContentLocators.CURRENT_STYLE).get_attribute('href')
             return True if style in css_theme else False
+
+    def switch_panel_mode(self, switch_mode: str):
+        self.element_is_not_visible(self.Locators.LOADING_BAR)
+        match switch_mode:
+            case 'admin':
+                switch_mode = 'logo-admin.png'
+                locator = MainContentLocators.SWITCH_ADMIN_MODE
+            case 'user':
+                switch_mode = 'logo.png'
+                locator = MainContentLocators.SWITCH_USER_MODE
+            case _:
+                return 'Incorrect switch_mode'
+        if switch_mode not in self.element_is_visible(MainContentLocators.LOGO).get_attribute('src'):
+            self.element_is_visible(locator).click()
