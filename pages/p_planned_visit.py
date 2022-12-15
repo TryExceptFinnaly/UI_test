@@ -65,7 +65,7 @@ class CreatePlannedVisitPage(PlannedVisitPage):
         assert self.element_is_visible(
             CreateVisitLocators.ParamsTab.INSURANCE_COMPANY_SELECT_VALUE).text == insurance_company
         assert self.element_is_visible(CreateVisitLocators.ParamsTab.INSURANCE_CONTRACT).get_attribute(
-            'value') == '_INSURANCE_CONTRACT'
+            'value') == 'INSURANCE_CONTRACT'
         assert self.element_is_visible(CreateVisitLocators.ParamsTab.POLIS_NUMBER).get_attribute(
             'value') == '_PATIENT_POLIS'
         assert self.element_is_visible(CreateVisitLocators.ParamsTab.ALTERNATE_ID).get_attribute(

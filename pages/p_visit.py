@@ -92,7 +92,8 @@ class CreateVisitPage(VisitPage):
         phone_number = self.patient_info.phone_number
         birthdate = f'{self.patient_info.birth_day}{self.patient_info.birth_month}{self.patient_info.birth_year}'
         sex = SystemDirectory.sex[self.patient_info.sex][1]
-        allergy_type = SystemDirectory.allergy_type[self.patient_info.allergy_type][1]
+        # Reg. from contains 6 variants, SystemDirectory.allergy_type contains 4 variants.
+        # allergy_type = SystemDirectory.allergy_type[self.patient_info.allergy_type][1]
         treatment_case = SystemDirectory.treatment_case[self.patient_info.treatment_case][1]
         patient_class = SystemDirectory.patient_class[self.patient_info.patient_class][1]
         is_cito = SystemDirectory.is_cito[self.patient_info.is_cito][1]
@@ -124,7 +125,7 @@ class CreateVisitPage(VisitPage):
         self.element_is_visible(CreateVisitLocators.BaseTab.PHONE_NUMBER).send_keys(phone_number)
         self.element_is_visible(CreateVisitLocators.BaseTab.EMAIL).send_keys(email)
         self.element_is_visible(CreateVisitLocators.BaseTab.ALLERGY_TYPE_CONTAINER).click()
-        self.elements_are_visible(CreateVisitLocators.BaseTab.ALLERGY_TYPE, element=allergy_type).click()
+        self.elements_are_visible(CreateVisitLocators.BaseTab.ALLERGY_TYPE, element=-1).click()
         self.element_is_visible(CreateVisitLocators.BaseTab.YEAR_DOSE)
 
         self.element_is_visible(CreateVisitLocators.BaseTab.TREATMENT_CASE_CONTAINER).click()
