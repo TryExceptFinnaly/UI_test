@@ -62,3 +62,11 @@ class TestMainContent:
         page.sleep(3)
         page.switch_panel_mode('user')
         page.sleep(3)
+
+    @allure.title('Matching data and footer data')
+    def test_matching_user_data(self, driver):
+        page = MainContentPage(driver, self.URL)
+        page.open()
+        page.authorization()
+        data, footer_data = page.check_user_data()
+        assert data == footer_data, 'The data does not match the data footer'

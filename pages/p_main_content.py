@@ -54,3 +54,14 @@ class MainContentPage(AuthorizationPage):
                 return 'Incorrect switch_mode'
         if switch_mode not in self.element_is_visible(MainContentLocators.LOGO).get_attribute('src'):
             self.element_is_visible(locator).click()
+
+    def check_user_data(self):
+        self.element_is_not_visible(self.Locators.LOADING_BAR)
+        self.element_is_visible(MainContentLocators.PLACE_OF_WORK).click()
+        role = self.element_is_visible(MainContentLocators.SESSION_ROLE_VALUE).text
+        place = self.element_is_visible(MainContentLocators.SESSION_PLACE_VALUE).text
+        data = place.split(', ')
+        data.insert(0, role)
+        footer_data = self.element_is_visible(MainContentLocators.USER_DATA_FOOTER).text
+        footer_data = footer_data.split('; ')
+        return data, footer_data
