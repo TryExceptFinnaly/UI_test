@@ -2,7 +2,7 @@ from selenium.webdriver.common.by import By
 
 
 class MainContentPageLocators:
-    LABEL_USER = (By.XPATH, "//div[@class='pull-right']/div[not(@class)]")
+    USER = (By.XPATH, "//div[@class='pull-right']/div[not(@class)]")
     PLACE_OF_WORK = (By.XPATH, "//div[@class='pull-right']/div[@class='']")
     SESSION_ROLE_CONTAINER = (By.XPATH,
                               "//div[@class='pull-right']//div[label[@for='sessionRole']]/div[contains(@class,'react-select-container')]")
@@ -16,6 +16,7 @@ class MainContentPageLocators:
                      "//div[@class='pull-right']//div[label[@for='sessionPlace']]/div[contains(@class,'react-select-container')]//div[contains(@class,'react-select__option')][@tabindex='-1']")
     SESSION_PLACE_VALUE = (By.XPATH,
                            "//div[@class='pull-right']//div[label[@for='sessionPlace']]/div[contains(@class,'react-select-container')]//div[contains(@class,'react-select__single-value')]")
+    SAVE_USER_DATA = (By.XPATH, "//div[@class='pull-right']/div//div/a[@class='btn btn-primary btn-block']")
     USER_DATA_FOOTER = (By.XPATH, "//div[@class='footer']/div[@class='container-fluid']/p")
     SLIDE_MENU_BTN = (By.CSS_SELECTOR, 'a#slide-menu-btn')
     SLIDE_MENU_OPEN = (By.CSS_SELECTOR, 'div#slide-menu.slide-menu-open')

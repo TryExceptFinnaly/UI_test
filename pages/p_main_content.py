@@ -55,11 +55,34 @@ class MainContentPage(AuthorizationPage):
         if switch_mode not in self.element_is_visible(MainContentLocators.LOGO).get_attribute('src'):
             self.element_is_visible(locator).click()
 
+    def switch_role(self, role):
+        self.element_is_not_visible(self.Locators.LOADING_BAR)
+        self.element_is_visible(MainContentLocators.PLACE_OF_WORK).click()
+        current_role = self.element_is_visible(MainContentLocators.SESSION_ROLE_VALUE).text
+        if role != current_role:
+            self.element_is_visible(MainContentLocators.SESSION_ROLE_CONTAINER).click()
+            locator = (MainContentLocators.SESSION_ROLE[0], MainContentLocators.SESSION_ROLE[1] + f'[text()="{role}"]')
+            self.element_is_visible(locator).click()
+        self.element_is_visible(MainContentLocators.SAVE_USER_DATA).click()
+        self.waiting_for_notification('Данные сохранены.')
+
+    def switch_work_place(self, place):
+        self.element_is_not_visible(self.Locators.LOADING_BAR)
+        self.element_is_visible(MainContentLocators.PLACE_OF_WORK).click()
+        current_place = self.element_is_visible(MainContentLocators.SESSION_PLACE_VALUE).text
+        if place != current_place:
+            self.element_is_visible(MainContentLocators.SESSION_PLACE_CONTAINER).click()
+            locator = (MainContentLocators.SESSION_PLACE[0], MainContentLocators.SESSION_PLACE[1] + f'[text()="{place}"]')
+            self.element_is_visible(locator).click()
+        self.element_is_visible(MainContentLocators.SAVE_USER_DATA).click()
+        self.waiting_for_notification('Данные сохранены.')
+
     def check_user_data(self):
         self.element_is_not_visible(self.Locators.LOADING_BAR)
         self.element_is_visible(MainContentLocators.PLACE_OF_WORK).click()
         role = self.element_is_visible(MainContentLocators.SESSION_ROLE_VALUE).text
         place = self.element_is_visible(MainContentLocators.SESSION_PLACE_VALUE).text
+        self.element_is_visible(MainContentLocators.SAVE_USER_DATA).click()
         data = place.split(', ')
         data.insert(0, role)
         footer_data = self.element_is_visible(MainContentLocators.USER_DATA_FOOTER).text

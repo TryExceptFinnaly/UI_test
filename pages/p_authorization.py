@@ -11,6 +11,7 @@ class AuthorizationPage(BasePage):
         self.element_is_visible(AuthorizationLocators.USER_NAME).send_keys(self.user)
         self.element_is_visible(AuthorizationLocators.USER_PASSWORD).send_keys(self.password)
         self.element_is_visible(AuthorizationLocators.BTN_SUBMIT).click()
+        self.element_is_not_visible(self.Locators.LOADING_BAR)
 
     def waiting_for_notification(self, waiting_notification: str, return_false: bool = False):
         locator_notification = (
@@ -20,3 +21,4 @@ class AuthorizationPage(BasePage):
 
     def logout(self):
         self.element_is_visible(MainContentLocators.BTN_LOGOUT).click()
+        self.element_is_not_visible(self.Locators.LOADING_BAR)

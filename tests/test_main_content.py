@@ -70,3 +70,24 @@ class TestMainContent:
         page.authorization()
         data, footer_data = page.check_user_data()
         assert data == footer_data, 'The data does not match the data footer'
+
+    @allure.title('Switch role')
+    def test_switch_role(self, driver):
+        page = MainContentPage(driver, self.URL)
+        page.open()
+        page.authorization()
+        roles = ['Врач', 'Эксперт', 'Врач']
+        for role in roles:
+            page.switch_role(role)
+            data, footer_data = page.check_user_data()
+            assert data == footer_data, 'The data does not match the data footer'
+
+    @allure.title('Switch work place')
+    def test_switch_work_place(self, driver):
+        page = MainContentPage(driver, self.URL)
+        page.open()
+        page.authorization()
+        place = 'ГБУЗ "Старая Руса", Отделение лучевой диагностики, Кабинет КТ №1'
+        page.switch_work_place(place)
+        data, footer_data = page.check_user_data()
+        assert data == footer_data, 'The data does not match the data footer'
