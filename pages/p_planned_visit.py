@@ -1,4 +1,4 @@
-from pages.p_authorization import AuthorizationPage
+from pages.p_main_content import MainContentPage
 from locators.l_planned_visit import PlannedVisitPageLocators as PlannedVisitLocators
 from locators.l_planned_visit import CreatePlannedVisitPageLocators as CreatePlannedVisitLocators
 from locators.l_visit import CreateVisitPageLocators as CreateVisitLocators
@@ -6,26 +6,31 @@ from generator.generator import generated_person
 from data.data import SystemDirectory
 
 
-class PlannedVisitPage(AuthorizationPage):
-    def check_list_planned_visits(self):
-        self.element_is_visible(PlannedVisitLocators.TBODY_PLANNED_VISITS)
-        planned_visit = self.elements_are_visible(PlannedVisitLocators.PLANNED_VISIT)
-        print(planned_visit[3].text, planned_visit[5].text)
+class PlannedVisitPage(MainContentPage):
+    patient_info = next(generated_person())
 
-    def go_to_create_planned_visit(self):
+    def get_planned_visit(self):
+        name = f'{self.patient_info.last_name} {self.patient_info.first_name[0]}. {self.patient_info.middle_name[0]}.'
+        birthdate = f'{self.patient_info.birth_day}.{self.patient_info.birth_month}.{self.patient_info.birth_year}'
+        cito = True if self.patient_info.is_cito != 'R' else False
+        sex = SystemDirectory.sex[self.patient_info.sex][0]
+        phone_number = self.patient_info.phone_number
+        phone_number = f'{phone_number[0:2]} {phone_number[2:5]} {phone_number[5:8]}-{phone_number[8:10]}-{phone_number[10:]}'
+        locator = PlannedVisitLocators.get_planned_visit_locator(cito, name, sex, birthdate,
+                                                                 'Спиральная компьютерная томография головы',
+                                                                 comment='COMMENT', number=phone_number)
+        return True if self.element_is_visible(locator, return_false=True) else False
+
+    def open_create_planned_visit(self):
         button_create_planned_visit = self.element_is_visible(PlannedVisitLocators.BUTTON_REGISTER_PLANNED_VISIT)
         self.get_request_href_and_click(button_create_planned_visit)
 
 
 class CreatePlannedVisitPage(PlannedVisitPage):
-    patient_info = next(generated_person())
-
     def check_base_fields(self):
         self.element_is_not_visible(self.Locators.BLOCK_PAGE)
         self.element_is_visible(CreateVisitLocators.TAB_BASE).click()
         full_name = f'{self.patient_info.last_name} {self.patient_info.first_name} {self.patient_info.middle_name}'
-        email = self.patient_info.email
-        phone_number = self.patient_info.phone_number
         birthdate = f'{self.patient_info.birth_year}-{self.patient_info.birth_month}-{self.patient_info.birth_day}'
         sex = SystemDirectory.sex[self.patient_info.sex][0]
         allergy_type = SystemDirectory.allergy_type[self.patient_info.allergy_type][0]
@@ -40,8 +45,9 @@ class CreatePlannedVisitPage(PlannedVisitPage):
         assert self.element_is_visible(CreateVisitLocators.BaseTab.BIRTHDAY).get_attribute('value') == birthdate
         assert self.element_is_visible(CreateVisitLocators.BaseTab.SEX_SELECT_VALUE).text == sex
         assert self.element_is_visible(CreateVisitLocators.BaseTab.PHONE_NUMBER).get_attribute('value').replace(' ',
-                                                                                                                '') == phone_number
-        assert self.element_is_visible(CreateVisitLocators.BaseTab.EMAIL).get_attribute('value') == email
+                                                                                                                '') == self.patient_info.phone_number
+        assert self.element_is_visible(CreateVisitLocators.BaseTab.EMAIL).get_attribute(
+            'value') == self.patient_info.email
         assert self.element_is_visible(CreateVisitLocators.BaseTab.ALLERGY_TYPE_SELECT_VALUE).text == allergy_type
         assert self.element_is_visible(CreateVisitLocators.BaseTab.TREATMENT_CASE_SELECT_VALUE).text == treatment_case
         assert self.element_is_visible(CreateVisitLocators.BaseTab.PATIENT_CLASS_SELECT_VALUE).text == patient_class

@@ -3,7 +3,7 @@ from selenium.webdriver.common.by import By
 
 class VisitPageLocators:
     @staticmethod
-    def search_patient_locator(birthdate: str, name: str, study: str, room: str, mo: str = ''):
+    def get_visit_locator(birthdate: str, name: str, study: str, room: str, mo: str = ''):
         search_patient = "//tr"
         prefix_birthdate = f"[td[span[br][text()='{birthdate}']]]"
         prefix_name = f"[td[a[text()='{name}']]]"
@@ -20,10 +20,14 @@ class VisitPageLocators:
     CREATE_PROTOCOL = (By.XPATH, "//tr/td/a[@class='no-underline']/i[@class='fa fa-plus']")
     VIEW_PROTOCOL = (By.XPATH, "//tr/td/a[@class='no-underline']/i[@class='fa fa-file-text-o']")
     EDIT_PROTOCOL = (By.XPATH, "//tr/td/a[@class='no-underline']/i[@class='fa fa-pencil']")
-    PATIENTS_LIST = (By.CSS_SELECTOR, "div.table-responsive>table>tbody>tr>td>a[href^='/share/visits/']")
-    PATIENTS_BIRTHDAY = (By.CSS_SELECTOR, "div.table-responsive>table>tbody>tr>td>span:has(br)")
+    VISITS = (By.XPATH, "//div[@class='table-responsive']//tbody/tr[td]")
+    VISITS_TD = (By.TAG_NAME, "td")
+    VISITS_PATIENT_NAME = (By.XPATH, "//tr/td[8]/a[contains(@href,'/share/visits/')]")
+    VISITS_BIRTHDATE = (By.XPATH, "//tr/td[9]/span")
     #
-    PATIENTS_STUDY = (By.XPATH, "//tr/td//a[not(@class)][contains(@href,'/visit/')]")
+    VISITS_STUDY = (By.XPATH, "//tr/td//a[not(@class)][contains(@href,'/visit/')]")
+    VISITS_DOCTOR = (By.XPATH, "//tr/td[12]/span[@title]")
+    VISITS_PLACE = (By.XPATH, "//tr/td[11]/span/span[@title]")
     PATIENTS_MISSING_PROTOCOL_STUDY = (By.XPATH,
                                        "//tr[td[a[i[@class='fa fa-plus']]]]//a[not(@class)][contains(@href,'/visit/')]")
     PATIENTS_COMPLETED_PROTOCOL_STUDY = (By.XPATH,

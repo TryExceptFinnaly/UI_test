@@ -14,7 +14,7 @@ class VisitPage(MainContentPage):
     patient_info.full_name = f'{patient_info.last_name} {patient_info.first_name} {patient_info.middle_name}'
     patient_info.birthdate = f'{patient_info.birth_day}{patient_info.birth_month}{patient_info.birth_year}'
 
-    def go_to_create_visit(self):
+    def open_create_visit(self):
         button_create_visit = self.element_is_visible(VisitLocators.CREATE_VISIT)
         self.get_request_href_and_click(button_create_visit)
 
@@ -33,7 +33,7 @@ class VisitPage(MainContentPage):
             case 'missing':
                 locator = VisitLocators.PATIENTS_MISSING_PROTOCOL_STUDY
             case 'ignore':
-                locator = VisitLocators.PATIENTS_STUDY
+                locator = VisitLocators.VISITS_STUDY
             case _:
                 return 'Incorrect protocol'
         match image:
@@ -54,8 +54,29 @@ class VisitPage(MainContentPage):
                 pass
             case _:
                 return 'Incorrect WLM'
-        visits = self.elements_are_visible(locator)
-        return len(visits), locator
+        visits = self.elements_are_visible(locator, return_false=True)
+        return (len(visits), locator) if visits else (0, locator)
+
+    def data_visits(self):
+        visits = self.elements_are_visible(VisitLocators.VISITS)
+        visits_data = []
+        for visit in visits:
+            visit_td = visit.find_elements(*VisitLocators.VISITS_TD)
+            patient = visit_td[7].text.split('\n')[0]
+            birthdate = visit_td[8].text.split('\n')[0]
+            study = visit_td[9].text
+            place = visit_td[10].text.split('\n')
+            if place[0] == place[-1]:
+                mo = ''
+                room = place[0]
+            else:
+                mo = place[0]
+                room = place[-1]
+            doctor = visit_td[11].text
+            comment = visit_td[12].text
+            visits_data.append((patient, birthdate, study, mo, room, doctor, comment))
+        return visits_data
+
 
     def open_visit(self, locator, visit: int = 0):
         self.element_is_not_visible(self.Locators.LOADING_BAR)
@@ -72,11 +93,12 @@ class VisitPage(MainContentPage):
         self.element_is_visible(VisitLocators.REFRESH_STUDY_PAGE)
         self.element_is_clickable(VisitLocators.REFRESH_STUDY_PAGE).click()
         self.element_is_visible(self.Locators.LOADING_BAR)
+        self.element_is_not_visible(self.Locators.LOADING_BAR)
 
     def check_result_created_visit(self, name, birthdate, study):
         self.element_is_not_visible(self.Locators.LOADING_BAR)
         room = self.get_footer_user_data()[1][2]
-        visit = VisitLocators.search_patient_locator(birthdate, name, study, room)
+        visit = VisitLocators.get_visit_locator(birthdate, name, study, room)
         visit = self.element_is_visible(visit, return_false=True)
         return visit
 
@@ -91,14 +113,12 @@ class VisitPage(MainContentPage):
             case _:
                 return 'Incorrect action'
 
-    def fill_filter(self):
-        self.element_is_visible(VisitLocators.FilterSearch.PATIENT).send_keys(self.patient_info.full_name)
-        self.element_is_visible(VisitLocators.FilterSearch.VISIT).send_keys('_PATIENT_POLIS')
-        self.element_is_visible(VisitLocators.FilterSearch.BIRTHDATE).send_keys(self.patient_info.birthdate)
-        # self.element_is_visible(VisitLocators.FilterSearch.STUDY_CONTAINER).click()
-        self.element_is_visible(VisitLocators.FilterSearch.STUDY_INPUT).send_keys(
-            'Компьютерная томография органов малого таза у женщин')
+    def fill_filter(self, patient, birthdate, study):
+        self.element_is_visible(VisitLocators.FilterSearch.PATIENT).send_keys(patient)
+        self.element_is_visible(VisitLocators.FilterSearch.BIRTHDATE).send_keys(birthdate)
+        self.element_is_visible(VisitLocators.FilterSearch.STUDY_INPUT).send_keys(study)
         self.elements_are_visible(VisitLocators.FilterSearch.STUDY, element=0, timeout=20).click()
+        self.element_is_visible(self.Locators.LOADING_BAR)
         self.element_is_not_visible(self.Locators.LOADING_BAR)
 
 
@@ -286,16 +306,18 @@ class CreateVisitPage(VisitPage):
 
 class ImageVisitPage(VisitPage):
     def open_image_from_visit(self):
+        self.element_is_not_visible(self.Locators.LOADING_BAR)
         image_visit = self.elements_are_visible(VisitLocators.VIEW_IMAGE_VISIT)
         image_visit[0].click()
-        self.element_is_not_visible(self.Locators.LOADING_BAR)
         return len(image_visit)
 
     def delete_image_from_visit(self):
         self.element_is_visible(ImageVisitLocators.BTN_DELETE).click()
         self.element_is_visible(CreateVisitLocators.BTN_MODAL_DELETE_YES).click()
+        self.element_is_visible(self.Locators.LOADING_BAR)
         self.element_is_not_visible(self.Locators.LOADING_BAR)
         self.element_is_visible(ImageVisitLocators.BTN_CLOSE_IMAGE_PAGE).click()
+        self.refresh_study_page()
         image_visit = self.elements_are_visible(VisitLocators.VIEW_IMAGE_VISIT, return_false=True)
         if image_visit:
             return len(image_visit)
@@ -348,6 +370,7 @@ class CreateProtocolPage(CreateVisitPage):
             self.sign_protocol()
 
     def sign_protocol(self):
+        self.element_is_not_visible(self.Locators.LOADING_BAR)
         self.element_is_visible(ProtocolLocators.SIGN_CONTAINER).click()
         self.elements_are_visible(ProtocolLocators.SIGN, element=-1).click()
         self.element_is_visible(ProtocolLocators.BTN_SIGN).click()

@@ -14,5 +14,4 @@ class TestUnregStudies:
         page = UnregStudiesPage(driver, self.URL)
         page.open()
         page.authorization()
-        patient = page.check_list_unreg_studies()
-        print(patient)
+        assert page.get_unreg_study(), 'Unregistered study not found'

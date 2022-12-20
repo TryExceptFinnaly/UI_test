@@ -14,14 +14,14 @@ class TestPlannedVisit:
         page = PlannedVisitPage(driver, self.URL)
         page.open()
         page.authorization()
-        page.check_list_planned_visits()
+        assert page.get_planned_visit(), 'Planned visit not found'
 
     @allure.title('Check data planned visit')
     def test_check_data_planned_visit(self, driver):
         page = CreatePlannedVisitPage(driver, self.URL)
         page.open()
         page.authorization()
-        page.go_to_create_planned_visit()
+        page.open_create_planned_visit()
         page.check_all_fields()
 
     @allure.title('Register planned visit')
@@ -29,7 +29,7 @@ class TestPlannedVisit:
         page = CreatePlannedVisitPage(driver, self.URL)
         page.open()
         page.authorization()
-        page.go_to_create_planned_visit()
+        page.open_create_planned_visit()
         page.register_planned_visit()
 
     @allure.title('Delete planned visit')
@@ -37,5 +37,5 @@ class TestPlannedVisit:
         page = CreatePlannedVisitPage(driver, self.URL)
         page.open()
         page.authorization()
-        page.go_to_create_planned_visit()
+        page.open_create_planned_visit()
         page.delete_planned_visit()

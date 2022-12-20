@@ -11,6 +11,9 @@
 # for i in range(500):
 #     send_hl7_message('sc')
 
-image = ''
+before_number = '+79187207439'
+after_number = ''
 
-assert image
+after_number = f'{before_number[0:2]} {before_number[2:5]} {before_number[5:8]}-{before_number[8:10]}-{before_number[10:]}'
+
+print(after_number)

@@ -25,7 +25,7 @@ class TestCreateVisit:
         page = CreateVisitPage(driver, self.URL)
         page.open()
         page.authorization()
-        page.go_to_create_visit()
+        page.open_create_visit()
         name, birthdate, study = page.fill_all_fields()
         page.save_visit('continue')
         page.waiting_for_notification('Данные сохранены.')
@@ -39,7 +39,7 @@ class TestCreateVisit:
         page = CreateVisitPage(driver, self.URL)
         page.open()
         page.authorization()
-        page.go_to_create_visit()
+        page.open_create_visit()
         name, birthdate, study = page.fill_all_fields()
         page.save_visit('close')
         page.waiting_for_notification('Данные сохранены.')
@@ -52,7 +52,7 @@ class TestCreateVisit:
         page = CreateVisitPage(driver, self.URL)
         page.open()
         page.authorization()
-        page.go_to_create_visit()
+        page.open_create_visit()
         name, birthdate, study = page.fill_all_fields()
         page.save_visit('create')
         page.waiting_for_notification('Данные сохранены.')
@@ -66,7 +66,7 @@ class TestCreateVisit:
         page = CreateVisitPage(driver, self.URL)
         page.open()
         page.authorization()
-        page.go_to_create_visit()
+        page.open_create_visit()
         name, birthdate, study = page.fill_all_fields()
         page.save_visit('bind')
         page.waiting_for_notification('Данные сохранены.')
@@ -81,7 +81,7 @@ class TestCreateVisit:
         page = CreateVisitPage(driver, self.URL)
         page.open()
         page.authorization()
-        page.go_to_create_visit()
+        page.open_create_visit()
         name, birthdate, study = page.fill_all_fields()
         page.save_visit('bind_and_create')
         page.waiting_for_notification('Данные сохранены.')
@@ -111,7 +111,7 @@ class TestProtocol:
         page.authorization()
         page.create_protocol('visit_page')
         page.save_protocol()
-        count, locator = page.list_visits_on_page('present')
+        locator = page.list_visits_on_page('present')[1]
         page.open_visit(locator)
         page.delete_protocol()
 
@@ -122,7 +122,7 @@ class TestProtocol:
         page.authorization()
         page.create_protocol('reg_form')
         page.save_protocol()
-        count, locator = page.list_visits_on_page('present')
+        locator = page.list_visits_on_page('present')[1]
         page.open_visit(locator)
         page.delete_protocol()
 
@@ -147,7 +147,7 @@ class TestProtocol:
         page = CreateVisitPage(driver, self.URL)
         page.open()
         page.authorization()
-        count, locator = page.list_visits_on_page('present')
+        locator = page.list_visits_on_page('present')[1]
         page.open_visit(locator)
         page.delete_protocol()
 
@@ -162,8 +162,45 @@ class TestImageVisit:
         page.open()
         page.authorization()
         before_count = page.open_image_from_visit()
-        answer_count = page.delete_image_from_visit()
-        assert before_count == answer_count, 'Before and answer counts do not differ'
+        after_count = page.delete_image_from_visit()
+        assert before_count != after_count, 'Counts before and after do not differ'
+
+
+@allure.feature('Filter Visit Page')
+class TestFilter:
+    URL = 'https://nt.ris-x.com/visit/'
+
+    def test_open_and_close_filter(self, driver):
+        page = VisitPage(driver, self.URL)
+        page.open()
+        page.authorization()
+        page.filter('open')
+        page.sleep(3)
+        page.filter('close')
+        page.sleep(3)
+
+    # def test_fill_filter_fields(self, driver):
+    #     page = VisitPage(driver, self.URL)
+    #     page.open()
+    #     page.authorization()
+    #     before_count, locator = page.list_visits_on_page()
+    #     page.filter('open')
+    #     page.fill_filter()
+    #     after_count = page.list_visits_on_page()[0]
+    #     assert before_count != after_count, 'Counts before and after do not differ'
+
+    def test_fill_filter_fields(self, driver):
+        page = VisitPage(driver, self.URL)
+        page.open()
+        page.authorization()
+        data_visits = page.data_visits()
+        selected_visit = data_visits[0]
+        expected_count = data_visits.count(selected_visit)
+        page.filter('open')
+        page.fill_filter(patient=selected_visit[0], birthdate=selected_visit[1], study=selected_visit[2])
+        after_count = page.list_visits_on_page()[0]
+        assert expected_count == after_count, 'Counts expected and received do differ'
+
 
 
 @allure.feature('Visit')
@@ -175,7 +212,7 @@ class TestVisit:
         page = CreateVisitPage(driver, self.URL)
         page.open()
         page.authorization()
-        count, locator = page.list_visits_on_page()
+        locator = page.list_visits_on_page()[1]
         page.open_visit(locator)
         page.save_visit('bind')
         page.waiting_for_notification('Данные сохранены.')
@@ -205,25 +242,3 @@ class TestVisit:
             page.open_visit(locator)
             page.delete_visit()
             page.refresh_study_page()
-
-
-@allure.feature('Filter Visit Page')
-class TestFilter:
-    URL = 'https://nt.ris-x.com/visit/'
-
-    def test_open_and_close_filter(self, driver):
-        page = VisitPage(driver, self.URL)
-        page.open()
-        page.authorization()
-        page.filter('open')
-        page.sleep(3)
-        page.filter('close')
-        page.sleep(3)
-
-    def test_fill_filter_fields(self, driver):
-        page = VisitPage(driver, self.URL)
-        page.open()
-        page.authorization()
-        page.filter('open')
-        page.fill_filter()
-        page.sleep(10)
