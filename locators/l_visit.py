@@ -2,13 +2,24 @@ from selenium.webdriver.common.by import By
 
 
 class VisitPageLocators:
+    @staticmethod
+    def search_patient_locator(birthdate: str, name: str, study: str, room: str, mo: str = ''):
+        search_patient = "//tr"
+        prefix_birthdate = f"[td[span[br][text()='{birthdate}']]]"
+        prefix_name = f"[td[a[text()='{name}']]]"
+        prefix_study = f"[td[ul[li[a[@href][text()='{study}']]]]]"
+        prefix_room = f"[td[span[span[@title][text()='{room}']]]]"
+        search_patient = search_patient + prefix_birthdate + prefix_name + prefix_study + prefix_room
+        if mo:
+            prefix_mo = f"[td[span[span[@title][text()='{mo}']]]]"
+            search_patient = search_patient + prefix_mo
+        return By.XPATH, search_patient
+
     STUDY_PAGE = (By.CSS_SELECTOR, 'div.pull-left>h1.pull-left')
     CREATE_VISIT = (By.CSS_SELECTOR, "a.btn.btn-primary[href='/visit/create/']")
     CREATE_PROTOCOL = (By.XPATH, "//tr/td/a[@class='no-underline']/i[@class='fa fa-plus']")
     VIEW_PROTOCOL = (By.XPATH, "//tr/td/a[@class='no-underline']/i[@class='fa fa-file-text-o']")
     EDIT_PROTOCOL = (By.XPATH, "//tr/td/a[@class='no-underline']/i[@class='fa fa-pencil']")
-    SEARCH_PATIENT = (
-        By.XPATH, "//tr[td[span[br][text()='BIRTHDATE']]][td[a[text()='NAME']]][td[ul[li[a[@href][text()='STUDY']]]]]")
     PATIENTS_LIST = (By.CSS_SELECTOR, "div.table-responsive>table>tbody>tr>td>a[href^='/share/visits/']")
     PATIENTS_BIRTHDAY = (By.CSS_SELECTOR, "div.table-responsive>table>tbody>tr>td>span:has(br)")
     #
@@ -29,6 +40,99 @@ class VisitPageLocators:
     #
     VIEW_IMAGE_VISIT = (By.XPATH, "//tr/td//i[@class='fa fa-picture-o']/..")
     REFRESH_STUDY_PAGE = (By.CSS_SELECTOR, "i.fa.fa-refresh")
+    # FILTER
+    FILTER_TOGGLE_BTN = (By.XPATH, "//div[@class='filter-toggle-btn']")
+    FILTER_CLOSE_TOGGLE_BTN = (By.XPATH, "//div[@class='filter-col in']//div[@class='filter-close']")
+
+    class FilterSearch:
+        SAVE_PRESET_BTN = (By.XPATH, "//a/i[@class='fa fa-floppy-o']")
+        FILTER_CLEAR_BTN = (By.XPATH, "//div[@class='filter-col in']//span[i[@class='fa fa-times']]")
+        IS_CITO_CONTAINER = (
+            By.CSS_SELECTOR, "div.form-group>label.control-label[for='is_cito']+div.react-select-container")
+        IS_CITO = (By.CSS_SELECTOR,
+                   "div.form-group>label.control-label[for='is_cito']+div>div div.react-select__option[tabindex='-1']")
+        IS_CITO_SELECT_VALUE = (
+            By.CSS_SELECTOR,
+            "div.form-group>label.control-label[for='is_cito']+div>div>div>div.react-select__single-value")
+        STATUS_CONTAINER = (
+            By.CSS_SELECTOR, "div.form-group>label.control-label[for='status']+div.react-select-container")
+        STATUS = (By.CSS_SELECTOR,
+                  "div.form-group>label.control-label[for='status']+div>div div.react-select__option[tabindex='-1']")
+        STATUS_SELECT_VALUE = (
+            By.CSS_SELECTOR,
+            "div.form-group>label.control-label[for='status']+div>div>div>div.react-select__single-value")
+        PATIENT = (By.CSS_SELECTOR, "input#searchPatient")
+        VISIT = (By.CSS_SELECTOR, "input#searchVisit")
+        BIRTHDATE = (By.CSS_SELECTOR, "input#patientBirth")
+        DATE_CONTAINER = (
+            By.CSS_SELECTOR,
+            "div.form-group>label.control-label[for='dateFilter']+div.react-bootstrap-daterangepicker-container")
+        MODALITY_CONTAINER = (
+            By.CSS_SELECTOR, "div.form-group>label.control-label[for='modality']+div.react-select-container")
+        MODALITY = (By.CSS_SELECTOR,
+                    "div.form-group>label.control-label[for='modality']+div>div div.react-select__option[tabindex='-1']")
+        MODALITY_SELECT_VALUE = (
+            By.CSS_SELECTOR,
+            "div.form-group>label.control-label[for='modality']+div>div>div>div.react-select__single-value")
+        STUDY_CONTAINER = (
+            By.CSS_SELECTOR, "div.form-group>label.control-label[for='study']+div.react-select-container")
+        STUDY = (By.CSS_SELECTOR,
+                 "div.form-group>label.control-label[for='study']+div>div div.react-select__option[tabindex='-1']")
+        STUDY_INPUT = (By.CSS_SELECTOR,
+                       "div.form-group>label.control-label[for='study']+div>div div.react-select__input>input")
+        STUDY_SELECT_VALUE = (
+            By.CSS_SELECTOR,
+            "div.form-group>label.control-label[for='study']+div>div>div>div.react-select__single-value")
+        SOURCE_FINANCING_CONTAINER = (
+            By.CSS_SELECTOR, "div.form-group>label.control-label[for='sourceFinancing']+div.react-select-container")
+        SOURCE_FINANCING = (By.CSS_SELECTOR,
+                            "div.form-group>label.control-label[for='sourceFinancing']+div>div div.react-select__option[tabindex='-1']")
+        SOURCE_FINANCING_SELECT_VALUE = (
+            By.CSS_SELECTOR,
+            "div.form-group>label.control-label[for='sourceFinancing']+div>div>div>div.react-select__single-value")
+        MO_CONTAINER = (
+            By.CSS_SELECTOR, "div.form-group>label.control-label[for='lpuPlace']+div.react-select-container")
+        MO = (By.CSS_SELECTOR,
+              "div.form-group>label.control-label[for='lpuPlace']+div>div div.react-select__option[tabindex='-1']")
+        MO_SELECT_VALUE = (
+            By.CSS_SELECTOR,
+            "div.form-group>label.control-label[for='lpuPlace']+div>div>div>div.react-select__single-value")
+        DEPARTMENT_CONTAINER = (
+            By.CSS_SELECTOR, "div.form-group>label.control-label[for='departmentPlace']+div.react-select-container")
+        DEPARTMENT = (By.CSS_SELECTOR,
+                      "div.form-group>label.control-label[for='departmentPlace']+div>div div.react-select__option[tabindex='-1']")
+        DEPARTMENT_SELECT_VALUE = (
+            By.CSS_SELECTOR,
+            "div.form-group>label.control-label[for='departmentPlace']+div>div>div>div.react-select__single-value")
+        ROOM_CONTAINER = (
+            By.CSS_SELECTOR, "div.form-group>label.control-label[for='roomPlace']+div.react-select-container")
+        ROOM = (By.CSS_SELECTOR,
+                "div.form-group>label.control-label[for='roomPlace']+div>div div.react-select__option[tabindex='-1']")
+        ROOM_SELECT_VALUE = (
+            By.CSS_SELECTOR,
+            "div.form-group>label.control-label[for='roomPlace']+div>div>div>div.react-select__single-value")
+        DEVICE_CONTAINER = (
+            By.CSS_SELECTOR, "div.form-group>label.control-label[for='devicePlace']+div.react-select-container")
+        DEVICE = (By.CSS_SELECTOR,
+                  "div.form-group>label.control-label[for='devicePlace']+div>div div.react-select__option[tabindex='-1']")
+        DEVICE_SELECT_VALUE = (
+            By.CSS_SELECTOR,
+            "div.form-group>label.control-label[for='devicePlace']+div>div>div>div.react-select__single-value")
+        DOCTOR_CONTAINER = (
+            By.CSS_SELECTOR, "div.form-group>label.control-label[for='doctorFilter']+div.react-select-container")
+        DOCTOR = (By.CSS_SELECTOR,
+                  "div.form-group>label.control-label[for='doctorFilter']+div>div div.react-select__option[tabindex='-1']")
+        DOCTOR_SELECT_VALUE = (
+            By.CSS_SELECTOR,
+            "div.form-group>label.control-label[for='doctorFilter']+div>div>div>div.react-select__single-value")
+        DOCUMENT_SIGN_CONTAINER = (
+            By.CSS_SELECTOR,
+            "div.form-group>label.control-label[for='cdocumentSignatureCount']+div.react-select-container")
+        DOCUMENT_SIGN = (By.CSS_SELECTOR,
+                         "div.form-group>label.control-label[for='cdocumentSignatureCount']+div>div div.react-select__option[tabindex='-1']")
+        DOCUMENT_SIGN_SELECT_VALUE = (
+            By.CSS_SELECTOR,
+            "div.form-group>label.control-label[for='cdocumentSignatureCount']+div>div>div>div.react-select__single-value")
 
 
 class CreateVisitPageLocators:
@@ -117,7 +221,7 @@ class CreateVisitPageLocators:
             "div.form-group>label.control-label[for='source_financing']+div>div>div>div.react-select__single-value")
         PURPOSE = (By.CSS_SELECTOR, "div.form-group>label.control-label[for='purpose']+div>input.form-control")
         DIAGNOSES_MKB_CONTAINER = (By.CSS_SELECTOR, "div#diagnoses.jstree-widget")
-        DIAGNOSES_MKB_SEARCH_INPUT = (By.CSS_SELECTOR, "div#diagnoses>div.jstree-widget-content>input")
+        DIAGNOSES_MKB_INPUT = (By.CSS_SELECTOR, "div#diagnoses>div.jstree-widget-content>input")
         DIAGNOSES_MKB_SELECTED_NODES = (
             By.CSS_SELECTOR, "div#diagnoses>div.jstree-widget-field>div>ul>li>i.fa.fa-times")
         DIAGNOSES_MKB_NODES = (By.CSS_SELECTOR, "div#diagnoses>div.jstree-widget-content>div>ul>li.jstree-node")

@@ -205,3 +205,25 @@ class TestVisit:
             page.open_visit(locator)
             page.delete_visit()
             page.refresh_study_page()
+
+
+@allure.feature('Filter Visit Page')
+class TestFilter:
+    URL = 'https://nt.ris-x.com/visit/'
+
+    def test_open_and_close_filter(self, driver):
+        page = VisitPage(driver, self.URL)
+        page.open()
+        page.authorization()
+        page.filter('open')
+        page.sleep(3)
+        page.filter('close')
+        page.sleep(3)
+
+    def test_fill_filter_fields(self, driver):
+        page = VisitPage(driver, self.URL)
+        page.open()
+        page.authorization()
+        page.filter('open')
+        page.fill_filter()
+        page.sleep(10)

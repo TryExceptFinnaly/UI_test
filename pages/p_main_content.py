@@ -72,10 +72,20 @@ class MainContentPage(AuthorizationPage):
         current_place = self.element_is_visible(MainContentLocators.SESSION_PLACE_VALUE).text
         if place != current_place:
             self.element_is_visible(MainContentLocators.SESSION_PLACE_CONTAINER).click()
-            locator = (MainContentLocators.SESSION_PLACE[0], MainContentLocators.SESSION_PLACE[1] + f'[text()="{place}"]')
+            locator = (
+                MainContentLocators.SESSION_PLACE[0], MainContentLocators.SESSION_PLACE[1] + f'[text()="{place}"]')
             self.element_is_visible(locator).click()
         self.element_is_visible(MainContentLocators.SAVE_USER_DATA).click()
         self.waiting_for_notification('Данные сохранены.')
+
+    def get_footer_user_data(self):
+        """return: role, (mo, department, room)"""
+        footer_data = self.element_is_visible(MainContentLocators.USER_DATA_FOOTER)
+        footer_role = self.element_child_nodes_text(footer_data, 0)
+        footer_mo = self.element_child_nodes_text(footer_data, 2)
+        footer_department = self.element_child_nodes_text(footer_data, 4)
+        footer_room = self.element_child_nodes_text(footer_data, 6)
+        return footer_role, (footer_mo, footer_department, footer_room)
 
     def check_user_data(self):
         self.element_is_not_visible(self.Locators.LOADING_BAR)
@@ -83,8 +93,6 @@ class MainContentPage(AuthorizationPage):
         role = self.element_is_visible(MainContentLocators.SESSION_ROLE_VALUE).text
         place = self.element_is_visible(MainContentLocators.SESSION_PLACE_VALUE).text
         self.element_is_visible(MainContentLocators.SAVE_USER_DATA).click()
-        data = place.split(', ')
-        data.insert(0, role)
-        footer_data = self.element_is_visible(MainContentLocators.USER_DATA_FOOTER).text
-        footer_data = footer_data.split('; ')
-        return data, footer_data
+        footer_role, footer_place = self.get_footer_user_data()
+        footer_place = f'{footer_place[0]}, {footer_place[1]}, {footer_place[2]}'
+        return (role, place), (footer_role, footer_place)

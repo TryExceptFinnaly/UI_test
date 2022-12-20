@@ -1,11 +1,11 @@
-from pages.p_authorization import AuthorizationPage
+from pages.p_main_content import MainContentPage
 from locators.l_patients import PatientSearchPageLocators as PatientSearchLocators
 from locators.l_patients import PatientPageLocators as PatientLocators
 from data.data import SystemDirectory
 from generator.generator import generated_person
 
 
-class PatientsPage(AuthorizationPage):
+class PatientsPage(MainContentPage):
     patient_info = next(generated_person())
 
     def found_created_patients(self):
@@ -42,8 +42,10 @@ class PatientsPage(AuthorizationPage):
         assert self.element_is_visible(PatientLocators.EditTab.INPUT_BIRTHDAY).get_attribute('value') == birthdate
         assert self.element_is_visible(PatientLocators.EditTab.SEX_SELECT_VALUE).text == sex
         assert self.element_is_visible(PatientLocators.EditTab.INPUT_SNILS).get_attribute('value') == '112-233-445 95'
-        assert self.element_is_visible(PatientLocators.EditTab.INPUT_POLIS).get_attribute('value') == 'PATIENT_POLIS_OMS'
-        assert self.element_is_visible(PatientLocators.EditTab.INPUT_ALTERNATE_ID).get_attribute('value') == 'PATIENT_ALTER_ID'
+        assert self.element_is_visible(PatientLocators.EditTab.INPUT_POLIS).get_attribute(
+            'value') == 'PATIENT_POLIS_OMS'
+        assert self.element_is_visible(PatientLocators.EditTab.INPUT_ALTERNATE_ID).get_attribute(
+            'value') == 'PATIENT_ALTER_ID'
 
     def save_patient(self):
         self.element_is_visible(PatientLocators.EditTab.SAVE_BUTTON).click()

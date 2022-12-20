@@ -69,6 +69,9 @@ class BasePage:
     def scroll_to_element(self, element):
         self.driver.execute_script('arguments[0].scrollIntoView();', element)
 
+    def element_child_nodes_text(self, element, node):
+        return self.driver.execute_script(f'return arguments[0].childNodes[{node}].textContent;', element)
+
     def zoom_level(self, level: int):
         self.driver.execute_script(f'document.body.style.zoom="{level}%";')
 

@@ -1,6 +1,6 @@
 from data.data import SystemDirectory
 from generator.generator import generated_person
-from pages.p_authorization import AuthorizationPage
+from pages.p_main_content import MainContentPage
 from locators.l_visit import VisitPageLocators as VisitLocators
 from locators.l_visit import CreateVisitPageLocators as CreateVisitLocators
 from locators.l_visit import BindVisitPageLocators as BindVisitLocators
@@ -9,8 +9,10 @@ from locators.l_visit import ProtocolPageLocators as ProtocolLocators
 from locators.l_visit import CreateProtocolPageLocators as CreateProtocolLocators
 
 
-class VisitPage(AuthorizationPage):
+class VisitPage(MainContentPage):
     patient_info = next(generated_person())
+    patient_info.full_name = f'{patient_info.last_name} {patient_info.first_name} {patient_info.middle_name}'
+    patient_info.birthdate = f'{patient_info.birth_day}{patient_info.birth_month}{patient_info.birth_year}'
 
     def go_to_create_visit(self):
         button_create_visit = self.element_is_visible(VisitLocators.CREATE_VISIT)
@@ -73,11 +75,31 @@ class VisitPage(AuthorizationPage):
 
     def check_result_created_visit(self, name, birthdate, study):
         self.element_is_not_visible(self.Locators.LOADING_BAR)
-        visit = (VisitLocators.SEARCH_PATIENT[0],
-                 VisitLocators.SEARCH_PATIENT[1].replace('BIRTHDATE', birthdate).replace('NAME', name).replace('STUDY',
-                                                                                                               study))
+        room = self.get_footer_user_data()[1][2]
+        visit = VisitLocators.search_patient_locator(birthdate, name, study, room)
         visit = self.element_is_visible(visit, return_false=True)
         return visit
+
+    def filter(self, action: str):
+        """param: action = open, close"""
+        self.element_is_not_visible(self.Locators.LOADING_BAR)
+        match action:
+            case 'open':
+                self.element_is_visible(VisitLocators.FILTER_TOGGLE_BTN).click()
+            case 'close':
+                self.element_is_visible(VisitLocators.FILTER_CLOSE_TOGGLE_BTN).click()
+            case _:
+                return 'Incorrect action'
+
+    def fill_filter(self):
+        self.element_is_visible(VisitLocators.FilterSearch.PATIENT).send_keys(self.patient_info.full_name)
+        self.element_is_visible(VisitLocators.FilterSearch.VISIT).send_keys('_PATIENT_POLIS')
+        self.element_is_visible(VisitLocators.FilterSearch.BIRTHDATE).send_keys(self.patient_info.birthdate)
+        # self.element_is_visible(VisitLocators.FilterSearch.STUDY_CONTAINER).click()
+        self.element_is_visible(VisitLocators.FilterSearch.STUDY_INPUT).send_keys(
+            'Компьютерная томография органов малого таза у женщин')
+        self.elements_are_visible(VisitLocators.FilterSearch.STUDY, element=0, timeout=20).click()
+        self.element_is_not_visible(self.Locators.LOADING_BAR)
 
 
 class CreateVisitPage(VisitPage):
@@ -87,10 +109,6 @@ class CreateVisitPage(VisitPage):
         self.element_is_not_visible(self.Locators.BLOCK_PAGE)
         self.element_is_visible(CreateVisitLocators.TAB_BASE).click()
 
-        full_name = f'{self.patient_info.last_name} {self.patient_info.first_name} {self.patient_info.middle_name}'
-        email = self.patient_info.email
-        phone_number = self.patient_info.phone_number
-        birthdate = f'{self.patient_info.birth_day}{self.patient_info.birth_month}{self.patient_info.birth_year}'
         sex = SystemDirectory.sex[self.patient_info.sex][1]
         # Reg. from contains 6 variants, SystemDirectory.allergy_type contains 4 variants.
         # allergy_type = SystemDirectory.allergy_type[self.patient_info.allergy_type][1]
@@ -115,15 +133,15 @@ class CreateVisitPage(VisitPage):
         self.element_is_visible(CreateVisitLocators.BaseTab.IS_CITO_CONTAINER).click()
         self.elements_are_visible(CreateVisitLocators.BaseTab.IS_CITO, element=is_cito).click()
 
-        self.element_is_visible(CreateVisitLocators.BaseTab.FULL_NAME).send_keys(full_name)
+        self.element_is_visible(CreateVisitLocators.BaseTab.FULL_NAME).send_keys(self.patient_info.full_name)
         self.element_is_visible(CreateVisitLocators.BaseTab.EXTERNAL_ID).send_keys('PATIENT_ID')
         self.element_is_visible(CreateVisitLocators.BaseTab.POLIS_OMS).send_keys('PATIENT_POLIS_OMS')
         self.element_is_visible(CreateVisitLocators.BaseTab.SNILS).send_keys(11223344595)
-        self.element_is_visible(CreateVisitLocators.BaseTab.BIRTHDAY).send_keys(birthdate)
+        self.element_is_visible(CreateVisitLocators.BaseTab.BIRTHDAY).send_keys(self.patient_info.birthdate)
         self.element_is_visible(CreateVisitLocators.BaseTab.SEX_CONTAINER).click()
         self.elements_are_visible(CreateVisitLocators.BaseTab.SEX, element=sex).click()
-        self.element_is_visible(CreateVisitLocators.BaseTab.PHONE_NUMBER).send_keys(phone_number)
-        self.element_is_visible(CreateVisitLocators.BaseTab.EMAIL).send_keys(email)
+        self.element_is_visible(CreateVisitLocators.BaseTab.PHONE_NUMBER).send_keys(self.patient_info.phone_number)
+        self.element_is_visible(CreateVisitLocators.BaseTab.EMAIL).send_keys(self.patient_info.email)
         self.element_is_visible(CreateVisitLocators.BaseTab.ALLERGY_TYPE_CONTAINER).click()
         self.elements_are_visible(CreateVisitLocators.BaseTab.ALLERGY_TYPE, element=-1).click()
         self.element_is_visible(CreateVisitLocators.BaseTab.YEAR_DOSE)
