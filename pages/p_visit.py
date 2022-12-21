@@ -1,4 +1,5 @@
 from data.data import SystemDirectory
+from data.data import Visit
 from generator.generator import generated_person
 from pages.p_main_content import MainContentPage
 from locators.l_visit import VisitPageLocators as VisitLocators
@@ -58,25 +59,23 @@ class VisitPage(MainContentPage):
         return (len(visits), locator) if visits else (0, locator)
 
     def data_visits(self):
+        """patient, birthdate, study, mo, room, doctor, comment"""
         visits = self.elements_are_visible(VisitLocators.VISITS)
-        visits_data = []
+        visit_list = []
         for visit in visits:
-            visit_td = visit.find_elements(*VisitLocators.VISITS_TD)
-            patient = visit_td[7].text.split('\n')[0]
-            birthdate = visit_td[8].text.split('\n')[0]
-            study = visit_td[9].text
-            place = visit_td[10].text.split('\n')
-            if place[0] == place[-1]:
-                mo = ''
-                room = place[0]
-            else:
-                mo = place[0]
-                room = place[-1]
-            doctor = visit_td[11].text
-            comment = visit_td[12].text
-            visits_data.append((patient, birthdate, study, mo, room, doctor, comment))
-        return visits_data
-
+            visit = visit.find_elements(*VisitLocators.VISITS_TD)
+            visit_data = Visit()
+            visit_data.patient = visit[7].text.split('\n')[0]
+            visit_data.birthdate = visit[8].text.split('\n')[0]
+            visit_data.study = visit[9].text
+            place = visit[10].text.split('\n')
+            if not place[0] == place[-1]:
+                visit_data.mo = place[0]
+            visit_data.room = place[-1]
+            visit_data.doctor = visit[11].text
+            visit_data.comment = visit[12].text
+            visit_list.append(visit_data)
+        return visit_list
 
     def open_visit(self, locator, visit: int = 0):
         self.element_is_not_visible(self.Locators.LOADING_BAR)
@@ -113,11 +112,17 @@ class VisitPage(MainContentPage):
             case _:
                 return 'Incorrect action'
 
-    def fill_filter(self, patient, birthdate, study):
-        self.element_is_visible(VisitLocators.FilterSearch.PATIENT).send_keys(patient)
-        self.element_is_visible(VisitLocators.FilterSearch.BIRTHDATE).send_keys(birthdate)
-        self.element_is_visible(VisitLocators.FilterSearch.STUDY_INPUT).send_keys(study)
+    def fill_filter(self, visit):
+        self.element_is_visible(VisitLocators.FilterSearch.PATIENT).send_keys(visit.patient.split('.')[0])
+        self.element_is_visible(VisitLocators.FilterSearch.VISIT).send_keys(visit.comment)
+        self.element_is_visible(VisitLocators.FilterSearch.BIRTHDATE).send_keys(visit.birthdate)
+        self.element_is_visible(VisitLocators.FilterSearch.STUDY_INPUT).send_keys(visit.study)
         self.elements_are_visible(VisitLocators.FilterSearch.STUDY, element=0, timeout=20).click()
+        self.element_is_visible(VisitLocators.FilterSearch.DOCTOR_INPUT).send_keys(visit.doctor)
+        self.elements_are_visible(VisitLocators.FilterSearch.DOCTOR, element=0, timeout=20).click()
+        if visit.mo:
+            self.element_is_visible(VisitLocators.FilterSearch.MO_INPUT).send_keys(visit.mo)
+            self.elements_are_visible(VisitLocators.FilterSearch.MO, element=0, timeout=20).click()
         self.element_is_visible(self.Locators.LOADING_BAR)
         self.element_is_not_visible(self.Locators.LOADING_BAR)
 
@@ -291,7 +296,7 @@ class CreateVisitPage(VisitPage):
     def delete_visit(self):
         self.element_is_not_visible(self.Locators.BLOCK_PAGE)
         self.element_is_visible(CreateVisitLocators.BTN_DELETE).click()
-        self.element_is_visible(CreateVisitLocators.REASON_FOR_DELETE).send_keys('Reason for delete')
+        self.element_is_visible(CreateVisitLocators.REASON_FOR_DELETE).send_keys('Reason to delete')
         self.element_is_visible(CreateVisitLocators.BTN_MODAL_DELETE).click()
         self.element_is_not_visible(self.Locators.LOADING_BAR)
 

@@ -98,6 +98,8 @@ class VisitPageLocators:
             By.CSS_SELECTOR, "div.form-group>label.control-label[for='lpuPlace']+div.react-select-container")
         MO = (By.CSS_SELECTOR,
               "div.form-group>label.control-label[for='lpuPlace']+div>div div.react-select__option[tabindex='-1']")
+        MO_INPUT = (By.CSS_SELECTOR,
+                    "div.form-group>label.control-label[for='lpuPlace']+div>div div.react-select__input>input")
         MO_SELECT_VALUE = (
             By.CSS_SELECTOR,
             "div.form-group>label.control-label[for='lpuPlace']+div>div>div>div.react-select__single-value")
@@ -126,6 +128,8 @@ class VisitPageLocators:
             By.CSS_SELECTOR, "div.form-group>label.control-label[for='doctorFilter']+div.react-select-container")
         DOCTOR = (By.CSS_SELECTOR,
                   "div.form-group>label.control-label[for='doctorFilter']+div>div div.react-select__option[tabindex='-1']")
+        DOCTOR_INPUT = (By.CSS_SELECTOR,
+                        "div.form-group>label.control-label[for='doctorFilter']+div>div div.react-select__input>input")
         DOCTOR_SELECT_VALUE = (
             By.CSS_SELECTOR,
             "div.form-group>label.control-label[for='doctorFilter']+div>div>div>div.react-select__single-value")

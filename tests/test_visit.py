@@ -179,17 +179,7 @@ class TestFilter:
         page.filter('close')
         page.sleep(3)
 
-    # def test_fill_filter_fields(self, driver):
-    #     page = VisitPage(driver, self.URL)
-    #     page.open()
-    #     page.authorization()
-    #     before_count, locator = page.list_visits_on_page()
-    #     page.filter('open')
-    #     page.fill_filter()
-    #     after_count = page.list_visits_on_page()[0]
-    #     assert before_count != after_count, 'Counts before and after do not differ'
-
-    def test_fill_filter_fields(self, driver):
+    def test_search_visit(self, driver):
         page = VisitPage(driver, self.URL)
         page.open()
         page.authorization()
@@ -197,10 +187,9 @@ class TestFilter:
         selected_visit = data_visits[0]
         expected_count = data_visits.count(selected_visit)
         page.filter('open')
-        page.fill_filter(patient=selected_visit[0], birthdate=selected_visit[1], study=selected_visit[2])
+        page.fill_filter(selected_visit)
         after_count = page.list_visits_on_page()[0]
         assert expected_count == after_count, 'Counts expected and received do differ'
-
 
 
 @allure.feature('Visit')

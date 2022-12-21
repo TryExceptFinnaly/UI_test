@@ -31,7 +31,8 @@ class SystemDirectory:
         '8': ('Дипломатический паспорт', 8),
         '9': ('Паспорт иностранного гражданина', 9),
         '10': (
-        'Свидетельство о рассмотрении ходатайства о признании лица беженцем на территории Российской Федерации', 10),
+            'Свидетельство о рассмотрении ходатайства о признании лица беженцем на территории Российской Федерации',
+            10),
         '11': ('Вид на жительство в Российской Федерации', 11),
         '12': ('Удостоверение беженца', 12),
         '13': ('Временное удостоверение личности гражданина Российской Федерации', 13),
@@ -82,3 +83,15 @@ class Patient:
     treatment_case: str = None
     patient_class: str = None
     insurance_company: str = None
+
+
+@dataclass
+class Visit:
+    status: str = None
+    patient: str = None
+    birthdate: str = None
+    study: str = None
+    mo: str = None
+    room: str = None
+    doctor: str = None
+    comment: str = None

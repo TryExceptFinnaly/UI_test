@@ -131,6 +131,6 @@ class CreatePlannedVisitPage(PlannedVisitPage):
 
     def delete_planned_visit(self):
         self.element_is_visible(CreateVisitLocators.BTN_DELETE).click()
-        self.element_is_visible(CreateVisitLocators.REASON_FOR_DELETE).send_keys('Reason for delete')
+        self.element_is_visible(CreateVisitLocators.REASON_FOR_DELETE).send_keys('Reason to delete')
         self.element_is_visible(CreateVisitLocators.BTN_MODAL_DELETE).click()
         self.element_is_not_visible(self.Locators.LOADING_BAR)
