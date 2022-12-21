@@ -4,16 +4,16 @@ from selenium.webdriver.common.by import By
 class VisitPageLocators:
     @staticmethod
     def get_visit_locator(birthdate: str, name: str, study: str, room: str, mo: str = ''):
-        search_patient = "//tr"
+        locator = "//tr"
         prefix_birthdate = f"[td[span[br][text()='{birthdate}']]]"
         prefix_name = f"[td[a[text()='{name}']]]"
         prefix_study = f"[td[ul[li[a[@href][text()='{study}']]]]]"
         prefix_room = f"[td[span[span[@title][text()='{room}']]]]"
-        search_patient = search_patient + prefix_birthdate + prefix_name + prefix_study + prefix_room
+        locator += prefix_birthdate + prefix_name + prefix_study + prefix_room
         if mo:
             prefix_mo = f"[td[span[span[@title][text()='{mo}']]]]"
-            search_patient = search_patient + prefix_mo
-        return By.XPATH, search_patient
+            locator += prefix_mo
+        return By.XPATH, locator
 
     STUDY_PAGE = (By.CSS_SELECTOR, 'div.pull-left>h1.pull-left')
     CREATE_VISIT = (By.CSS_SELECTOR, "a.btn.btn-primary[href='/visit/create/']")

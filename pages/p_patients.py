@@ -7,26 +7,23 @@ from generator.generator import generated_person
 
 class PatientsPage(MainContentPage):
     patient_info = next(generated_person())
+    patient_info.full_name = f'{patient_info.last_name} {patient_info.first_name} {patient_info.middle_name}'
 
-    def found_created_patients(self):
-        last_name = f'{self.patient_info.last_name}'
-        first_name = f'{self.patient_info.first_name}'
-        middle_name = f'{self.patient_info.middle_name}'
+    def search_created_patients(self):
         birthdate = f'{self.patient_info.birth_day}{self.patient_info.birth_month}{self.patient_info.birth_year}'
-        self.element_is_visible(PatientSearchLocators.INPUT_LAST_NAME).send_keys(last_name)
-        self.element_is_visible(PatientSearchLocators.INPUT_FIRST_NAME).send_keys(first_name)
-        self.element_is_visible(PatientSearchLocators.INPUT_MIDDLE_NAME).send_keys(middle_name)
+        self.element_is_visible(PatientSearchLocators.INPUT_LAST_NAME).send_keys(self.patient_info.last_name)
+        self.element_is_visible(PatientSearchLocators.INPUT_FIRST_NAME).send_keys(self.patient_info.first_name)
+        self.element_is_visible(PatientSearchLocators.INPUT_MIDDLE_NAME).send_keys(self.patient_info.middle_name)
         self.element_is_visible(PatientSearchLocators.INPUT_BIRTHDAY).send_keys(birthdate)
         self.element_is_visible(PatientSearchLocators.INPUT_SNILS).send_keys('112-233-445 95')
         self.element_is_visible(PatientSearchLocators.INPUT_POLIS).send_keys('PATIENT_POLIS_OMS')
-        full_name = f'{last_name} {first_name} {middle_name}'
-        birthdate = f'{self.patient_info.birth_day}.{self.patient_info.birth_month}.{self.patient_info.birth_year}'
-        return full_name, birthdate
 
     def check_found_patient(self):
-        self.element_is_visible(PatientSearchLocators.TBODY_PATIENTS)
-        patient = self.elements_are_visible(PatientSearchLocators.PATIENT)
-        return patient[3].text, patient[4].text
+        birthdate = f'{self.patient_info.birth_day}.{self.patient_info.birth_month}.{self.patient_info.birth_year}'
+        sex = SystemDirectory.sex[self.patient_info.sex][0]
+        return True if self.element_is_visible(
+            PatientSearchLocators.get_visit_locator(name=self.patient_info.full_name, birthdate=birthdate, sex=sex,
+                                                    snils='112-233-445 95', polis='PATIENT_POLIS_OMS')) else False
 
     def check_found_patient_in_edit_tab(self):
         self.element_is_visible(PatientSearchLocators.MODIFY_PATIENT).click()
@@ -49,6 +46,10 @@ class PatientsPage(MainContentPage):
 
     def save_patient(self):
         self.element_is_visible(PatientLocators.EditTab.SAVE_BUTTON).click()
+        self.element_is_visible(self.Locators.LOADING_BAR)
+        self.element_is_not_visible(self.Locators.LOADING_BAR)
 
     def save_and_continue_patient(self):
         self.element_is_visible(PatientLocators.EditTab.SAVE_AND_CONTINUE).click()
+        self.element_is_visible(self.Locators.LOADING_BAR)
+        self.element_is_not_visible(self.Locators.LOADING_BAR)
