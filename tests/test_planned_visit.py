@@ -10,7 +10,8 @@ class TestPlannedVisit:
 
     @allure.title('Create planned visit(HL7 msg)')
     def test_create_planned_visit_in_hl7_message(self, driver):
-        send_hl7_message('nw', count=2)
+        result = send_hl7_message('nw', count=2)
+        print(result)
         page = PlannedVisitPage(driver, self.URL)
         page.open()
         page.authorization()

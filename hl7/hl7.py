@@ -60,7 +60,6 @@ def send_hl7_message(order: str, random: bool = False, count: int = 1):
             file_data = file_data.replace('PATIENT_EMAIL', f'{patient_info.email}')
             file_data = file_data.replace('IDENTIFIER_TYPE', f'{patient_info.identifier_type}')
             # AL1
-            print(patient_info.allergy_type)
             file_data = file_data.replace('ALLERGY_TYPE', f'{patient_info.allergy_type}')
             # IN1
             file_data = file_data.replace('INSURANCE_COMPANY', f'{patient_info.insurance_company}')

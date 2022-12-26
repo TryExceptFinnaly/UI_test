@@ -23,7 +23,8 @@ class PatientsPage(MainContentPage):
         sex = SystemDirectory.sex[self.patient_info.sex][0]
         return True if self.element_is_visible(
             PatientSearchLocators.get_visit_locator(name=self.patient_info.full_name, birthdate=birthdate, sex=sex,
-                                                    snils='112-233-445 95', polis='PATIENT_POLIS_OMS')) else False
+                                                    snils='112-233-445 95', polis='PATIENT_POLIS_OMS'),
+            return_false=True) else False
 
     def check_found_patient_in_edit_tab(self):
         self.element_is_visible(PatientSearchLocators.MODIFY_PATIENT).click()
