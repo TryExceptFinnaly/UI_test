@@ -3,8 +3,11 @@ from selenium.webdriver.common.by import By
 
 class VisitPageLocators:
     @staticmethod
-    def get_visit_locator(birthdate: str, name: str, study: str, room: str, mo: str = ''):
-        locator = "//tr"
+    def find_visits_by_data(return_: str, birthdate: str, name: str, study: str, room: str, mo: str = ''):
+        """params birthdate, name, study, room, mo\n
+        param return_: visit, study\n
+        return: XPath locator"""
+        locator = "//tr[td]"
         prefix_birthdate = f"[td[span[br][text()='{birthdate}']]]"
         prefix_name = f"[td[a[text()='{name}']]]"
         prefix_study = f"[td[ul[li[a[@href][text()='{study}']]]]]"
@@ -13,6 +16,61 @@ class VisitPageLocators:
         if mo:
             prefix_mo = f"[td[span[span[@title][text()='{mo}']]]]"
             locator += prefix_mo
+        match return_:
+            case 'study':
+                locator += "//a[not(@class)][contains(@href,'/visit/')]"
+            case 'patient':
+                locator += "/td[8]/a[contains(@href,'/share/visits/')]"
+            case 'visit':
+                pass
+        return By.XPATH, locator
+
+    @staticmethod
+    def find_visits_by_param(return_: str, protocol: str = 'ignore', image: str = 'ignore', wlm: str = 'ignore'):
+        """param protocol: present, editable, completed, missing, ignore\n
+        param image: present, missing, ignore\n
+        param wlm: present, missing, ignore\n
+        param return_: visit, study\n
+        return: XPath locator"""
+        locator = "//tr[td]"
+        match image:
+            case 'present':
+                locator += '[td[3][a]]'
+            case 'missing':
+                locator += '[td[3][not(a)]]'
+            case 'ignore':
+                pass
+            case _:
+                return 'Incorrect image'
+        match wlm:
+            case 'present':
+                locator += '[td[5][div[text()="PACS"]]]'
+            case 'missing':
+                locator += '[td[5][not(div[text()="PACS"])]]'
+            case 'ignore':
+                pass
+            case _:
+                return 'Incorrect WLM'
+        match protocol:
+            case 'present':
+                locator += "[td[a[i[@class='fa fa-pencil' or @class='fa fa-file-text-o']]]]"
+            case 'editable':
+                locator += "[td[a[i[@class='fa fa-pencil']]]]"
+            case 'completed':
+                locator += "[td[a[i[@class='fa fa-file-text-o']]]]"
+            case 'missing':
+                locator += "[td[a[i[@class='fa fa-plus']]]]"
+            case 'ignore':
+                pass
+            case _:
+                return 'Incorrect protocol'
+        match return_:
+            case 'study':
+                locator += "//a[not(@class)][contains(@href,'/visit/')]"
+            case 'patient':
+                locator += "/td[8]/a[contains(@href,'/share/visits/')]"
+            case 'visit':
+                pass
         return By.XPATH, locator
 
     STUDY_PAGE = (By.CSS_SELECTOR, 'div.pull-left>h1.pull-left')
@@ -20,28 +78,7 @@ class VisitPageLocators:
     CREATE_PROTOCOL = (By.XPATH, "//tr/td/a[@class='no-underline']/i[@class='fa fa-plus']")
     VIEW_PROTOCOL = (By.XPATH, "//tr/td/a[@class='no-underline']/i[@class='fa fa-file-text-o']")
     EDIT_PROTOCOL = (By.XPATH, "//tr/td/a[@class='no-underline']/i[@class='fa fa-pencil']")
-    VISITS = (By.XPATH, "//div[@class='table-responsive']//tbody/tr[td]")
     VISITS_TD = (By.TAG_NAME, "td")
-    VISITS_PATIENT_NAME = (By.XPATH, "//tr/td[8]/a[contains(@href,'/share/visits/')]")
-    VISITS_BIRTHDATE = (By.XPATH, "//tr/td[9]/span")
-    #
-    VISITS_STUDY = (By.XPATH, "//tr/td//a[not(@class)][contains(@href,'/visit/')]")
-    VISITS_DOCTOR = (By.XPATH, "//tr/td[12]/span[@title]")
-    VISITS_PLACE = (By.XPATH, "//tr/td[11]/span/span[@title]")
-    PATIENTS_MISSING_PROTOCOL_STUDY = (By.XPATH,
-                                       "//tr[td[a[i[@class='fa fa-plus']]]]//a[not(@class)][contains(@href,'/visit/')]")
-    PATIENTS_COMPLETED_PROTOCOL_STUDY = (By.XPATH,
-                                         "//tr[td[a[i[@class='fa fa-file-text-o']]]]//a[not(@class)][contains(@href,'/visit/')]")
-    PATIENTS_EDITABLE_PROTOCOL_STUDY = (By.XPATH,
-                                        "//tr[td[a[i[@class='fa fa-pencil']]]]//a[not(@class)][contains(@href,'/visit/')]")
-    PATIENTS_PRESENT_PROTOCOL_STUDY = (By.XPATH,
-                                       "//tr[td[a[i[@class='fa fa-pencil' or @class='fa fa-file-text-o']]]]//a[not(@class)][contains(@href,'/visit/')]")
-    PREFIX = '//tr'
-    PREFIX_PRESENT_WLM = '//tr[td[5][div[text()="PACS"]]]'
-    PREFIX_MISSING_WLM = '//tr[td[5][not(div[text()="PACS"])]]'
-    PREFIX_PRESENT_IMAGE = '//tr[td[3][a]]'
-    PREFIX_MISSING_IMAGE = '//tr[td[3][not(a)]]'
-    #
     VIEW_IMAGE_VISIT = (By.XPATH, "//tr/td//i[@class='fa fa-picture-o']/..")
     REFRESH_STUDY_PAGE = (By.CSS_SELECTOR, "i.fa.fa-refresh")
     # FILTER
