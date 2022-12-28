@@ -26,6 +26,7 @@ class VisitPage(MainContentPage):
         param return_: visit, study\n
         return: found elements or none"""
         locator = VisitLocators.find_visits_by_param(return_, protocol, image, wlm)
+        self.element_is_not_visible(self.Locators.LOADING_BAR)
         visits = self.elements_are_visible(locator, return_false=True)
         return visits if visits else None
 
@@ -34,6 +35,7 @@ class VisitPage(MainContentPage):
         param return_: visit, study\n
         return: found elements or none"""
         locator = VisitLocators.find_visits_by_data(return_, birthdate, name, study, room, mo)
+        self.element_is_not_visible(self.Locators.LOADING_BAR)
         visits = self.elements_are_visible(locator, return_false=True)
         return visits if visits else None
 
@@ -43,6 +45,7 @@ class VisitPage(MainContentPage):
         visit_list = []
         for visit in visits:
             visit = visit.find_elements(*VisitLocators.VISITS_TD)
+            print(len(visit))
             visit_data = Visit()
             visit_data.patient = visit[7].text.split('\n')[0]
             visit_data.birthdate = visit[8].text.split('\n')[0]
@@ -323,11 +326,11 @@ class CreateProtocolPage(CreateVisitPage):
             case 'visit_page':
                 self.elements_are_visible(VisitLocators.CREATE_PROTOCOL, element=0).click()
             case 'reg_form':
-                visits = self.find_visits(return_='study', protocol='missing')
+                visits = self.find_visits_by_param(return_='study', protocol='missing')
                 self.open_visit(visits[0])
                 self.element_is_visible(CreateVisitLocators.BTN_CREATE_PROTOCOL).click()
             case 'tab_doc':
-                visits = self.find_visits(return_='study', protocol='missing')
+                visits = self.find_visits_by_param(return_='study', protocol='missing')
                 self.open_visit(visits[0])
                 self.element_is_visible(CreateVisitLocators.TAB_CLINICAL_DOCUMENTS).click()
                 self.element_is_visible(CreateVisitLocators.ClinicalDocumentsTab.PROTOCOL_CREATE).click()
