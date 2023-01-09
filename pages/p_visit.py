@@ -39,12 +39,11 @@ class VisitPage(MainContentPage):
         visits = self.elements_are_visible(locator, return_false=True)
         return visits if visits else None
 
-    @staticmethod
-    def data_visits(visits):
+    def data_visits(self, visits):
         """return: patient, birthdate, study, mo, room, doctor, comment"""
         visit_list = []
         for visit in visits:
-            visit = visit.find_elements(*VisitLocators.VISITS_TD)
+            visit = visit.find_elements(*self.Locators.TAG_TD)
             print(len(visit))
             visit_data = Visit()
             visit_data.patient = visit[7].text.split('\n')[0]

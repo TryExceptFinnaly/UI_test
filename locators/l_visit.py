@@ -78,7 +78,6 @@ class VisitPageLocators:
     CREATE_PROTOCOL = (By.XPATH, "//tr/td/a[@class='no-underline']/i[@class='fa fa-plus']")
     VIEW_PROTOCOL = (By.XPATH, "//tr/td/a[@class='no-underline']/i[@class='fa fa-file-text-o']")
     EDIT_PROTOCOL = (By.XPATH, "//tr/td/a[@class='no-underline']/i[@class='fa fa-pencil']")
-    VISITS_TD = (By.TAG_NAME, "td")
     VIEW_IMAGE_VISIT = (By.XPATH, "//tr/td//i[@class='fa fa-picture-o']/..")
     REFRESH_STUDY_PAGE = (By.CSS_SELECTOR, "i.fa.fa-refresh")
     # FILTER

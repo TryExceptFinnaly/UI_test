@@ -25,8 +25,8 @@ class TestUnregStudies:
         before_count = len(unreg_study)
         page.delete_unreg_study(unreg_study)
         page.refresh_page()
+        page.refresh_page()
         unreg_study = page.get_unreg_study()
         after_count = len(unreg_study)
         assert before_count != after_count, 'Counts before and after do not differ'
-        page.sleep(5)
 
