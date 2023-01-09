@@ -13,7 +13,7 @@ class TestVisitPage:
         page = VisitPage(driver, self.URL)
         page.open()
         page.authorization()
-        page.refresh_page()
+        page.refresh_study_page()
 
 
 @allure.feature('Create Visit')
@@ -111,8 +111,9 @@ class TestProtocol:
         page.authorization()
         page.create_protocol('visit_page')
         page.save_protocol()
-        locator = page.list_visits_on_page('present')[1]
-        page.open_visit(locator)
+        visits = page.find_visits_by_param(return_='study', protocol='present')
+        assert visits is not None, "Visit with protocol not found"
+        page.open_visit(visits[0])
         page.delete_protocol()
 
     @allure.title('Create protocol from reg form and delete')
@@ -122,8 +123,9 @@ class TestProtocol:
         page.authorization()
         page.create_protocol('reg_form')
         page.save_protocol()
-        locator = page.list_visits_on_page('present')[1]
-        page.open_visit(locator)
+        visits = page.find_visits_by_param(return_='study', protocol='present')
+        assert visits is not None, "Visit with protocol not found"
+        page.open_visit(visits[0])
         page.delete_protocol()
 
     @allure.title('Create protocol from tab doc')
@@ -147,8 +149,9 @@ class TestProtocol:
         page = CreateVisitPage(driver, self.URL)
         page.open()
         page.authorization()
-        locator = page.list_visits_on_page('present')[1]
-        page.open_visit(locator)
+        visits = page.find_visits_by_param(return_='study', protocol='present')
+        assert visits is not None, "Visit with protocol not found"
+        page.open_visit(visits[0])
         page.delete_protocol()
 
 
@@ -183,12 +186,13 @@ class TestFilter:
         page = VisitPage(driver, self.URL)
         page.open()
         page.authorization()
-        data_visits = page.data_visits()
+        visits = page.find_visits_by_param(return_='visit')
+        data_visits = page.data_visits(visits)
         selected_visit = data_visits[0]
         expected_count = data_visits.count(selected_visit)
         page.filter('open')
         page.fill_filter(selected_visit)
-        after_count = page.list_visits_on_page()[0]
+        after_count = len(page.find_visits_by_param(return_='visit'))
         assert expected_count == after_count, 'Counts expected and received do differ'
 
 
@@ -201,8 +205,8 @@ class TestVisit:
         page = CreateVisitPage(driver, self.URL)
         page.open()
         page.authorization()
-        locator = page.list_visits_on_page()[1]
-        page.open_visit(locator)
+        visits = page.find_visits_by_param(return_='study')
+        page.open_visit(visits[0])
         page.save_visit('bind')
         page.waiting_for_notification('Данные сохранены.')
         if not page.waiting_for_notification('Сопоставление успешно выполнено.', return_false=True):
@@ -213,10 +217,10 @@ class TestVisit:
         page = VisitPage(driver, self.URL)
         page.open()
         page.authorization()
-        count, locator = page.list_visits_on_page(image='missing', wlm='present')
-        for i in range(count):
-            page.refresh_page()
-            acc_number = page.get_visit_id(locator)
+        visits = page.find_visits_by_param(return_='study', image='missing', wlm='present')
+        for visit in visits:
+            page.refresh_study_page()
+            acc_number = page.get_visit_id(visit)
             result = send_hl7_message(f'sc_{acc_number}')
             print(result)
             page.sleep(5)
@@ -226,8 +230,9 @@ class TestVisit:
         page = CreateVisitPage(driver, self.URL)
         page.open()
         page.authorization()
-        count, locator = page.list_visits_on_page()
-        for i in range(count):
-            page.open_visit(locator)
+        visits = page.find_visits_by_param(return_='study')
+        while visits is not None:
+            page.open_visit(visits[0])
             page.delete_visit()
-            page.refresh_page()
+            page.refresh_study_page()
+            visits = page.find_visits_by_param(return_='study')

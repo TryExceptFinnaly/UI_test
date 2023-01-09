@@ -19,51 +19,33 @@ class VisitPage(MainContentPage):
         button_create_visit = self.element_is_visible(VisitLocators.CREATE_VISIT)
         self.get_request_href_and_click(button_create_visit)
 
-    def list_visits_on_page(self, protocol: str = 'ignore', image: str = 'ignore', wlm: str = 'ignore'):
+    def find_visits_by_param(self, return_: str, protocol: str = 'ignore', image: str = 'ignore', wlm: str = 'ignore'):
         """param protocol: present, editable, completed, missing, ignore\n
         param image: present, missing, ignore\n
         param wlm: present, missing, ignore\n
-        return: count, locator"""
-        match protocol:
-            case 'present':
-                locator = VisitLocators.PATIENTS_PRESENT_PROTOCOL_STUDY
-            case 'editable':
-                locator = VisitLocators.PATIENTS_EDITABLE_PROTOCOL_STUDY
-            case 'completed':
-                locator = VisitLocators.PATIENTS_COMPLETED_PROTOCOL_STUDY
-            case 'missing':
-                locator = VisitLocators.PATIENTS_MISSING_PROTOCOL_STUDY
-            case 'ignore':
-                locator = VisitLocators.VISITS_STUDY
-            case _:
-                return 'Incorrect protocol'
-        match image:
-            case 'present':
-                locator = (locator[0], locator[1].replace(VisitLocators.PREFIX, VisitLocators.PREFIX_PRESENT_IMAGE))
-            case 'missing':
-                locator = (locator[0], locator[1].replace(VisitLocators.PREFIX, VisitLocators.PREFIX_MISSING_IMAGE))
-            case 'ignore':
-                pass
-            case _:
-                return 'Incorrect image'
-        match wlm:
-            case 'present':
-                locator = (locator[0], locator[1].replace(VisitLocators.PREFIX, VisitLocators.PREFIX_PRESENT_WLM))
-            case 'missing':
-                locator = (locator[0], locator[1].replace(VisitLocators.PREFIX, VisitLocators.PREFIX_MISSING_WLM))
-            case 'ignore':
-                pass
-            case _:
-                return 'Incorrect WLM'
+        param return_: visit, study\n
+        return: found elements or none"""
+        locator = VisitLocators.find_visits_by_param(return_, protocol, image, wlm)
+        self.element_is_not_visible(self.Locators.LOADING_BAR)
         visits = self.elements_are_visible(locator, return_false=True)
-        return (len(visits), locator) if visits else (0, locator)
+        return visits if visits else None
 
-    def data_visits(self):
-        """patient, birthdate, study, mo, room, doctor, comment"""
-        visits = self.elements_are_visible(VisitLocators.VISITS)
+    def find_visits_by_data(self, return_: str, birthdate: str, name: str, study: str, room: str, mo: str = ''):
+        """params birthdate, name, study, room, mo\n
+        param return_: visit, study\n
+        return: found elements or none"""
+        locator = VisitLocators.find_visits_by_data(return_, birthdate, name, study, room, mo)
+        self.element_is_not_visible(self.Locators.LOADING_BAR)
+        visits = self.elements_are_visible(locator, return_false=True)
+        return visits if visits else None
+
+    @staticmethod
+    def data_visits(visits):
+        """return: patient, birthdate, study, mo, room, doctor, comment"""
         visit_list = []
         for visit in visits:
-            visit = visit.find_elements(*self.Locators.TAG_TD)
+            visit = visit.find_elements(*VisitLocators.VISITS_TD)
+            print(len(visit))
             visit_data = Visit()
             visit_data.patient = visit[7].text.split('\n')[0]
             visit_data.birthdate = visit[8].text.split('\n')[0]
@@ -77,27 +59,25 @@ class VisitPage(MainContentPage):
             visit_list.append(visit_data)
         return visit_list
 
-    def open_visit(self, locator, visit: int = 0):
+    def open_visit(self, visit):
         self.element_is_not_visible(self.Locators.LOADING_BAR)
-        visit = self.elements_are_visible(locator, element=visit)
         self.get_request_href_and_click(visit)
 
-    def get_visit_id(self, locator, visit: int = 0) -> str:
+    def get_visit_id(self, visit) -> str:
         self.element_is_not_visible(self.Locators.LOADING_BAR)
-        visit = self.elements_are_visible(locator, element=visit, return_false=True)
         return visit.get_attribute('href').rsplit('/', 2)[1]
 
-    def refresh_page(self):
+    def refresh_study_page(self):
         self.element_is_not_visible(self.Locators.LOADING_BAR)
-        self.element_is_visible(VisitLocators.REFRESH_PAGE)
-        self.element_is_clickable(VisitLocators.REFRESH_PAGE).click()
+        self.element_is_visible(VisitLocators.REFRESH_STUDY_PAGE)
+        self.element_is_clickable(VisitLocators.REFRESH_STUDY_PAGE).click()
         self.element_is_visible(self.Locators.LOADING_BAR)
         self.element_is_not_visible(self.Locators.LOADING_BAR)
 
     def check_result_created_visit(self, name, birthdate, study):
         self.element_is_not_visible(self.Locators.LOADING_BAR)
         room = self.get_footer_user_data()[1][2]
-        visit = VisitLocators.get_visit_locator(birthdate, name, study, room)
+        visit = VisitLocators.find_visits_by_data('visit', birthdate, name, study, room)
         visit = self.element_is_visible(visit, return_false=True)
         return visit
 
@@ -323,7 +303,7 @@ class ImageVisitPage(VisitPage):
         self.element_is_visible(self.Locators.LOADING_BAR)
         self.element_is_not_visible(self.Locators.LOADING_BAR)
         self.element_is_visible(ImageVisitLocators.BTN_CLOSE_IMAGE_PAGE).click()
-        self.refresh_page()
+        self.refresh_study_page()
         image_visit = self.elements_are_visible(VisitLocators.VIEW_IMAGE_VISIT, return_false=True)
         if image_visit:
             return len(image_visit)
@@ -346,12 +326,12 @@ class CreateProtocolPage(CreateVisitPage):
             case 'visit_page':
                 self.elements_are_visible(VisitLocators.CREATE_PROTOCOL, element=0).click()
             case 'reg_form':
-                count, locator = self.list_visits_on_page('missing')
-                self.open_visit(locator)
+                visits = self.find_visits_by_param(return_='study', protocol='missing')
+                self.open_visit(visits[0])
                 self.element_is_visible(CreateVisitLocators.BTN_CREATE_PROTOCOL).click()
             case 'tab_doc':
-                count, locator = self.list_visits_on_page('missing')
-                self.open_visit(locator)
+                visits = self.find_visits_by_param(return_='study', protocol='missing')
+                self.open_visit(visits[0])
                 self.element_is_visible(CreateVisitLocators.TAB_CLINICAL_DOCUMENTS).click()
                 self.element_is_visible(CreateVisitLocators.ClinicalDocumentsTab.PROTOCOL_CREATE).click()
             case _:
