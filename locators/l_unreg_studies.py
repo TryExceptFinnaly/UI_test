@@ -20,3 +20,9 @@ class UnregStudiesPageLocators:
         prefix_modality = f"[td[13][text()='{modality}']]" if modality else ''
         locator += prefix_name + prefix_birthdate + prefix_sex + prefix_id + prefix_study + prefix_part + prefix_mo + prefix_room + prefix_device + prefix_modality
         return By.XPATH, locator
+    BTN_DELETE = (By.XPATH, "//td[1]/a/i[@class='fa fa-trash']")
+    BTN_MODAL_DELETE_YES = (
+        By.CSS_SELECTOR, "div[role='dialog']>div>div.modal-content>div.modal-footer>button.btn.btn-danger")
+    BTN_MODAL_DELETE_NO = (
+        By.CSS_SELECTOR, "div[role='dialog']>div>div.modal-content>div.modal-footer>button.btn.btn-default")
+    REFRESH_PAGE = (By.CSS_SELECTOR, "i.fa.fa-refresh")

@@ -63,7 +63,7 @@ class VisitPage(MainContentPage):
         visits = self.elements_are_visible(VisitLocators.VISITS)
         visit_list = []
         for visit in visits:
-            visit = visit.find_elements(*VisitLocators.VISITS_TD)
+            visit = visit.find_elements(*self.Locators.TAG_TD)
             visit_data = Visit()
             visit_data.patient = visit[7].text.split('\n')[0]
             visit_data.birthdate = visit[8].text.split('\n')[0]
@@ -87,10 +87,10 @@ class VisitPage(MainContentPage):
         visit = self.elements_are_visible(locator, element=visit, return_false=True)
         return visit.get_attribute('href').rsplit('/', 2)[1]
 
-    def refresh_study_page(self):
+    def refresh_page(self):
         self.element_is_not_visible(self.Locators.LOADING_BAR)
-        self.element_is_visible(VisitLocators.REFRESH_STUDY_PAGE)
-        self.element_is_clickable(VisitLocators.REFRESH_STUDY_PAGE).click()
+        self.element_is_visible(VisitLocators.REFRESH_PAGE)
+        self.element_is_clickable(VisitLocators.REFRESH_PAGE).click()
         self.element_is_visible(self.Locators.LOADING_BAR)
         self.element_is_not_visible(self.Locators.LOADING_BAR)
 
@@ -323,7 +323,7 @@ class ImageVisitPage(VisitPage):
         self.element_is_visible(self.Locators.LOADING_BAR)
         self.element_is_not_visible(self.Locators.LOADING_BAR)
         self.element_is_visible(ImageVisitLocators.BTN_CLOSE_IMAGE_PAGE).click()
-        self.refresh_study_page()
+        self.refresh_page()
         image_visit = self.elements_are_visible(VisitLocators.VIEW_IMAGE_VISIT, return_false=True)
         if image_visit:
             return len(image_visit)

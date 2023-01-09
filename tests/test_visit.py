@@ -13,7 +13,7 @@ class TestVisitPage:
         page = VisitPage(driver, self.URL)
         page.open()
         page.authorization()
-        page.refresh_study_page()
+        page.refresh_page()
 
 
 @allure.feature('Create Visit')
@@ -215,7 +215,7 @@ class TestVisit:
         page.authorization()
         count, locator = page.list_visits_on_page(image='missing', wlm='present')
         for i in range(count):
-            page.refresh_study_page()
+            page.refresh_page()
             acc_number = page.get_visit_id(locator)
             result = send_hl7_message(f'sc_{acc_number}')
             print(result)
@@ -230,4 +230,4 @@ class TestVisit:
         for i in range(count):
             page.open_visit(locator)
             page.delete_visit()
-            page.refresh_study_page()
+            page.refresh_page()

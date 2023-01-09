@@ -21,7 +21,6 @@ class VisitPageLocators:
     VIEW_PROTOCOL = (By.XPATH, "//tr/td/a[@class='no-underline']/i[@class='fa fa-file-text-o']")
     EDIT_PROTOCOL = (By.XPATH, "//tr/td/a[@class='no-underline']/i[@class='fa fa-pencil']")
     VISITS = (By.XPATH, "//div[@class='table-responsive']//tbody/tr[td]")
-    VISITS_TD = (By.TAG_NAME, "td")
     VISITS_PATIENT_NAME = (By.XPATH, "//tr/td[8]/a[contains(@href,'/share/visits/')]")
     VISITS_BIRTHDATE = (By.XPATH, "//tr/td[9]/span")
     #
@@ -43,7 +42,7 @@ class VisitPageLocators:
     PREFIX_MISSING_IMAGE = '//tr[td[3][not(a)]]'
     #
     VIEW_IMAGE_VISIT = (By.XPATH, "//tr/td//i[@class='fa fa-picture-o']/..")
-    REFRESH_STUDY_PAGE = (By.CSS_SELECTOR, "i.fa.fa-refresh")
+    REFRESH_PAGE = (By.CSS_SELECTOR, "i.fa.fa-refresh")
     # FILTER
     FILTER_TOGGLE_BTN = (By.XPATH, "//div[@class='filter-toggle-btn']")
     FILTER_CLOSE_TOGGLE_BTN = (By.XPATH, "//div[@class='filter-col in']//div[@class='filter-close']")
