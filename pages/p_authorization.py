@@ -7,11 +7,14 @@ from locators.l_base import BaseLocators
 class AuthorizationPage(BasePage):
     Locators = BaseLocators()
 
-    def authorization(self):
-        self.element_is_visible(AuthorizationLocators.USER_NAME).send_keys(self.user)
-        self.element_is_visible(AuthorizationLocators.USER_PASSWORD).send_keys(self.password)
+    def authorization(self, user: str = 'dav', password: str = 'dav'):
+        self.element_is_visible(AuthorizationLocators.USER_NAME).send_keys(user)
+        self.element_is_visible(AuthorizationLocators.USER_PASSWORD).send_keys(password)
         self.element_is_visible(AuthorizationLocators.BTN_SUBMIT).click()
         self.element_is_not_visible(self.Locators.LOADING_BAR)
+
+    def check_alert_message(self):
+        return self.element_is_visible(AuthorizationLocators.ALERT_MSG).text
 
     def waiting_for_notification(self, waiting_notification: str, return_false: bool = False):
         locator_notification = (

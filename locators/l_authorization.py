@@ -5,3 +5,4 @@ class AuthorizationPageLocators:
     USER_NAME = (By.CSS_SELECTOR, 'input#username')
     USER_PASSWORD = (By.CSS_SELECTOR, 'input#password')
     BTN_SUBMIT = (By.CSS_SELECTOR, "button.btn.btn-primary[type='submit']")
+    ALERT_MSG = (By.XPATH, '//div[@role="alert"][@class="alert alert-danger"]')
