@@ -11,6 +11,9 @@
 # for i in range(500):
 #     send_hl7_message('sc')
 
-blabla = 'blabla'
+i = 0
 
-print(blabla.split('\n')[0])
+if i:
+    print('12414')
+else:
+    print('asfasf')

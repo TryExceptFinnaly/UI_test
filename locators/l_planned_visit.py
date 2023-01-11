@@ -5,7 +5,7 @@ class PlannedVisitPageLocators:
     @staticmethod
     def get_planned_visit_locator(cito: bool, name: str, sex: str, birthdate: str, study: str, room: str = '',
                                   doctor: str = '', comment: str = '', number: str = ''):
-        locator = "//tr"
+        locator = "//tr[td[2]]"
         # Required
         prefix_cito = "[td[2][strong[text()='Cito!']]]" if cito else "[td[2][not(strong[text()='Cito!'])]]"
         prefix_name = f"[td[4][span[text()='{name}']]]"

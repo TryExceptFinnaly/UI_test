@@ -7,7 +7,7 @@ class VisitPageLocators:
         """params birthdate, name, study, room, mo\n
         param return_: visit, study\n
         return: XPath locator"""
-        locator = "//tr[td]"
+        locator = "//tr[td[2]]"
         prefix_birthdate = f"[td[span[br][text()='{birthdate}']]]"
         prefix_name = f"[td[a[text()='{name}']]]"
         prefix_study = f"[td[ul[li[a[@href][text()='{study}']]]]]"
@@ -32,7 +32,7 @@ class VisitPageLocators:
         param wlm: present, missing, ignore\n
         param return_: visit, study\n
         return: XPath locator"""
-        locator = "//tr[td]"
+        locator = "//tr[td[2]]"
         match image:
             case 'present':
                 locator += '[td[3][a]]'
@@ -79,7 +79,7 @@ class VisitPageLocators:
     VIEW_PROTOCOL = (By.XPATH, "//tr/td/a[@class='no-underline']/i[@class='fa fa-file-text-o']")
     EDIT_PROTOCOL = (By.XPATH, "//tr/td/a[@class='no-underline']/i[@class='fa fa-pencil']")
     VIEW_IMAGE_VISIT = (By.XPATH, "//tr/td//i[@class='fa fa-picture-o']/..")
-    REFRESH_STUDY_PAGE = (By.CSS_SELECTOR, "i.fa.fa-refresh")
+    REFRESH_PAGE = (By.XPATH, "//div[@class='form-group']/a/i[@class='fa fa-refresh']")
     # FILTER
     FILTER_TOGGLE_BTN = (By.XPATH, "//div[@class='filter-toggle-btn']")
     FILTER_CLOSE_TOGGLE_BTN = (By.XPATH, "//div[@class='filter-col in']//div[@class='filter-close']")

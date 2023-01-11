@@ -1,8 +1,18 @@
 from pages.p_authorization import AuthorizationPage
 from locators.l_main_content import MainContentPageLocators as MainContentLocators
+from generator.generator import generated_person, write_seed
 
 
 class MainContentPage(AuthorizationPage):
+
+    def __init__(self, driver, url):
+        super().__init__(driver, url)
+        self.patient_info = next(generated_person())
+
+    def generate_new_patient(self, seed: int = 0):
+        write_seed(seed)
+        self.patient_info = next(generated_person())
+
     def change_slide_menu(self, active=False):
         slide_menu_btn = self.element_is_visible(MainContentLocators.SLIDE_MENU_BTN)
         slide_menu_btn_class = slide_menu_btn.get_attribute('class')

@@ -17,7 +17,7 @@ class TestPatients:
         page.check_found_patient_in_edit_tab()
         page.save_and_continue_patient()
         page.waiting_for_notification('Данные сохранены.')
-        page.sleep(5)
+        page.sleep(3)
         page.save_patient()
         page.waiting_for_notification('Данные сохранены.')
         assert self.URL == page.current_url(), 'Incorrect current URL'

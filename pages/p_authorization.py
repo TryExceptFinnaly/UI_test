@@ -7,6 +7,11 @@ from locators.l_base import BaseLocators
 class AuthorizationPage(BasePage):
     Locators = BaseLocators()
 
+    # def __init__(self, driver, url):
+    #     super().__init__(driver, url)
+    #     self.user = 'dav'
+    #     self.password = 'dav'
+
     def authorization(self, user: str = 'dav', password: str = 'dav'):
         self.element_is_visible(AuthorizationLocators.USER_NAME).send_keys(user)
         self.element_is_visible(AuthorizationLocators.USER_PASSWORD).send_keys(password)

@@ -1,6 +1,5 @@
 from data.data import SystemDirectory
 from data.data import Visit
-from generator.generator import generated_person
 from pages.p_main_content import MainContentPage
 from locators.l_visit import VisitPageLocators as VisitLocators
 from locators.l_visit import CreateVisitPageLocators as CreateVisitLocators
@@ -11,9 +10,6 @@ from locators.l_visit import CreateProtocolPageLocators as CreateProtocolLocator
 
 
 class VisitPage(MainContentPage):
-    patient_info = next(generated_person())
-    patient_info.full_name = f'{patient_info.last_name} {patient_info.first_name} {patient_info.middle_name}'
-    patient_info.birthdate = f'{patient_info.birth_day}{patient_info.birth_month}{patient_info.birth_year}'
 
     def open_create_visit(self):
         button_create_visit = self.element_is_visible(VisitLocators.CREATE_VISIT)
@@ -44,7 +40,6 @@ class VisitPage(MainContentPage):
         visit_list = []
         for visit in visits:
             visit = visit.find_elements(*self.Locators.TAG_TD)
-            print(len(visit))
             visit_data = Visit()
             visit_data.patient = visit[7].text.split('\n')[0]
             visit_data.birthdate = visit[8].text.split('\n')[0]
@@ -66,10 +61,10 @@ class VisitPage(MainContentPage):
         self.element_is_not_visible(self.Locators.LOADING_BAR)
         return visit.get_attribute('href').rsplit('/', 2)[1]
 
-    def refresh_study_page(self):
+    def refresh_page(self):
         self.element_is_not_visible(self.Locators.LOADING_BAR)
-        self.element_is_visible(VisitLocators.REFRESH_STUDY_PAGE)
-        self.element_is_clickable(VisitLocators.REFRESH_STUDY_PAGE).click()
+        self.element_is_visible(VisitLocators.REFRESH_PAGE)
+        self.element_is_clickable(VisitLocators.REFRESH_PAGE).click()
         self.element_is_visible(self.Locators.LOADING_BAR)
         self.element_is_not_visible(self.Locators.LOADING_BAR)
 
@@ -114,6 +109,8 @@ class CreateVisitPage(VisitPage):
         self.element_is_visible(CreateVisitLocators.TAB_BASE).click()
 
         sex = SystemDirectory.sex[self.patient_info.sex][1]
+        full_name = f'{self.patient_info.last_name} {self.patient_info.first_name} {self.patient_info.middle_name}'
+        birthdate = f'{self.patient_info.birth_day}{self.patient_info.birth_month}{self.patient_info.birth_year}'
         # Reg. from contains 6 variants, SystemDirectory.allergy_type contains 4 variants.
         # allergy_type = SystemDirectory.allergy_type[self.patient_info.allergy_type][1]
         treatment_case = SystemDirectory.treatment_case[self.patient_info.treatment_case][1]
@@ -137,11 +134,11 @@ class CreateVisitPage(VisitPage):
         self.element_is_visible(CreateVisitLocators.BaseTab.IS_CITO_CONTAINER).click()
         self.elements_are_visible(CreateVisitLocators.BaseTab.IS_CITO, element=is_cito).click()
 
-        self.element_is_visible(CreateVisitLocators.BaseTab.FULL_NAME).send_keys(self.patient_info.full_name)
+        self.element_is_visible(CreateVisitLocators.BaseTab.FULL_NAME).send_keys(full_name)
         self.element_is_visible(CreateVisitLocators.BaseTab.EXTERNAL_ID).send_keys('PATIENT_ID')
         self.element_is_visible(CreateVisitLocators.BaseTab.POLIS_OMS).send_keys('PATIENT_POLIS_OMS')
         self.element_is_visible(CreateVisitLocators.BaseTab.SNILS).send_keys(11223344595)
-        self.element_is_visible(CreateVisitLocators.BaseTab.BIRTHDAY).send_keys(self.patient_info.birthdate)
+        self.element_is_visible(CreateVisitLocators.BaseTab.BIRTHDAY).send_keys(birthdate)
         self.element_is_visible(CreateVisitLocators.BaseTab.SEX_CONTAINER).click()
         self.elements_are_visible(CreateVisitLocators.BaseTab.SEX, element=sex).click()
         self.element_is_visible(CreateVisitLocators.BaseTab.PHONE_NUMBER).send_keys(self.patient_info.phone_number)
@@ -302,7 +299,7 @@ class ImageVisitPage(VisitPage):
         self.element_is_visible(self.Locators.LOADING_BAR)
         self.element_is_not_visible(self.Locators.LOADING_BAR)
         self.element_is_visible(ImageVisitLocators.BTN_CLOSE_IMAGE_PAGE).click()
-        self.refresh_study_page()
+        self.refresh_page()
         image_visit = self.elements_are_visible(VisitLocators.VIEW_IMAGE_VISIT, return_false=True)
         if image_visit:
             return len(image_visit)

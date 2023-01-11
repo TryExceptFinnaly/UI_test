@@ -54,9 +54,11 @@ faker_ru.add_provider(insurance_company_provider)
 PATH = os.path.join(os.path.dirname(__file__), 'seed')
 
 
-def write_seed():
+def write_seed(seed: int):
+    if not seed:
+        seed = randint(0, 1000)
     with open(PATH, 'w', encoding='utf-8') as file:
-        file.write(f'{randint(0, 1000)}')
+        file.write(f'{seed}')
 
 
 def read_seed():

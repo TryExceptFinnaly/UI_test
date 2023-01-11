@@ -1,7 +1,6 @@
 import subprocess
 import sys
 import os
-from generator.generator import generated_person, write_seed
 
 # Main
 SENDING_APPLICATION = 'PACS'
@@ -27,17 +26,14 @@ def get_module_path() -> str:
         return os.path.dirname(__file__)
 
 
-def send_hl7_message(order: str, random: bool = False, count: int = 1):
-    """order('nw', 'sc', 'sc_<accession number>'), random, count"""
+def send_hl7_message(order: str, patient_info, count: int = 1):
+    """order('nw', 'sc', 'sc_<accession number>'), patient_info, count"""
     order = order.lower().split('_')
     path_to_hl7 = os.path.join(get_module_path(), 'bin\\')
     path_to_bin = f'{path_to_hl7}HL7_cmd.exe'
     path_to_hl7 = f'{path_to_hl7}test_{order[0]}.hl7'
     with open(path_to_hl7, 'r', encoding='utf-8') as file:
         file_data = file.read()
-    if random:
-        write_seed()
-    patient_info = next(generated_person())
     #       Common
     # MSH
     file_data = file_data.replace('SENDING_APPLICATION', SENDING_APPLICATION)

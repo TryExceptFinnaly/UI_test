@@ -13,7 +13,7 @@ class TestVisitPage:
         page = VisitPage(driver, self.URL)
         page.open()
         page.authorization()
-        page.refresh_study_page()
+        page.refresh_page()
 
 
 @allure.feature('Create Visit')
@@ -219,20 +219,33 @@ class TestVisit:
         page.authorization()
         visits = page.find_visits_by_param(return_='study', image='missing', wlm='present')
         for visit in visits:
-            page.refresh_study_page()
+            page.refresh_page()
             acc_number = page.get_visit_id(visit)
-            result = send_hl7_message(f'sc_{acc_number}')
+            result = send_hl7_message(f'sc_{acc_number}', page.patient_info)
             print(result)
             page.sleep(5)
 
-    @allure.title('Delete visits')
-    def test_delete_visits(self, driver):
+    @allure.title('Delete visit')
+    def test_delete_visit(self, driver):
         page = CreateVisitPage(driver, self.URL)
         page.open()
         page.authorization()
         visits = page.find_visits_by_param(return_='study')
-        while visits is not None:
+        if visits:
+            before_count_visits = len(visits)
             page.open_visit(visits[0])
             page.delete_visit()
-            page.refresh_study_page()
-            visits = page.find_visits_by_param(return_='study')
+            after_count_visits = page.find_visits_by_param(return_='study')
+            after_count_visits = len(after_count_visits) if after_count_visits else 0
+            assert before_count_visits != after_count_visits, 'The number of visits before and after does not differ'
+
+    # @allure.title('Delete visits')
+    # def test_delete_visits(self, driver):
+    #     page = CreateVisitPage(driver, self.URL)
+    #     page.open()
+    #     page.authorization()
+    #     visits = page.find_visits_by_param(return_='study')
+    #     while visits is not None:
+    #         page.open_visit(visits[0])
+    #         page.delete_visit()
+    #         visits = page.find_visits_by_param(return_='study')

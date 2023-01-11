@@ -3,9 +3,9 @@ from selenium.webdriver.common.by import By
 
 class UnregStudiesPageLocators:
     @staticmethod
-    def get_unreg_study_locator(name: str, birthdate: str, sex: str, id: str = '', study: str = '', part: str = '',
-                                mo: str = '', room: str = '', device: str = '', modality: str = ''):
-        locator = "//tr"
+    def get_unreg_studies_locator(name: str, birthdate: str, sex: str, id: str = '', study: str = '', part: str = '',
+                                  mo: str = '', room: str = '', device: str = '', modality: str = ''):
+        locator = "//tr[td[2]]"
         # Required
         prefix_name = f"[td[5][span[text()='{name}']][div[text()='{name}']]]"
         prefix_birthdate = f"[td[6][text()='{birthdate}']]"
@@ -25,4 +25,4 @@ class UnregStudiesPageLocators:
         By.CSS_SELECTOR, "div[role='dialog']>div>div.modal-content>div.modal-footer>button.btn.btn-danger")
     BTN_MODAL_DELETE_NO = (
         By.CSS_SELECTOR, "div[role='dialog']>div>div.modal-content>div.modal-footer>button.btn.btn-default")
-    REFRESH_PAGE = (By.CSS_SELECTOR, "i.fa.fa-refresh")
+    REFRESH_PAGE = (By.XPATH, "//div[@class='form-group']/a/i[@class='fa fa-refresh']")
